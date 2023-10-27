@@ -21,11 +21,12 @@ import GObject from "gi://GObject";
 import Gio from "gi://Gio";
 import St from "gi://St";
 
-import { Extension, gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
-import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
-  PopupMenuSection,
-} from "resource:///org/gnome/shell/ui/popupMenu.js";
+  Extension,
+  gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import { PopupMenuSection } from "resource:///org/gnome/shell/ui/popupMenu.js";
 
 /**
  * The indicator of this extension.
@@ -36,11 +37,15 @@ const PictureOfTheDayIndicator = GObject.registerClass(
       super(0, "PictureOfTheDayIndicator", false);
 
       // TODO: Load and initialize icon
-      const gicon = Gio.FileIcon.new(extension.metadata.dir.get_child("icon.svg"));
-      this.add_child(new St.Icon({style_class: "system-status-icon", gicon }));
+      const gicon = Gio.FileIcon.new(
+        extension.metadata.dir.get_child("icon.svg"),
+      );
+      this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
 
       const generalItems = new PopupMenuSection();
-      generalItems.addAction(_("Settings"), () => extension.openPreferences());
+      generalItems.addAction(_("Settings"), () => {
+        extension.openPreferences();
+      });
 
       for (const section of [generalItems]) {
         this.menu.addMenuItem(section);
