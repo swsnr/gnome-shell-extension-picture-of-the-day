@@ -1,17 +1,17 @@
 {
-  "name": "gnome-shell-extension-typescript-template",
+  "name": "gnome-shell-extension-picture-of-the-day",
   "version": "1.0.0",
-  "description": "GNOME shell extension template in typescript",
+  "description": "Get the picture of the day from various sources as your wallpaper",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/swsnr/gnome-shell-extension-typescript-template.git"
+    "url": "git+https://github.com/swsnr/gnome-shell-extension-picture-of-the-day.git"
   },
   "author": "Sebastian Wiesner <sebastian@swsnr.de>",
   "license": "GPL-2.0-or-later OR MPL-2.0",
   "bugs": {
-    "url": "https://github.com/swsnr/gnome-shell-extension-typescript-template/issues"
+    "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/issues"
   },
-  "homepage": "https://github.com/swsnr/gnome-shell-extension-typescript-template#readme",
+  "homepage": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day#readme",
   "type": "module",
   "private": true,
   "scripts": {

@@ -1,8 +1,8 @@
 {
-  "name": "gnome-shell-extension-typescript-template",
-  "uuid": "typescript-template@swsnr.de",
-  "description": "Typescript template for GNOME shell extensions",
-  "url": "https://github.com/swsnr/gnome-shell-extension-typescript-template",
+  "name": "Pciture of the Day",
+  "uuid": "picture-of-the-day@swsnr.de",
+  "description": "Get the picture of the day from various sources as your wallpaper",
+  "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day",
   "shell-version": ["45"],
-  "settings-schema": "org.gnome.shell.extensions.typescript-template"
+  "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day"
 }

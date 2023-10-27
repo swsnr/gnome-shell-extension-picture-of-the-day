@@ -2,7 +2,7 @@ PREFIX = /usr/local
 DESTDIR =
 HOME-DESTDIR = $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 
-UUID = typescript-template@swsnr.de
+UUID = picture-of-the-day@swsnr.de
 
 DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2
 BLUEPRINTS = $(addprefix ui/,about.blp)
@@ -72,4 +72,4 @@ install-system: dist
 uninstall-system:
 	rm -rf \
 		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID) \
-		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/org.gnome.shell.extensions.typescript-template.gschema.xml
+		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/org.gnome.shell.extensions.swsnr-picture-of-the-day.gschema.xml
