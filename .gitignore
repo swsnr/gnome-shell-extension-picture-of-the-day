@@ -5,7 +5,4 @@
 /dist/
 
 # Build outputs
-*.js
-
-# But allow certain config files
-!/.ts-for-girrc.js
+/build/

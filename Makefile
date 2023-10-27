@@ -11,8 +11,14 @@ UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 .PHONY: dist
 dist: compile
 	mkdir -p ./dist/
-	gnome-extensions pack --force --out-dir dist \
-		$(addprefix --extra-source=,$(DIST-EXTRA-SRC) $(UIDEFS))
+	mkdir -p ./build/ui
+	cp -t ./build/ui $(UIDEFS)
+	gnome-extensions pack --force --out-dir dist build \
+		--extra-source=../metadata.json \
+		--extra-source=ui \
+		$(addprefix --extra-source=,$(wildcard src/*)) \
+		$(addprefix --extra-source=../,$(DIST-EXTRA-SRC)) \
+		$(addprefix --schema=../,$(wildcard schemas/*.gschema.xml))
 
 # Make a reproducible dist package
 .PHONY: dist-repro
