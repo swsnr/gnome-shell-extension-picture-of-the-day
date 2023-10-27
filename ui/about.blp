@@ -1,0 +1,59 @@
+using Gtk 4.0;
+
+Box about {
+  orientation: vertical;
+  valign: center;
+  halign: center;
+  margin-top: 12;
+  margin-bottom: 12;
+
+  Label name {
+    label: "The name of this extension";
+    margin-bottom: 15;
+    styles ["title-1"]
+  }
+
+  Box description {
+    orientation: vertical;
+    halign: center;
+    margin-bottom: 5;
+    Label {
+      label: "The description of this extension";
+      justify: center;
+    }
+  }
+
+  Box links {
+    halign: center;
+
+    LinkButton github {
+      label: "Github";
+
+    }
+
+    LinkButton issues {
+      label: "Issue tracker";
+    }
+  }
+
+  Box license_box {
+    halign: center;
+
+    ScrolledWindow {
+      margin-top: 24;
+      height-request: 400;
+      width-request: 600;
+
+      TextView license {
+        bottom-margin: 12;
+        left-margin: 12;
+        right-margin: 12;
+        top-margin: 12;
+        editable: false;
+        cursor-visible: false;
+        wrap-mode: word;
+        justification: center;
+      }
+    }
+  }
+}

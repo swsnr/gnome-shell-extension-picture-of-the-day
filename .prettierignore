@@ -1,0 +1,3 @@
+/@types/gir-generated/*
+*.js
+!/.ts-for-girrc.js

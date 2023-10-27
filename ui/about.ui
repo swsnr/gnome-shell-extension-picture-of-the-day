@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkBox" id="about">
+    <property name="orientation">1</property>
+    <property name="valign">3</property>
+    <property name="halign">3</property>
+    <property name="margin-top">12</property>
+    <property name="margin-bottom">12</property>
+    <child>
+      <object class="GtkLabel" id="name">
+        <property name="label">The name of this extension</property>
+        <property name="margin-bottom">15</property>
+        <style>
+          <class name="title-1"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="description">
+        <property name="orientation">1</property>
+        <property name="halign">3</property>
+        <property name="margin-bottom">5</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">The description of this extension</property>
+            <property name="justify">2</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="links">
+        <property name="halign">3</property>
+        <child>
+          <object class="GtkLinkButton" id="github">
+            <property name="label">Github</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLinkButton" id="issues">
+            <property name="label">Issue tracker</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="license_box">
+        <property name="halign">3</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="margin-top">24</property>
+            <property name="height-request">400</property>
+            <property name="width-request">600</property>
+            <child>
+              <object class="GtkTextView" id="license">
+                <property name="bottom-margin">12</property>
+                <property name="left-margin">12</property>
+                <property name="right-margin">12</property>
+                <property name="top-margin">12</property>
+                <property name="editable">false</property>
+                <property name="cursor-visible">false</property>
+                <property name="wrap-mode">2</property>
+                <property name="justification">2</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

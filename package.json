@@ -1,0 +1,34 @@
+{
+  "name": "gnome-shell-extension-typescript-template",
+  "version": "1.0.0",
+  "description": "GNOME shell extension template in typescript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swsnr/gnome-shell-extension-typescript-template.git"
+  },
+  "author": "Sebastian Wiesner <sebastian@swsnr.de>",
+  "license": "GPL-2.0-or-later OR MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/swsnr/gnome-shell-extension-typescript-template/issues"
+  },
+  "homepage": "https://github.com/swsnr/gnome-shell-extension-typescript-template#readme",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate:gir-types": "ts-for-gir generate",
+    "compile": "tsc --build tsconfig.json",
+    "lint": "eslint *.ts",
+    "format": "prettier *.ts *.json *.cjs"
+  },
+  "devDependencies": {
+    "@ts-for-gir/cli": "^3.2.2",
+    "@tsconfig/strictest": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
+}
