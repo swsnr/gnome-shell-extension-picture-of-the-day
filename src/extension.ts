@@ -39,7 +39,7 @@ const PictureOfTheDayIndicator = GObject.registerClass(
 
       // TODO: Load and initialize icon
       const gicon = Gio.FileIcon.new(
-        extension.metadata.dir.get_child("icon.svg"),
+        extension.metadata.dir.get_child("image").get_child("icon.svg"),
       );
       this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
 
