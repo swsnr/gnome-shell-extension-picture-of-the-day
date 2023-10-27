@@ -25,6 +25,7 @@ import {
   Extension,
   gettext as _,
 } from "resource:///org/gnome/shell/extensions/extension.js";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import { PopupMenuSection } from "resource:///org/gnome/shell/ui/popupMenu.js";
 
@@ -64,6 +65,7 @@ class EnabledExtension {
 
   constructor(extension: Extension) {
     this.indicator = new PictureOfTheDayIndicator(extension);
+    Main.panel.addToStatusArea(extension.metadata.uuid, this.indicator);
   }
 
   destroy() {
