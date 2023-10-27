@@ -32,7 +32,7 @@ interface TracksSettings {
 
 export default class HelloWorldPreferences extends ExtensionPreferences {
   private loadUI(name: string): Gtk.Builder | null {
-    const path = this.metadata.dir.get_child(name).get_path();
+    const path = this.metadata.dir.get_child("ui").get_child(name).get_path();
     if (!path) {
       return null;
     }

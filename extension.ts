@@ -17,20 +17,69 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import GLib from "gi://GLib";
-import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+import GObject from "gi://GObject";
+import Gio from "gi://Gio";
+import St from "gi://St";
 
-export default class HelloWorldExtension extends Extension {
+import { Extension, gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import {
+  PopupMenuSection,
+} from "resource:///org/gnome/shell/ui/popupMenu.js";
+
+/**
+ * The indicator of this extension.
+ */
+const PictureOfTheDayIndicator = GObject.registerClass(
+  class PictureOfTheDayIndicator extends PanelMenu.Button {
+    constructor(extension: Extension) {
+      super(0, "PictureOfTheDayIndicator", false);
+
+      // TODO: Load and initialize icon
+      const gicon = Gio.FileIcon.new(extension.metadata.dir.get_child("icon.svg"));
+      this.add_child(new St.Icon({style_class: "system-status-icon", gicon }));
+
+      const generalItems = new PopupMenuSection();
+      generalItems.addAction(_("Settings"), () => extension.openPreferences());
+
+      for (const section of [generalItems]) {
+        this.menu.addMenuItem(section);
+      }
+    }
+  },
+);
+
+type PictureOfTheDayIndicator = InstanceType<typeof PictureOfTheDayIndicator>;
+
+/**
+ * Track
+ */
+class EnabledExtension {
+  private indicator: PictureOfTheDayIndicator;
+
+  constructor(extension: Extension) {
+    this.indicator = new PictureOfTheDayIndicator(extension);
+  }
+
+  destroy() {
+    this.indicator.destroy();
+  }
+}
+
+/**
+ * An extension to use a picture of the day from various sources as wallpaper.
+ */
+export default class PictureOfTheDayExtension extends Extension {
+  private enabledExtension?: EnabledExtension | null;
+
   override enable(): void {
-    const settings = this.getSettings();
-    if (settings.get_boolean("say-hello")) {
-      const user = GLib.get_user_name();
-      console.log(`Hello ${user} from ${this.metadata.name}`);
+    if (!this.enabledExtension) {
+      this.enabledExtension = new EnabledExtension(this);
     }
   }
 
   override disable(): void {
-    const user = GLib.get_user_name();
-    console.log(`Goodbye ${user} from ${this.metadata.name}`);
+    this.enabledExtension?.destroy();
+    this.enabledExtension = null;
   }
 }
