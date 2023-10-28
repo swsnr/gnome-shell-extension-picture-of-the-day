@@ -18,6 +18,7 @@ export default {
     "St-13",
     "Gtk-4.0",
     "Adw-1",
+    "Soup-3.0",
   ],
   ignore: [],
   noNamespace: false,
