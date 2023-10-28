@@ -37,7 +37,6 @@ const PictureOfTheDayIndicator = GObject.registerClass(
     constructor(extension: Extension) {
       super(0, "PictureOfTheDayIndicator", false);
 
-      // TODO: Load and initialize icon
       const gicon = Gio.FileIcon.new(
         extension.metadata.dir.get_child("image").get_child("icon.svg"),
       );
