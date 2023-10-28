@@ -17,12 +17,12 @@
       </object>
     </child>
     <child>
-      <object class="GtkBox" id="description">
+      <object class="GtkBox">
         <property name="orientation">1</property>
         <property name="halign">3</property>
         <property name="margin-bottom">5</property>
         <child>
-          <object class="GtkLabel">
+          <object class="GtkLabel" id="description">
             <property name="label">The description of this extension</property>
             <property name="justify">2</property>
           </object>
