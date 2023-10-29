@@ -31,7 +31,10 @@ import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import { PopupMenuSection } from "resource:///org/gnome/shell/ui/popupMenu.js";
 
 // Promisify all the async APIs we use
+Gio._promisify(Gio.OutputStream.prototype, "splice_async");
+Gio._promisify(Gio.File.prototype, "create_async");
 Gio._promisify(Soup.Session.prototype, "send_and_read_async");
+Gio._promisify(Soup.Session.prototype, "send_async");
 
 /**
  * The indicator of this extension.
@@ -61,7 +64,7 @@ const PictureOfTheDayIndicator = GObject.registerClass(
 type PictureOfTheDayIndicator = InstanceType<typeof PictureOfTheDayIndicator>;
 
 /**
- * Track
+ * Track the state of this extension.
  */
 class EnabledExtension {
   private indicator: PictureOfTheDayIndicator;

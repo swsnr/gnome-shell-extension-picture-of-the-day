@@ -31,6 +31,7 @@ import {
 } from "../source.js";
 import { ConfigurationError } from "../error.js";
 import { QueryList, encodeQuery } from "../uri.js";
+import { HttpError, downloadToFile } from "../../http.js";
 
 const metadata: SourceMetadata = {
   key: "apod",
@@ -44,18 +45,6 @@ const metadata: SourceMetadata = {
 export class ApodErrorDataMissing extends Error {
   constructor() {
     super("Response returned no data");
-  }
-}
-
-/**
- * The APOD API returned a non-200 response but did not provide error details.
- */
-export class ApodHttpError extends Error {
-  constructor(
-    readonly status: Soup.Status,
-    readonly reason?: string | null,
-  ) {
-    super(_(`Request failed with HTTP status ${status} ${reason ?? ""}`));
   }
 }
 
@@ -131,7 +120,7 @@ const queryMetadata = async (
     return JSON.parse(new TextDecoder().decode(data)) as ApodMetadata;
   } else {
     if (data === null) {
-      throw new ApodHttpError(
+      throw new HttpError(
         message.get_status(),
         message.get_reason_phrase(),
       );
@@ -140,7 +129,7 @@ const queryMetadata = async (
       if (isApodErrorBody(body)) {
         throw new ApodError(body.error.code, body.error.message);
       } else {
-        throw new ApodHttpError(
+        throw new HttpError(
           message.get_status(),
           message.get_reason_phrase(),
         );
@@ -190,7 +179,7 @@ const createDownloader: DownloadImageFactory = (
       `${imageMetadata.date}-${filename}`,
     );
     if (!targetFile.query_exists(null)) {
-      throw new Error("Not implemented");
+      await downloadToFile(session, imageUrl, targetFile);
     }
     return {
       file: targetFile,
