@@ -15,7 +15,7 @@ dist: compile
 	cp -t ./build/ui $(UIDEFS)
 	gnome-extensions pack --force --out-dir dist build \
 		--extra-source=../metadata.json \
-		--extra-source=ui \
+		--extra-source=ui --extra-source=sources \
 		$(addprefix --extra-source=,$(wildcard src/*)) \
 		$(addprefix --extra-source=../,$(DIST-EXTRA-SRC)) \
 		$(addprefix --schema=../,$(wildcard schemas/*.gschema.xml))

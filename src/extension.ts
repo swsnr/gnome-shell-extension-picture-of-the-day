@@ -20,6 +20,7 @@
 import GObject from "gi://GObject";
 import Gio from "gi://Gio";
 import St from "gi://St";
+import Soup from "gi://Soup";
 
 import {
   Extension,
@@ -28,6 +29,9 @@ import {
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import { PopupMenuSection } from "resource:///org/gnome/shell/ui/popupMenu.js";
+
+// Promisify all the async APIs we use
+Gio._promisify(Soup.Session.prototype, "send_and_read_async");
 
 /**
  * The indicator of this extension.
