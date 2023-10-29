@@ -53,6 +53,10 @@ uninstall-system:
 		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID) \
 		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/org.gnome.shell.extensions.swsnr-picture-of-the-day.gschema.xml
 
+.PHONY: clean
+clean:
+	rm -rf dist build
+
 .PHONY: compile
 compile: $(UIDEFS)
 	npm run compile
