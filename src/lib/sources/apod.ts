@@ -110,7 +110,7 @@ const queryMetadata = async (
   cancellable: Gio.Cancellable,
 ): Promise<ApodMetadata> => {
   const query: QueryList = [["api_key", apiKey]];
-  const url = `https://api.nasa.gov/planetary/apod&${encodeQuery(query)}`;
+  const url = `https://api.nasa.gov/planetary/apod?${encodeQuery(query)}`;
   const message = Soup.Message.new("GET", url);
   const response = await session.send_and_read_async(message, 0, cancellable);
   const data = response.get_data();
