@@ -179,9 +179,7 @@ const createDownloader: DownloadImageFactory = (
     const targetFile = directories.imageDirectory.get_child(
       `${imageMetadata.date}-${filename}`,
     );
-    if (!targetFile.query_exists(null)) {
-      await downloadToFile(session, imageUrl, targetFile, cancellable);
-    }
+    await downloadToFile(session, imageUrl, targetFile, cancellable);
     return {
       file: targetFile,
       title: imageMetadata.title,
