@@ -31,7 +31,7 @@ import {
 } from "../source.js";
 import { ConfigurationError } from "../error.js";
 import { QueryList, encodeQuery } from "../uri.js";
-import { HttpError, downloadToFile } from "../../http.js";
+import { HttpError, downloadToFile } from "../http.js";
 
 const metadata: SourceMetadata = {
   key: "apod",
