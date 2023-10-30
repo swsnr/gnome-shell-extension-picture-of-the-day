@@ -38,6 +38,8 @@ export class DownloadScheduler {
   ): Promise<Image> {
     this.cancelCurrentDownload();
     this.currentDownloadCancellable = new Gio.Cancellable();
-    return download(this.currentDownloadCancellable);
+    return download(this.currentDownloadCancellable).finally(() => {
+      this.currentDownloadCancellable = null;
+    });
   }
 }
