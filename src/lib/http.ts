@@ -51,7 +51,10 @@ export const downloadToFile = async (
   target: Gio.File,
   cancellable: Gio.Cancellable,
 ): Promise<void> => {
-  // TODO: Make this a lot smarter: Make a HEAD preflight request and only download if size doesn't match content-length?
+  if (target.query_exists(cancellable)) {
+    // TODO: Make this a lot smarter: Make a HEAD preflight request and only download if size doesn't match content-length?
+    return;
+  }
   const message = Soup.Message.new("GET", url);
   const source = await session.send_async(message, 0, cancellable);
   if (message.get_status() !== Soup.Status.OK) {
