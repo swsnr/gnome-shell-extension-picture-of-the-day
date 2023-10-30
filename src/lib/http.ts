@@ -17,6 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
@@ -55,6 +56,23 @@ export const downloadToFile = async (
   const source = await session.send_async(message, 0, cancellable);
   if (message.get_status() !== Soup.Status.OK) {
     throw new HttpError(message.get_status(), message.get_reason_phrase());
+  }
+  // TODO: We should make this async, but there's no async equivalent…
+  try {
+    target.get_parent()?.make_directory_with_parents(cancellable);
+  } catch (error) {
+    // We've to cast around here because the type signature of `matches` doesn't allow for enums…
+    if (
+      !(
+        error instanceof GLib.Error &&
+        error.matches(
+          Gio.IOErrorEnum as unknown as number,
+          Gio.IOErrorEnum.EXISTS,
+        )
+      )
+    ) {
+      throw error;
+    }
   }
   const sink = await target.create_async(Gio.FileCreateFlags.NONE, 0, null);
   await sink.splice_async(
