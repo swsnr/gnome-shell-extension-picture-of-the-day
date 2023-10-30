@@ -17,9 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import GObject from "gi://GObject";
 import Gio from "gi://Gio";
-import St from "gi://St";
 import Soup from "gi://Soup";
 import GLib from "gi://GLib";
 
@@ -28,108 +26,16 @@ import {
   gettext as _,
 } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
-import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
-import {
-  PopupMenuItem,
-  PopupMenuSection,
-  PopupSeparatorMenuItem,
-} from "resource:///org/gnome/shell/ui/popupMenu.js";
 
 import { DownloadScheduler } from "./lib/download.js";
-import APOD from "./lib/sources/apod.js";
 import { DownloadDirectories } from "./lib/source";
+import { PictureOfTheDayIndicator } from "./lib/indicator.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
 Gio._promisify(Gio.File.prototype, "create_async");
 Gio._promisify(Soup.Session.prototype, "send_and_read_async");
 Gio._promisify(Soup.Session.prototype, "send_async");
-
-/**
- * The indicator of this extension.
- */
-const PictureOfTheDayIndicator = GObject.registerClass(
-  class PictureOfTheDayIndicator extends PanelMenu.Button {
-    private readonly refresh: PopupMenuItem;
-
-    constructor(
-      extension: Extension,
-      scheduler: DownloadScheduler,
-      baseDirectories: DownloadDirectories,
-    ) {
-      super(0, "PictureOfTheDayIndicator", false);
-
-      const source = APOD;
-
-      const sourceSettings = extension.getSettings(
-        `${extension.getSettings().schema_id}.source.${source.metadata.key}`,
-      );
-      const directories: DownloadDirectories = {
-        stateDirectory: baseDirectories.stateDirectory.get_child(
-          source.metadata.key,
-        ),
-        cacheDirectory: baseDirectories.cacheDirectory.get_child(
-          source.metadata.key,
-        ),
-        // For the user visible image directory we use a human-readable name.
-        imageDirectory: baseDirectories.imageDirectory.get_child(
-          source.metadata.name,
-        ),
-      };
-
-      const download = APOD.createDownloader(sourceSettings, directories);
-
-      const gicon = Gio.FileIcon.new(
-        extension.metadata.dir.get_child("image").get_child("icon.svg"),
-      );
-      this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
-
-      const refreshItems = new PopupMenuSection();
-      this.refresh = new PopupMenuItem("");
-      refreshItems.addMenuItem(this.refresh);
-      this.resetRefreshLabel();
-      this.refresh.connect("activate", () => {
-        if (scheduler.downloadOngoing) {
-          scheduler.cancelCurrentDownload();
-          this.resetRefreshLabel();
-        } else {
-          this.refresh.label.set_text(_("Cancel refresh…"));
-          scheduler
-            .download(download)
-            .then((image) => {
-              console.log("Downloaded image", image);
-              this.resetRefreshLabel();
-              return;
-            })
-            .catch((error) => {
-              // Show proper error message
-              console.error("Failed to download image", error);
-              this.resetRefreshLabel();
-            });
-        }
-      });
-
-      const generalItems = new PopupMenuSection();
-      generalItems.addAction(_("Settings"), () => {
-        extension.openPreferences();
-      });
-
-      for (const section of [
-        refreshItems,
-        new PopupSeparatorMenuItem(),
-        generalItems,
-      ]) {
-        this.menu.addMenuItem(section);
-      }
-    }
-
-    private resetRefreshLabel(): void {
-      this.refresh.label.set_text(_("Refresh"));
-    }
-  },
-);
-
-type PictureOfTheDayIndicator = InstanceType<typeof PictureOfTheDayIndicator>;
 
 /**
  * Track the state of this extension.
