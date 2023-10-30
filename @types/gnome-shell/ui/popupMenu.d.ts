@@ -25,6 +25,8 @@ export declare class PopupBaseMenuItem extends St.BoxLayout {}
 
 export declare class PopupMenuItem extends PopupBaseMenuItem {
   constructor(text: string, params?: unknown);
+
+  label: St.Label;
 }
 
 // PopupMenuBase.addMenuItem checks these types quite explicitly

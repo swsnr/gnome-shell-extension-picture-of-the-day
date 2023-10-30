@@ -24,6 +24,10 @@ import { Image } from "./source";
 export class DownloadScheduler {
   private currentDownloadCancellable: Gio.Cancellable | null = null;
 
+  get downloadOngoing(): boolean {
+    return this.currentDownloadCancellable !== null;
+  }
+
   cancelCurrentDownload(): void {
     this.currentDownloadCancellable?.cancel();
     this.currentDownloadCancellable = null;

@@ -30,6 +30,7 @@ import {
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
+  PopupMenuItem,
   PopupMenuSection,
   PopupSeparatorMenuItem,
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
@@ -49,6 +50,8 @@ Gio._promisify(Soup.Session.prototype, "send_async");
  */
 const PictureOfTheDayIndicator = GObject.registerClass(
   class PictureOfTheDayIndicator extends PanelMenu.Button {
+    private readonly refresh: PopupMenuItem;
+
     constructor(
       extension: Extension,
       scheduler: DownloadScheduler,
@@ -82,16 +85,28 @@ const PictureOfTheDayIndicator = GObject.registerClass(
       this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
 
       const refreshItems = new PopupMenuSection();
-      refreshItems.addAction(_("Refresh"), () => {
-        scheduler
-          .download(download)
-          .then((image) => {
-            console.log("Downloaded image", image);
-            return;
-          })
-          .catch((error) => {
-            console.error("Failed to download image", error);
-          });
+      this.refresh = new PopupMenuItem("");
+      refreshItems.addMenuItem(this.refresh);
+      this.resetRefreshLabel();
+      this.refresh.connect("activate", () => {
+        if (scheduler.downloadOngoing) {
+          scheduler.cancelCurrentDownload();
+          this.resetRefreshLabel();
+        } else {
+          this.refresh.label.set_text(_("Cancel refresh…"));
+          scheduler
+            .download(download)
+            .then((image) => {
+              console.log("Downloaded image", image);
+              this.resetRefreshLabel();
+              return;
+            })
+            .catch((error) => {
+              // Show proper error message
+              console.error("Failed to download image", error);
+              this.resetRefreshLabel();
+            });
+        }
       });
 
       const generalItems = new PopupMenuSection();
@@ -106,6 +121,10 @@ const PictureOfTheDayIndicator = GObject.registerClass(
       ]) {
         this.menu.addMenuItem(section);
       }
+    }
+
+    private resetRefreshLabel(): void {
+      this.refresh.label.set_text(_("Refresh"));
     }
   },
 );
