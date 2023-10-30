@@ -46,10 +46,14 @@ export declare class PopupMenuBase {
   ): void;
 }
 
-export declare class PopupImageMenuItem extends PopupMenuBase {
+export declare class PopupImageMenuItem extends PopupBaseMenuItem {
   constructor(text: string, icon: string | Gio.Icon, params?: unknown);
 
   setIcon(icon: string | Gio.Icon): void;
+}
+
+export declare class PopupSeparatorMenuItem extends PopupBaseMenuItem {
+  constructor(text?: string)
 }
 
 export declare class PopupMenu extends PopupMenuBase {}

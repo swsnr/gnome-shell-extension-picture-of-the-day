@@ -29,7 +29,10 @@ import {
 } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
-import { PopupMenuSection } from "resource:///org/gnome/shell/ui/popupMenu.js";
+import {
+  PopupMenuSection,
+  PopupSeparatorMenuItem,
+} from "resource:///org/gnome/shell/ui/popupMenu.js";
 
 import { DownloadScheduler } from "./lib/download.js";
 import APOD from "./lib/sources/apod.js";
@@ -55,7 +58,7 @@ const PictureOfTheDayIndicator = GObject.registerClass(
 
       const source = APOD;
 
-      const sourceSettings =extension.getSettings(
+      const sourceSettings = extension.getSettings(
         `${extension.getSettings().schema_id}.source.${source.metadata.key}`,
       );
       const directories: DownloadDirectories = {
@@ -96,7 +99,11 @@ const PictureOfTheDayIndicator = GObject.registerClass(
         extension.openPreferences();
       });
 
-      for (const section of [refreshItems, generalItems]) {
+      for (const section of [
+        refreshItems,
+        new PopupSeparatorMenuItem(),
+        generalItems,
+      ]) {
         this.menu.addMenuItem(section);
       }
     }
@@ -133,7 +140,11 @@ class EnabledExtension {
       ).get_child(extension.metadata.uuid),
       imageDirectory,
     };
-    this.indicator = new PictureOfTheDayIndicator(extension, scheduler, baseDirectories);
+    this.indicator = new PictureOfTheDayIndicator(
+      extension,
+      scheduler,
+      baseDirectories,
+    );
     Main.panel.addToStatusArea(extension.metadata.uuid, this.indicator);
   }
 
