@@ -51,8 +51,10 @@ export interface Image {
 
 /**
  * A function to download an image.
+ *
+ * @param cancellable Used to cancel any ongoing IO operations.
  */
-export type DownloadImage = () => Promise<Image>;
+export type DownloadImage = (cancellable: Gio.Cancellable) => Promise<Image>;
 
 /**
  * Directories where sources can store data.

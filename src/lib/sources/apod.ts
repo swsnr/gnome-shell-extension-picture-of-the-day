@@ -107,11 +107,12 @@ const isApodErrorBody = (value: unknown): value is ApodErrorBody => {
 const queryMetadata = async (
   session: Soup.Session,
   apiKey: string,
+  cancellable: Gio.Cancellable,
 ): Promise<ApodMetadata> => {
   const query: QueryList = [["api_key", apiKey]];
   const url = `https://api.nasa.gov/planetary/apod&${encodeQuery(query)}`;
   const message = Soup.Message.new("GET", url);
-  const response = await session.send_and_read_async(message, 0, null);
+  const response = await session.send_and_read_async(message, 0, cancellable);
   const data = response.get_data();
   if (message.get_status() === Soup.Status.OK) {
     if (data === null) {
@@ -153,7 +154,7 @@ const createDownloader: DownloadImageFactory = (
     user_agent: `gnome-shell-extension-picture-of-the-day`,
   });
 
-  return async (): Promise<Image> => {
+  return async (cancellable: Gio.Cancellable): Promise<Image> => {
     const apiKey = settings.get_string("api-key");
     if (apiKey === null || apiKey.length === 0) {
       throw new ConfigurationError(
@@ -164,7 +165,7 @@ const createDownloader: DownloadImageFactory = (
       );
     }
 
-    const imageMetadata = await queryMetadata(session, apiKey);
+    const imageMetadata = await queryMetadata(session, apiKey, cancellable);
     if (imageMetadata.media_type !== "image") {
       throw new UnsupportedMediaType(imageMetadata.media_type);
     }
@@ -179,7 +180,7 @@ const createDownloader: DownloadImageFactory = (
       `${imageMetadata.date}-${filename}`,
     );
     if (!targetFile.query_exists(null)) {
-      await downloadToFile(session, imageUrl, targetFile);
+      await downloadToFile(session, imageUrl, targetFile, cancellable);
     }
     return {
       file: targetFile,

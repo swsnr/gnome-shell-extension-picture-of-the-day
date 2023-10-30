@@ -26,16 +26,15 @@ import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.j
  * A non-200 status code.
  */
 export class HttpError extends Error {
-    constructor(
-        /** The status */
-      readonly status: Soup.Status,
-      /** The status reason. */
-      readonly reason?: string | null,
-    ) {
-      super(_(`Request failed with HTTP status ${status} ${reason ?? ""}`));
-    }
+  constructor(
+    /** The status */
+    readonly status: Soup.Status,
+    /** The status reason. */
+    readonly reason?: string | null,
+  ) {
+    super(_(`Request failed with HTTP status ${status} ${reason ?? ""}`));
   }
-
+}
 
 /**
  * Download a URL to a file.
@@ -43,13 +42,26 @@ export class HttpError extends Error {
  * @param session The session to use.
  * @param url The URL to download.
  * @param target The target file.
+ * @param cancellable Cancel the ongoing download.
  */
-export const downloadToFile = async (session: Soup.Session, url: string, target: Gio.File): Promise<void> => {
-    const message = new Soup.Message("GET", url);
-    const source = await session.send_async(message, 0, null);
-    if (message.get_status() !== Soup.Status.OK) {
-        throw new HttpError(message.get_status(), message.get_reason_phrase());
-    }
-    const sink = await target.create_async(Gio.FileCreateFlags.NONE, 0, null);
-    await sink.splice_async(source, Gio.OutputStreamSpliceFlags.CLOSE_SOURCE | Gio.OutputStreamSpliceFlags.CLOSE_TARGET, 0, null);
-}
+export const downloadToFile = async (
+  session: Soup.Session,
+  url: string,
+  target: Gio.File,
+  cancellable: Gio.Cancellable,
+): Promise<void> => {
+  // TODO: Make this a lot smarter: Make a HEAD preflight request and only download if size doesn't match content-length?
+  const message = new Soup.Message("GET", url);
+  const source = await session.send_async(message, 0, cancellable);
+  if (message.get_status() !== Soup.Status.OK) {
+    throw new HttpError(message.get_status(), message.get_reason_phrase());
+  }
+  const sink = await target.create_async(Gio.FileCreateFlags.NONE, 0, null);
+  await sink.splice_async(
+    source,
+    Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+      Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+    0,
+    cancellable,
+  );
+};
