@@ -71,7 +71,9 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       const download = APOD.createDownloader(sourceSettings, directories);
 
       const gicon = Gio.FileIcon.new(
-        extension.metadata.dir.get_child("image").get_child("icon.svg"),
+        extension.metadata.dir
+          .get_child("icon")
+          .get_child("picture-of-the-day-symbolic.svg"),
       );
       this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
 
