@@ -51,7 +51,7 @@ export const downloadToFile = async (
   cancellable: Gio.Cancellable,
 ): Promise<void> => {
   // TODO: Make this a lot smarter: Make a HEAD preflight request and only download if size doesn't match content-length?
-  const message = new Soup.Message("GET", url);
+  const message = Soup.Message.new("GET", url);
   const source = await session.send_async(message, 0, cancellable);
   if (message.get_status() !== Soup.Status.OK) {
     throw new HttpError(message.get_status(), message.get_reason_phrase());
