@@ -25,7 +25,7 @@ import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
 import { DownloadScheduler } from "./lib/download.js";
-import { DownloadDirectories } from "./lib/source";
+import { DownloadDirectories } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/indicator.js";
 
 // Promisify all the async APIs we use
