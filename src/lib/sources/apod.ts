@@ -180,12 +180,13 @@ const createDownloader: DownloadImageFactory = (
       `${imageMetadata.date}-${filename}`,
     );
     await downloadToFile(session, imageUrl, targetFile, cancellable);
+    const urlDate = imageMetadata.date.replaceAll("-", "").slice(2);
+    const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
     return {
       file: targetFile,
       title: imageMetadata.title,
       description: imageMetadata.explanation,
-      // TODO: Assemble URL to image website
-      url: null,
+      url,
       copyright: imageMetadata.copyright ?? null,
     };
   };
