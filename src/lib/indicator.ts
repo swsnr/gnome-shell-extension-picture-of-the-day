@@ -83,8 +83,9 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       this.resetRefreshLabel();
       this.refresh.connect("activate", () => {
         if (scheduler.downloadOngoing) {
-          scheduler.cancelCurrentDownload();
-          this.resetRefreshLabel();
+          void scheduler.cancelCurrentDownload().finally(() => {
+            this.resetRefreshLabel();
+          });
         } else {
           this.refresh.label.set_text(_("Cancel refresh…"));
           scheduler
@@ -95,7 +96,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
               return;
             })
             .catch((error) => {
-              // Show proper error message
+              // TODO: Show proper error message
               console.error("Failed to download image", error);
               this.resetRefreshLabel();
             });

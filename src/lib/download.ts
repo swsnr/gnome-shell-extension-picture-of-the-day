@@ -20,26 +20,45 @@
 import Gio from "gi://Gio";
 
 import { Image } from "./source";
+import { CancellableResult, runCancellable } from "./gio";
+
+interface CurrentDownload {
+  readonly cancellable: Gio.Cancellable;
+  readonly promise: Promise<CancellableResult<Image>>;
+}
 
 export class DownloadScheduler {
-  private currentDownloadCancellable: Gio.Cancellable | null = null;
+  private currentDownload: CurrentDownload | null = null;
 
   get downloadOngoing(): boolean {
-    return this.currentDownloadCancellable !== null;
+    return this.currentDownload !== null;
   }
 
-  cancelCurrentDownload(): void {
-    this.currentDownloadCancellable?.cancel();
-    this.currentDownloadCancellable = null;
+  cancelCurrentDownload(): Promise<void> {
+    if (this.currentDownload === null) {
+      return Promise.resolve();
+    } else {
+      return this.currentDownload.promise
+        .finally(() => {
+          this.currentDownload = null;
+        })
+        .then(() => {
+          return;
+        })
+        .catch(() => {
+          return;
+        });
+    }
   }
 
   async download(
     download: (cancellable: Gio.Cancellable) => Promise<Image>,
-  ): Promise<Image> {
-    this.cancelCurrentDownload();
-    this.currentDownloadCancellable = new Gio.Cancellable();
-    return download(this.currentDownloadCancellable).finally(() => {
-      this.currentDownloadCancellable = null;
+  ): Promise<CancellableResult<Image>> {
+    await this.cancelCurrentDownload();
+    const [promise, cancellable] = runCancellable(download);
+    this.currentDownload = { promise, cancellable };
+    return promise.finally(() => {
+      this.currentDownload = null;
     });
   }
 }
