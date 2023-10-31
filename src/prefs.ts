@@ -101,7 +101,7 @@ export default class HelloWorldPreferences extends ExtensionPreferences {
         `Copyright Sebastian Wiesner <sebastian@swsnr.de>
 
 This programm is subject to the terms of the Mozilla Public
-License, v. 2.0.If a copy of the MPL was not distributed with this
+License, v. 2.0. If a copy of the MPL was not distributed with this
 file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 Alternatively, this program may be used under the terms
