@@ -20,6 +20,7 @@
 import GObject from "gi://GObject";
 import Gio from "gi://Gio";
 import St from "gi://St";
+import Shell from "gi://Shell";
 
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
@@ -33,14 +34,100 @@ import {
 } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import { DownloadScheduler } from "./download.js";
-import { DownloadDirectories } from "./source.js";
+import { DownloadDirectories, Image } from "./source.js";
 import APOD from "./sources/apod.js";
+
+class ImageInfoSection extends PopupMenuSection {
+  private readonly title: PopupMenuItem;
+  private readonly description: PopupMenuItem;
+  private readonly copyright: PopupMenuItem;
+
+  private urlToOpen: string | null = null;
+
+  private get allItems(): readonly PopupMenuItem[] {
+    return [this.title, this.description, this.copyright];
+  }
+
+  constructor() {
+    super();
+
+    this.title = new PopupMenuItem("");
+    // Make the title stand out
+    this.title.style = "font-weight: 700; font-size: 12pt;";
+    this.title.connect("activate", () => {
+      if (this.urlToOpen !== null) {
+        Gio.app_info_launch_default_for_uri(
+          this.urlToOpen,
+          Shell.Global.get().create_app_launch_context(0, -1),
+        );
+      }
+    });
+
+    // The description is a long text, so limit the width of the menu item, and
+    // enable text wrapping.
+    this.description = new PopupMenuItem("");
+    this.description.style = "max-width: 400px";
+    this.description.label.clutter_text.line_wrap = true;
+
+    this.copyright = new PopupMenuItem("");
+
+    for (const item of this.allItems) {
+      item.set_reactive(false);
+      // Don't dim text, but let's still not click on these elements
+      item.remove_style_pseudo_class("insensitive");
+      this.addMenuItem(item);
+    }
+
+    this.unsetImage();
+  }
+
+  unsetImage(): void {
+    this.urlToOpen = null;
+    for (const item of this.allItems) {
+      item.label.text = "";
+      item.visible = false;
+    }
+  }
+
+  setImage(image: Image): void {
+    this.urlToOpen = image.url;
+    for (const item of this.allItems) {
+      item.visible = true;
+    }
+
+    this.title.label.set_text(image.title.trim());
+    if (this.urlToOpen) {
+      this.title.reactive = true;
+    } else {
+      this.title.reactive = false;
+      this.title.remove_style_pseudo_class("insensitive");
+    }
+
+    if (image.description) {
+      this.description.label.text = image.description.trim();
+      this.description.label.visible = true;
+    } else {
+      this.description.label.text = "";
+      this.description.visible = false;
+    }
+
+    if (image.copyright) {
+      this.copyright.label.text = _(`Copyright ${image.copyright.trim()}`);
+      this.copyright.visible = true;
+    } else {
+      this.copyright.label.text = "";
+      this.copyright.visible = false;
+    }
+  }
+}
 
 /**
  * The main indicator of this extension.
  */
 export const PictureOfTheDayIndicator = GObject.registerClass(
   class PictureOfTheDayIndicator extends PanelMenu.Button {
+    private readonly imageInfoSection: ImageInfoSection;
+
     private readonly refresh: PopupMenuItem;
 
     constructor(
@@ -77,6 +164,8 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       );
       this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
 
+      this.imageInfoSection = new ImageInfoSection();
+
       const refreshItems = new PopupMenuSection();
       this.refresh = new PopupMenuItem("");
       refreshItems.addMenuItem(this.refresh);
@@ -91,8 +180,11 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
           scheduler
             .download(download)
             .then((image) => {
-              console.log("Downloaded image", image);
               this.resetRefreshLabel();
+              if (image.result === "completed") {
+                console.log("Downloaded image", image);
+                this.imageInfoSection.setImage(image.value);
+              }
               return;
             })
             .catch((error) => {
@@ -109,6 +201,8 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       });
 
       for (const section of [
+        this.imageInfoSection,
+        new PopupSeparatorMenuItem(),
         refreshItems,
         new PopupSeparatorMenuItem(),
         generalItems,

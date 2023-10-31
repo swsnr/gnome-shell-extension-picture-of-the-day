@@ -19,6 +19,7 @@
       "gi://St": ["./@types/gir-generated/st-13.d.ts"],
       "gi://Clutter": ["./@types/gir-generated/clutter-13.d.ts"],
       "gi://Soup": ["./@types/gir-generated/soup-3.0.d.ts"],
+      "gi://Shell": ["./@types/gir-generated/shell-13.d.ts"],
       "gi://GnomeDesktop": ["./@types/gir-generated/gnomedesktop-4.0.d.ts"],
 
       // Our own types.  First as they are seen in GNOME shell extensions,
