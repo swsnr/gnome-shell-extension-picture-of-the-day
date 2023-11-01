@@ -5,5 +5,8 @@
   "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day",
   "shell-version": ["45"],
   "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day",
-  "gettext-domain": "picture-of-the-day@swsnr.de"
+  "gettext-domain": "picture-of-the-day@swsnr.de",
+  "donations": {
+    "paypal": "swsnr"
+  }
 }
