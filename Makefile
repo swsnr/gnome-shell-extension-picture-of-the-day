@@ -35,23 +35,21 @@ install-home: dist
 uninstall-home:
 	rm -rf $(HOME-DESTDIR)
 
-# Install system wide, moving various parts to appropriate system directories
-.PHONY: install-system
-install-system: dist
+# Install as a system-wide installation schema, into a separate directory
+# Intended for distribution packaging
+.PHONY: install-package
+install-package: dist
 	install -d \
 		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID) \
-		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas
+		$(DESTDIR)/$(PREFIX)/share/glib-2.0/
 	bsdtar -xf dist/$(UUID).shell-extension.zip \
 		-C $(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID) --no-same-owner
-	mv $(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/schemas/*.gschema.xml \
+	mv -T --no-clobber \
+		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/schemas \
 		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas
-	rm -rf $(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/schemas
-
-.PHONY: uninstall-system
-uninstall-system:
-	rm -rf \
-		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID) \
-		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/org.gnome.shell.extensions.swsnr-picture-of-the-day.gschema.xml
+	mv -T --no-clobber \
+		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/locale \
+		$(DESTDIR)/$(PREFIX)/share/locale
 
 .PHONY: clean
 clean:
