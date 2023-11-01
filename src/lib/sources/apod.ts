@@ -87,6 +87,12 @@ interface ApodErrorBody {
   readonly error: ApodErrorDetails;
 }
 
+/**
+ * Whether a value is a error response body from the APOD API.
+ *
+ * @param value The value to check
+ * @returns true if value denotes an APOD error response, false otherwise
+ */
 const isApodErrorBody = (value: unknown): value is ApodErrorBody => {
   if (value && typeof value === "object" && Object.hasOwn(value, "error")) {
     const details = (value as Record<string, unknown>)["error"] as
@@ -104,6 +110,14 @@ const isApodErrorBody = (value: unknown): value is ApodErrorBody => {
   }
 };
 
+/**
+ * Query the metadata for todays image.
+ *
+ * @param session The HTTP session to use
+ * @param apiKey The API key
+ * @param cancellable The handle to cancel any IO operation
+ * @returns The metadata for todays image.
+ */
 const queryMetadata = async (
   session: Soup.Session,
   apiKey: string,

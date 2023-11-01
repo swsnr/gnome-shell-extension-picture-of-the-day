@@ -22,18 +22,41 @@ import Gio from "gi://Gio";
 import { Image } from "../source.js";
 import { CancellableResult, runCancellable } from "../util/gio.js";
 
+/**
+ * An ongoing download.
+ */
 interface CurrentDownload {
+  /**
+   * Cancel the ongoing download.
+   */
   readonly cancellable: Gio.Cancellable;
+  /**
+   * The result of the download.
+   */
   readonly promise: Promise<CancellableResult<Image>>;
 }
 
+/**
+ * Schedule downloads.
+ *
+ * Currently this class permits just one ongoing image download, and cancels
+ * ongoing downloads when a new download is requested.
+ */
 export class DownloadScheduler {
   private currentDownload: CurrentDownload | null = null;
 
+  /**
+   * Whether a download is ongoing.
+   */
   get downloadOngoing(): boolean {
     return this.currentDownload !== null;
   }
 
+  /**
+   * Cancel the current download if any.
+   *
+   * @returns A promise which completes once the download is fully cancelled
+   */
   cancelCurrentDownload(): Promise<void> {
     if (this.currentDownload === null) {
       return Promise.resolve();
@@ -51,6 +74,15 @@ export class DownloadScheduler {
     }
   }
 
+  /**
+   * Request a new download.
+   *
+   * Cancel the current download and wait until it is fully cancelled; then
+   * start the new download.
+   *
+   * @param download The download function
+   * @returns The result of the download
+   */
   async download(
     download: (cancellable: Gio.Cancellable) => Promise<Image>,
   ): Promise<CancellableResult<Image>> {
