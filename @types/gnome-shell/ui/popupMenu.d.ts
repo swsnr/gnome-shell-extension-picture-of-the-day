@@ -31,8 +31,9 @@ export declare class PopupMenuItem extends PopupBaseMenuItem {
 
 // PopupMenuBase.addMenuItem checks these types quite explicitly
 export type PopupMenuItemType =
+  // eslint-disable-next-line no-use-before-define
   | PopupMenuSection
-  | PopupSubMenuMenuItem
+  // eslint-disable-next-line no-use-before-define
   | PopupSeparatorMenuItem
   | PopupBaseMenuItem;
 
