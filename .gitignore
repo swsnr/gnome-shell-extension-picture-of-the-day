@@ -1,8 +1,10 @@
 /node_modules/
 
-
 # Extension artifact
 /dist/
 
 # Build outputs
 /build/
+
+# Compiled translation catalogs
+/po/*.mo

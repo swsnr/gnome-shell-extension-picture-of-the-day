@@ -14,7 +14,7 @@ dist: compile
 	mkdir -p ./build/ui
 	cp -t ./build/ui $(UIDEFS)
 	gnome-extensions pack --force --out-dir dist build \
-		--extra-source=../metadata.json \
+		--podir=../po --extra-source=../metadata.json \
 		--extra-source=ui --extra-source=lib \
 		$(addprefix --extra-source=,$(wildcard src/*)) \
 		$(addprefix --extra-source=../,$(DIST-EXTRA-SRC)) \
