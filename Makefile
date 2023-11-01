@@ -29,7 +29,7 @@ dist-repro: dist
 .PHONY: install-home
 install-home: dist
 	mkdir -p $(HOME-DESTDIR)
-	bsdtar -xf dist/$(UUID).shell-extension.zip -C $(HOME-DESTDIR) --no-same-owner
+	gnome-extensions install -f dist/$(UUID).shell-extension.zip
 
 .PHONY: uninstall-home
 uninstall-home:
