@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-01 20:33+0100\n"
+"PO-Revision-Date: 2023-11-01 20:35+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#: src/lib/sources/apod.ts:68
+#, javascript-format
+msgid "Media type not supported: %s"
+msgstr "Medientyp wird nicht unterstützt: %s"
+
+#: src/lib/sources/apod.ts:174
+msgid ""
+"Please configure an API key for the NASA Astronomy Picture of the Day in the "
+"extension settings."
+msgstr ""
+"Bitte richten Sie in den Einstellungen dieser Erweiterung einen API-"
+"Schlüssel für NASA Astronomy Picture of the Day ein."
+
+#: src/lib/ui/indicator.ts:116
+#, javascript-format
+msgid "Copyright %s"
+msgstr "Urheberrecht: %s"
+
+#: src/lib/ui/indicator.ts:173
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/lib/ui/indicator.ts:190
+msgid "Cancel refresh…"
+msgstr "Aktualisierung abbrechen…"
+
+#: src/lib/ui/indicator.ts:193
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: ui/about.blp:30
+msgctxt "about link"
+msgid "Github"
+msgstr "Github"
+
+#: ui/about.blp:35
+msgctxt "about link"
+msgid "Issue tracker"
+msgstr "Issue tracker"
