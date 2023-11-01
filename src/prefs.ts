@@ -44,44 +44,14 @@ export default class HelloWorldPreferences extends ExtensionPreferences {
     }
   }
 
-  override fillPreferencesWindow(
-    window: Adw.PreferencesWindow & TracksSettings,
-  ): void {
-    const settingsPage = new Adw.PreferencesPage({
-      title: "General",
-      icon_name: "dialog-information-symbolic",
-    });
-    window.add(settingsPage);
-
-    const settingsGroup = new Adw.PreferencesGroup();
-    settingsPage.add(settingsGroup);
-
-    // Create a new preferences row
-    const row = new Adw.SwitchRow({
-      title: "Say hello",
-      subtitle: "Whether to say hello",
-    });
-    settingsGroup.add(row);
-
-    // Create a settings object and bind the row to our key.
-    // Attach the settings object to the window to keep it alive while the window is alive.
-    window._settings = this.getSettings();
-    window._settings.bind(
-      "say-hello",
-      row,
-      "active",
-      Gio.SettingsBindFlags.DEFAULT,
-    );
-
+  private createAboutPage(): Adw.PreferencesPage {
     const aboutPage = new Adw.PreferencesPage({
       title: "About",
       icon_name: "dialog-information-symbolic",
     });
-    window.add(aboutPage);
 
     const aboutGroup = new Adw.PreferencesGroup();
     aboutPage.add(aboutGroup);
-
     const aboutUI = this.loadUI("about.ui");
     const aboutWidget = aboutUI?.get_object("about");
     if (aboutUI && aboutWidget) {
@@ -119,5 +89,38 @@ GNU General Public License for more details.`,
         -1,
       );
     }
+    return aboutPage;
+  }
+
+  override fillPreferencesWindow(
+    window: Adw.PreferencesWindow & TracksSettings,
+  ): void {
+    const settingsPage = new Adw.PreferencesPage({
+      title: "General",
+      icon_name: "dialog-information-symbolic",
+    });
+    window.add(settingsPage);
+
+    const settingsGroup = new Adw.PreferencesGroup();
+    settingsPage.add(settingsGroup);
+
+    // Create a new preferences row
+    const row = new Adw.SwitchRow({
+      title: "Say hello",
+      subtitle: "Whether to say hello",
+    });
+    settingsGroup.add(row);
+
+    // Create a settings object and bind the row to our key.
+    // Attach the settings object to the window to keep it alive while the window is alive.
+    window._settings = this.getSettings();
+    window._settings.bind(
+      "say-hello",
+      row,
+      "active",
+      Gio.SettingsBindFlags.DEFAULT,
+    );
+
+    window.add(this.createAboutPage());
   }
 }
