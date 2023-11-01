@@ -29,6 +29,7 @@ import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
 import { RefreshService } from "./lib/services/refresh.js";
 import APOD from "./lib/sources/apod.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
+import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -41,14 +42,15 @@ Gio._promisify(Soup.Session.prototype, "send_async");
  */
 class EnabledExtension {
   private readonly indicator: PictureOfTheDayIndicator;
-  private readonly refreshService: RefreshService;
+  private readonly refreshService: RefreshService = new RefreshService();
+  private readonly desktopBackgroundService: DesktopBackgroundService =
+    DesktopBackgroundService.default();
 
   constructor(private readonly extension: Extension) {
     const iconLoader = new ExtensionIcons(
       extension.metadata.dir.get_child("icon"),
     );
     const baseDirectories = this.getBaseDirectories();
-    this.refreshService = new RefreshService();
     this.refreshService.setDownloader(this.createDownloader(baseDirectories));
 
     this.indicator = new PictureOfTheDayIndicator(iconLoader);
@@ -68,9 +70,15 @@ class EnabledExtension {
     // Make everyone react on a new picture of the day
     this.refreshService.connect("image-changed", (_, image): undefined => {
       this.indicator.showImageMetadata(image);
+      this.desktopBackgroundService.setBackgroundImage(image.file);
     });
   }
 
+  /**
+   * Get the base directories this extension should use for storage.
+   *
+   * @returns The base directories for this extension.
+   */
   private getBaseDirectories(): DownloadDirectories {
     const picturesDirectory = GLib.get_user_special_dir(
       GLib.UserDirectory.DIRECTORY_PICTURES,
@@ -94,6 +102,12 @@ class EnabledExtension {
     };
   }
 
+  /**
+   * Create the download function to use.
+   *
+   * @param baseDirectories The base directories from which to derive the directories the source can use to store data
+   * @returns A function to download images from the source
+   */
   private createDownloader(
     baseDirectories: DownloadDirectories,
   ): DownloadImage {
