@@ -55,7 +55,7 @@ export declare class PopupImageMenuItem extends PopupBaseMenuItem {
 }
 
 export declare class PopupSeparatorMenuItem extends PopupBaseMenuItem {
-  constructor(text?: string)
+  constructor(text?: string);
 }
 
 export declare class PopupMenu extends PopupMenuBase {}

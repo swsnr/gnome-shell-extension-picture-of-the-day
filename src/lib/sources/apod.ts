@@ -135,19 +135,13 @@ const queryMetadata = async (
     return JSON.parse(new TextDecoder().decode(data)) as ApodMetadata;
   } else {
     if (data === null) {
-      throw new HttpError(
-        message.get_status(),
-        message.get_reason_phrase(),
-      );
+      throw new HttpError(message.get_status(), message.get_reason_phrase());
     } else {
       const body = JSON.parse(new TextDecoder().decode(data)) as unknown;
       if (isApodErrorBody(body)) {
         throw new ApodError(body.error.code, body.error.message);
       } else {
-        throw new HttpError(
-          message.get_status(),
-          message.get_reason_phrase(),
-        );
+        throw new HttpError(message.get_status(), message.get_reason_phrase());
       }
     }
   }

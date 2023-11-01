@@ -21,7 +21,11 @@ import type Gio from "../../gir-generated/gio-2.0.js";
 
 // See https://gjs.guide/extensions/topics/extension.html#gettext
 export declare function gettext(str: string): string;
-export declare function ngettext(str: string, strPlural: string, n: number): string;
+export declare function ngettext(
+  str: string,
+  strPlural: string,
+  n: number,
+): string;
 export declare function pgettext(context: string, str: string): string;
 
 // See https://gjs.guide/extensions/topics/extension.html#types
