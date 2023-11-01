@@ -7,7 +7,8 @@
   </schema>
   <schema id="org.gnome.shell.extensions.swsnr-picture-of-the-day.source.apod" path="/org/gnome/shell/extensions/swsnr-picture-of-the-day/source/apod/">
     <key name="api-key" type="s">
-      <default>""</default>
+      <!-- API key account ID: dcc2671f-ef8d-4c1a-93cc-c5edeba69695 -->
+      <default>"OmoiiKAC40a83uIjibcFmwfRKa8hfbCK9HLv90DI"</default>
     </key>
   </schema>
 </schemalist>
