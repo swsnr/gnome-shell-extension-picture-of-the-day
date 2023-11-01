@@ -46,7 +46,7 @@ export default class HelloWorldPreferences extends ExtensionPreferences {
 
   private createAboutPage(): Adw.PreferencesPage {
     const aboutPage = new Adw.PreferencesPage({
-      title: "About",
+      title: _("About"),
       icon_name: "dialog-information-symbolic",
     });
 
