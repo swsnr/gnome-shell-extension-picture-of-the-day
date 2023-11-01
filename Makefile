@@ -3,6 +3,9 @@ DESTDIR =
 HOME-DESTDIR = $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 
 UUID = picture-of-the-day@swsnr.de
+XGETTEXT_METADATA = \
+	--package-name=$(UUID) \
+	--copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>"
 
 DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2 icon/
 BLUEPRINTS = $(addprefix ui/,about.blp)
@@ -63,12 +66,17 @@ compile: $(UIDEFS)
 generate:
 	npm run generate:gir-types
 
+# For blueprint, see https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/translations.html
+# The language doesn't really matter for blueprint, but xgettext warns if we don't set it
 .PHONY: pot
 pot:
 	find src -name '*.ts' | \
-		xargs xgettext \
-			--package-name=$(UUID) --copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>" \
+		xargs xgettext $(XGETTEXT_METADATA) \
 			--from-code=UTF-8 --language=JavaScript --output=po/$(UUID).pot
+	xgettext $(XGETTEXT_METADATA) --from-code=UTF-8 --language=C \
+		--join-existing --output=po/$(UUID).pot \
+		 --add-comments --keyword=_ --keyword=C_:1c,2 \
+		$(wildcard ui/*.blp)
 
 .PHONY: format
 format:

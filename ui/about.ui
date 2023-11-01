@@ -34,12 +34,12 @@
         <property name="halign">3</property>
         <child>
           <object class="GtkLinkButton" id="github">
-            <property name="label">Github</property>
+            <property name="label" translatable="true" context="about link">Github</property>
           </object>
         </child>
         <child>
           <object class="GtkLinkButton" id="issues">
-            <property name="label">Issue tracker</property>
+            <property name="label" translatable="true" context="about link">Issue tracker</property>
           </object>
         </child>
       </object>
