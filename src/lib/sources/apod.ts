@@ -33,6 +33,9 @@ import { ConfigurationError } from "../util/configuration.js";
 import { QueryList, encodeQuery } from "../network/uri.js";
 import { HttpError, downloadToFile } from "../network/http.js";
 
+// eslint-disable-next-line no-restricted-properties
+const vprintf = imports.format.vprintf;
+
 const metadata: SourceMetadata = {
   key: "apod",
   name: "Astronomy Picture of the Day",
@@ -62,7 +65,7 @@ export class ApodError extends Error {
 
 export class UnsupportedMediaType extends Error {
   constructor(readonly mediaType: string) {
-    super(_(`Media type not supported: ${mediaType}`));
+    super(vprintf(_(`Media type not supported: %s`), [mediaType]));
   }
 }
 

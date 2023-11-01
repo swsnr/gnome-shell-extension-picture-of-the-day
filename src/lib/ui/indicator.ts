@@ -34,6 +34,9 @@ import { Image } from "../source.js";
 import { IconLoader } from "./icons.js";
 import { RefreshState } from "../services/refresh.js";
 
+// eslint-disable-next-line no-restricted-properties
+const vprintf = imports.format.vprintf;
+
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;
   private readonly description: PopupMenuItem;
@@ -110,7 +113,9 @@ class ImageInfoSection extends PopupMenuSection {
     }
 
     if (image.copyright) {
-      this.copyright.label.text = _(`Copyright ${image.copyright.trim()}`);
+      this.copyright.label.text = vprintf(_("Copyright %s"), [
+        image.copyright.trim(),
+      ]);
       this.copyright.visible = true;
     } else {
       this.copyright.label.text = "";
