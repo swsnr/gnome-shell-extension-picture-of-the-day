@@ -21,8 +21,6 @@ import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
-
 /**
  * A non-200 status code.
  */
@@ -33,7 +31,7 @@ export class HttpError extends Error {
     /** The status reason. */
     readonly reason?: string | null,
   ) {
-    super(_(`Request failed with HTTP status ${status} ${reason ?? ""}`));
+    super(`HTTP request failed with HTTP status ${status} ${reason ?? ""}`);
   }
 }
 
