@@ -1,3 +1,13 @@
+# Generated types
 /@types/gir-generated/*
-*.js
-!/.ts-for-girrc.js
+
+# Build and dist outputs
+/build/
+/dist/
+
+# Leave markdown files alone
+*.md
+
+# npm configuration and packages
+/package.json
+/node_modules/
