@@ -21,10 +21,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: latest
-      - name: Install gnome-shell and strip-nondeterminism
+      - name: Install gettext, gnome-shell, and strip-nondeterminism
         run: |
           sudo apt-get update -qq
-          sudo apt-get install --no-install-recommends -qq -y gnome-shell strip-nondeterminism
+          sudo apt-get install --no-install-recommends -qq -y gettext gnome-shell strip-nondeterminism
       - run: npm ci
       - run: make dist-repro
       - run: b2sum *.zip > B2SUMS.txt
