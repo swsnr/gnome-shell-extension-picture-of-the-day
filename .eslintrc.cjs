@@ -18,5 +18,10 @@ module.exports = {
   root: true,
   rules: {},
   // These are either generated or config files or no real typescript
-  ignorePatterns: ["*.js", "*.cjs", "*.d.ts"],
+  ignorePatterns: [
+    "/build/**/*",
+    "/dist/**/*",
+    "/node_modules/**/*",
+    "/@types/gir-generated/**/*",
+  ],
 };

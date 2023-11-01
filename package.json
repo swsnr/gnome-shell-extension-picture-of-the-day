@@ -17,7 +17,7 @@
   "scripts": {
     "generate:gir-types": "ts-for-gir generate",
     "compile": "tsc --build tsconfig.json",
-    "lint": "eslint **/*.ts",
+    "lint": "eslint .",
     "format": "prettier ."
   },
   "devDependencies": {
