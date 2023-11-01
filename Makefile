@@ -65,6 +65,9 @@ compile: $(UIDEFS)
 generate:
 	npm run generate:gir-types
 
+.PHONY: pot
+pot: po/$(UUID).pot
+
 .PHONY: format
 format:
 	npm run format -- --write
@@ -83,3 +86,7 @@ fix: format
 
 $(UIDEFS): %.ui: %.blp
 	blueprint-compiler compile --output $@ $<
+
+po/$(UUID).pot: compile
+	find src -name '*.ts' | \
+		xargs xgettext --from-code=UTF-8 --output=$@ --language=JavaScript
