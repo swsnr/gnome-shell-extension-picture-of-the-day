@@ -74,8 +74,31 @@ export class DownloadScheduler {
     }
   }
 
+  private doDownload(
+    download: (cancellable: Gio.Cancellable) => Promise<Image>,
+  ): Promise<CancellableResult<Image>> {
+    const [promise, cancellable] = runCancellable(download);
+    this.currentDownload = { promise, cancellable };
+    return promise.finally(() => {
+      this.currentDownload = null;
+    });
+  }
+
   /**
-   * Request a new download.
+   * Start a new download if no download is ongoing, otherwise return the ongoing download.
+   */
+  async maybeStartDownload(
+    download: (cancellable: Gio.Cancellable) => Promise<Image>,
+  ): Promise<CancellableResult<Image>> {
+    if (this.currentDownload) {
+      return this.currentDownload.promise;
+    } else {
+      return this.doDownload(download);
+    }
+  }
+
+  /**
+   * Force a new download.
    *
    * Cancel the current download and wait until it is fully cancelled; then
    * start the new download.
@@ -83,14 +106,10 @@ export class DownloadScheduler {
    * @param download The download function
    * @returns The result of the download
    */
-  async download(
+  async forceStartDownload(
     download: (cancellable: Gio.Cancellable) => Promise<Image>,
   ): Promise<CancellableResult<Image>> {
     await this.cancelCurrentDownload();
-    const [promise, cancellable] = runCancellable(download);
-    this.currentDownload = { promise, cancellable };
-    return promise.finally(() => {
-      this.currentDownload = null;
-    });
+    return this.doDownload(download);
   }
 }

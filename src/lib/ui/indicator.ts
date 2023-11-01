@@ -28,14 +28,11 @@ import {
   PopupMenuSection,
   PopupSeparatorMenuItem,
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
-import {
-  gettext as _,
-  Extension,
-} from "resource:///org/gnome/shell/extensions/extension.js";
+import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { DownloadScheduler } from "../network/download.js";
-import { DownloadDirectories, Image } from "../source.js";
-import APOD from "../sources/apod.js";
+import { Image } from "../source.js";
+import { IconLoader } from "./icons.js";
+import { RefreshState } from "../services/refresh.js";
 
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;
@@ -56,6 +53,7 @@ class ImageInfoSection extends PopupMenuSection {
     this.title.style = "font-weight: 700; font-size: 12pt;";
     this.title.connect("activate", () => {
       if (this.urlToOpen !== null) {
+        // TODO: Perhaps we should externalize this into a signal?
         Gio.app_info_launch_default_for_uri(
           this.urlToOpen,
           Shell.Global.get().create_app_launch_context(0, -1),
@@ -125,79 +123,50 @@ class ImageInfoSection extends PopupMenuSection {
  * The main indicator of this extension.
  */
 export const PictureOfTheDayIndicator = GObject.registerClass(
+  {
+    Signals: {
+      activated: {
+        flags: [GObject.SignalFlags.DETAILED],
+      },
+    },
+  },
   class PictureOfTheDayIndicator extends PanelMenu.Button {
     private readonly imageInfoSection: ImageInfoSection;
-
     private readonly refresh: PopupMenuItem;
 
-    constructor(
-      extension: Extension,
-      scheduler: DownloadScheduler,
-      baseDirectories: DownloadDirectories,
-    ) {
+    private refreshAction: "refresh" | "cancel-refresh" = "refresh";
+
+    constructor(iconLoader: IconLoader) {
       super(0, "PictureOfTheDayIndicator", false);
-
-      const source = APOD;
-
-      const sourceSettings = extension.getSettings(
-        `${extension.getSettings().schema_id}.source.${source.metadata.key}`,
+      this.add_child(
+        new St.Icon({
+          style_class: "system-status-icon",
+          gicon: iconLoader.loadIcon("picture-of-the-day-symbolic"),
+        }),
       );
-      const directories: DownloadDirectories = {
-        stateDirectory: baseDirectories.stateDirectory.get_child(
-          source.metadata.key,
-        ),
-        cacheDirectory: baseDirectories.cacheDirectory.get_child(
-          source.metadata.key,
-        ),
-        // For the user visible image directory we use a human-readable name.
-        imageDirectory: baseDirectories.imageDirectory.get_child(
-          source.metadata.name,
-        ),
-      };
-
-      const download = APOD.createDownloader(sourceSettings, directories);
-
-      const gicon = Gio.FileIcon.new(
-        extension.metadata.dir
-          .get_child("icon")
-          .get_child("picture-of-the-day-symbolic.svg"),
-      );
-      this.add_child(new St.Icon({ style_class: "system-status-icon", gicon }));
 
       this.imageInfoSection = new ImageInfoSection();
 
       const refreshItems = new PopupMenuSection();
       this.refresh = new PopupMenuItem("");
       refreshItems.addMenuItem(this.refresh);
-      this.resetRefreshLabel();
+      // Initially assume we're in completed state to allow the user to refresh
+      // manually
+      this.updateRefreshState("completed");
       this.refresh.connect("activate", () => {
-        if (scheduler.downloadOngoing) {
-          void scheduler.cancelCurrentDownload().finally(() => {
-            this.resetRefreshLabel();
-          });
-        } else {
-          this.refresh.label.set_text(_("Cancel refresh…"));
-          scheduler
-            .download(download)
-            .then((image) => {
-              this.resetRefreshLabel();
-              if (image.result === "completed") {
-                console.log("Downloaded image", image);
-                this.imageInfoSection.setImage(image.value);
-              }
-              return;
-            })
-            .catch((error) => {
-              // TODO: Show proper error message
-              console.error("Failed to download image", error);
-              this.resetRefreshLabel();
-            });
+        switch (this.refreshAction) {
+          case "refresh":
+            this.emit("activated::refresh");
+            break;
+          case "cancel-refresh":
+            this.emit("activated::cancel-refresh");
+            break;
         }
       });
 
       const generalItems = new PopupMenuSection();
       generalItems.addAction(_("Settings"), () => {
-        extension.openPreferences();
+        this.emit("activated::settings");
       });
 
       for (const section of [
@@ -211,8 +180,18 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       }
     }
 
-    private resetRefreshLabel(): void {
-      this.refresh.label.set_text(_("Refresh"));
+    updateRefreshState(state: RefreshState): void {
+      if (state === "ongoing") {
+        this.refresh.label.set_text(_("Cancel refresh…"));
+        this.refreshAction = "cancel-refresh";
+      } else {
+        this.refresh.label.set_text(_("Refresh"));
+        this.refreshAction = "refresh";
+      }
+    }
+
+    showImageMetadata(image: Image): void {
+      this.imageInfoSection.setImage(image);
     }
   },
 );
