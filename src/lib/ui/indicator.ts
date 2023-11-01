@@ -33,9 +33,9 @@ import {
   Extension,
 } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { DownloadScheduler } from "./download.js";
-import { DownloadDirectories, Image } from "./source.js";
-import APOD from "./sources/apod.js";
+import { DownloadScheduler } from "../network/download.js";
+import { DownloadDirectories, Image } from "../source.js";
+import APOD from "../sources/apod.js";
 
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;

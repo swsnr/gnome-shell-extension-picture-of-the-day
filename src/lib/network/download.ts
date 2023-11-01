@@ -19,8 +19,8 @@
 
 import Gio from "gi://Gio";
 
-import { Image } from "./source.js";
-import { CancellableResult, runCancellable } from "./gio.js";
+import { Image } from "../source.js";
+import { CancellableResult, runCancellable } from "../util/gio.js";
 
 interface CurrentDownload {
   readonly cancellable: Gio.Cancellable;
