@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR Sebastian Wiesner <sebastian@swsnr.de>
+# This file is distributed under the same license as the picture-of-the-day@swsnr.de package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-01 19:20+0100\n"
+"POT-Creation-Date: 2023-11-01 20:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,19 +28,19 @@ msgid ""
 "extension settings."
 msgstr ""
 
-#: src/lib/ui/indicator.ts:115
+#: src/lib/ui/indicator.ts:116
 #, javascript-format
 msgid "Copyright %s"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:172
+#: src/lib/ui/indicator.ts:173
 msgid "Settings"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:189
+#: src/lib/ui/indicator.ts:190
 msgid "Cancel refresh…"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:192
+#: src/lib/ui/indicator.ts:193
 msgid "Refresh"
 msgstr ""

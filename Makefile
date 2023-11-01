@@ -64,7 +64,11 @@ generate:
 	npm run generate:gir-types
 
 .PHONY: pot
-pot: po/$(UUID).pot
+pot:
+	find src -name '*.ts' | \
+		xargs xgettext \
+			--package-name=$(UUID) --copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>" \
+			--from-code=UTF-8 --language=JavaScript --output=po/$(UUID).pot
 
 .PHONY: format
 format:
@@ -84,7 +88,3 @@ fix: format
 
 $(UIDEFS): %.ui: %.blp
 	blueprint-compiler compile --output $@ $<
-
-po/$(UUID).pot: compile
-	find src -name '*.ts' | \
-		xargs xgettext --from-code=UTF-8 --output=$@ --language=JavaScript
