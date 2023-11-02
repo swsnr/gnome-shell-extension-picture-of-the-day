@@ -57,14 +57,11 @@ interface AboutPageChildren {
 
 export default class PictureOfTheDayPreferences extends ExtensionPreferences {
   private loadPages(templateDirectory: Gio.File) {
-    const aboutTemplate = templateDirectory.get_child("about.ui").get_uri();
-    if (aboutTemplate === null) {
-      throw new Error("aboutTemplate null");
-    }
     const AboutPage = GObject.registerClass(
       {
         GTypeName: "AboutPage",
-        Template: aboutTemplate,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        Template: templateDirectory.get_child("AboutPage.ui").get_uri()!,
         InternalChildren: [
           "extensionName",
           "extensionDescription",

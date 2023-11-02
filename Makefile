@@ -8,7 +8,7 @@ XGETTEXT_METADATA = \
 	--copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>"
 
 DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2 icon/
-BLUEPRINTS = $(addprefix ui/,about.blp)
+BLUEPRINTS = $(wildcard ui/*.blp)
 UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 
 .PHONY: dist
