@@ -17,58 +17,18 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+import GObject from "gi://GObject";
+import Gio from "gi://Gio";
 import Gtk from "gi://Gtk";
 import Adw from "gi://Adw";
-import Gio from "gi://Gio";
 
-import { ExtensionPreferences } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
+import {
+  gettext as _,
+  ExtensionPreferences,
+  ExtensionMetadata,
+} from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
-interface TracksSettings {
-  /**
-   * The settings object backing the settings window.
-   */
-  _settings?: Gio.Settings;
-}
-
-export default class HelloWorldPreferences extends ExtensionPreferences {
-  private loadUI(name: string): Gtk.Builder | null {
-    const path = this.metadata.dir.get_child("ui").get_child(name).get_path();
-    if (!path) {
-      return null;
-    }
-    try {
-      return Gtk.Builder.new_from_file(path);
-    } catch (error) {
-      console.error("Failed to load:", path, error);
-      return null;
-    }
-  }
-
-  private createAboutPage(): Adw.PreferencesPage {
-    const aboutPage = new Adw.PreferencesPage({
-      title: _("About"),
-      icon_name: "dialog-information-symbolic",
-    });
-
-    const aboutGroup = new Adw.PreferencesGroup();
-    aboutPage.add(aboutGroup);
-    const aboutUI = this.loadUI("about.ui");
-    const aboutWidget = aboutUI?.get_object("about");
-    if (aboutUI && aboutWidget) {
-      aboutGroup.add(aboutWidget as Gtk.Widget);
-
-      const name = aboutUI.get_object("name") as Gtk.Label | null;
-      name?.set_text(this.metadata.name);
-      const description = aboutUI.get_object("description") as Gtk.Label | null;
-      description?.set_text(this.metadata.description);
-      const github = aboutUI.get_object("github") as Gtk.LinkButton | null;
-      github?.set_uri(this.metadata.url);
-      const issues = aboutUI.get_object("issues") as Gtk.LinkButton | null;
-      issues?.set_uri(`${this.metadata.url}/issues`);
-
-      const licenseText = aboutUI.get_object("license") as Gtk.TextView | null;
-      licenseText?.buffer.set_text(
-        `Copyright Sebastian Wiesner <sebastian@swsnr.de>
+const LICENSE = `Copyright Sebastian Wiesner <sebastian@swsnr.de>
 
 This programm is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -85,42 +45,63 @@ the Free Software Foundation; either version 2 of the License, or
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.`,
-        -1,
-      );
+GNU General Public License for more details.`;
+
+interface AboutPageChildren {
+  _extensionName: Gtk.Label;
+  _extensionDescription: Gtk.Label;
+  _linkGithub: Gtk.LinkButton;
+  _linkIssues: Gtk.LinkButton;
+  _extensionLicense: Gtk.TextView;
+}
+
+export default class HelloWorldPreferences extends ExtensionPreferences {
+  private loadPages(templateDirectory: Gio.File) {
+    const aboutTemplate = templateDirectory.get_child("about.ui").get_uri();
+    if (aboutTemplate === null) {
+      throw new Error("aboutTemplate null");
     }
-    return aboutPage;
+    const AboutPage = GObject.registerClass(
+      {
+        GTypeName: "AboutPage",
+        Template: aboutTemplate,
+        InternalChildren: [
+          "extensionName",
+          "extensionDescription",
+          "linkGithub",
+          "linkIssues",
+          "extensionLicense",
+        ],
+      },
+
+      class AboutPage extends Adw.PreferencesPage {
+        constructor(metadata: ExtensionMetadata) {
+          super({
+            title: _("About"),
+            icon_name: "dialog-information-symbolic",
+          });
+
+          // TODO: Find a better way to declare that an instance has a set of props
+          const children = this as unknown as AboutPageChildren;
+          children._extensionName.set_text(metadata.name);
+          children._extensionDescription.set_text(metadata.description);
+          children._linkGithub.set_uri(metadata.url);
+          children._linkIssues.set_uri(`${metadata.url}/issues`);
+          children._extensionLicense.buffer.set_text(LICENSE, -1);
+        }
+      },
+    );
+
+    return { AboutPage };
   }
 
   override fillPreferencesWindow(
-    window: Adw.PreferencesWindow & TracksSettings,
+    window: Adw.PreferencesWindow & {
+      _settings: Gio.Settings;
+    },
   ): void {
-    const settingsPage = new Adw.PreferencesPage({
-      title: "General",
-      icon_name: "dialog-information-symbolic",
-    });
-    window.add(settingsPage);
-
-    const settingsGroup = new Adw.PreferencesGroup();
-    settingsPage.add(settingsGroup);
-
-    // Create a new preferences row
-    const row = new Adw.SwitchRow({
-      title: "Say hello",
-      subtitle: "Whether to say hello",
-    });
-    settingsGroup.add(row);
-
-    // Create a settings object and bind the row to our key.
-    // Attach the settings object to the window to keep it alive while the window is alive.
-    window._settings = this.getSettings();
-    window._settings.bind(
-      "say-hello",
-      row,
-      "active",
-      Gio.SettingsBindFlags.DEFAULT,
-    );
-
-    window.add(this.createAboutPage());
+    const uiDir = this.metadata.dir.get_child("ui");
+    const Pages = this.loadPages(uiDir);
+    window.add(new Pages.AboutPage(this.metadata));
   }
 }

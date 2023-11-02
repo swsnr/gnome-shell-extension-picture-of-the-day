@@ -1,58 +1,62 @@
 using Gtk 4.0;
+using Adw 1;
 
-Box about {
-  orientation: vertical;
-  valign: center;
-  halign: center;
-  margin-top: 12;
-  margin-bottom: 12;
-
-  Label name {
-    label: "The name of this extension";
-    margin-bottom: 15;
-    styles ["title-1"]
-  }
-
+template $AboutPage : Adw.PreferencesPage {
   Box {
     orientation: vertical;
+    valign: center;
     halign: center;
-    margin-bottom: 5;
-    Label description {
-      label: "The description of this extension";
-      justify: center;
-    }
-  }
+    margin-top: 12;
+    margin-bottom: 12;
 
-  Box links {
-    halign: center;
-
-    LinkButton github {
-      label: C_("about link", "Github");
-
+    Label extensionName {
+      label: "The name of this extension";
+      margin-bottom: 15;
+      styles ["title-1"]
     }
 
-    LinkButton issues {
-      label: C_("about link", "Issue tracker");
+    Box {
+      orientation: vertical;
+      halign: center;
+      margin-bottom: 5;
+
+      Label extensionDescription {
+        label: "The description of this extension";
+        justify: center;
+      }
     }
-  }
 
-  Box license_box {
-    halign: center;
+    Box {
+      halign: center;
 
-    ScrolledWindow {
-      margin-top: 24;
-      height-request: 400;
-      width-request: 600;
+      LinkButton linkGithub {
+        label: C_("about link", "Github");
 
-      TextView license {
-        bottom-margin: 12;
-        left-margin: 12;
-        right-margin: 12;
-        top-margin: 12;
-        editable: false;
-        cursor-visible: false;
-        wrap-mode: word;
-        justification: center;
+      }
+
+      LinkButton linkIssues {
+        label: C_("about link", "Issue tracker");
+      }
+    }
+
+    Box {
+      halign: center;
+
+      ScrolledWindow {
+        margin-top: 24;
+        height-request: 400;
+        width-request: 600;
+
+        TextView extensionLicense {
+          bottom-margin: 12;
+          left-margin: 12;
+          right-margin: 12;
+          top-margin: 12;
+          editable: false;
+          cursor-visible: false;
+          wrap-mode: word;
+          justification: center;
+        }
       }
     }
   }
