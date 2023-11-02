@@ -55,7 +55,7 @@ interface AboutPageChildren {
   _extensionLicense: Gtk.TextView;
 }
 
-export default class HelloWorldPreferences extends ExtensionPreferences {
+export default class PictureOfTheDayPreferences extends ExtensionPreferences {
   private loadPages(templateDirectory: Gio.File) {
     const aboutTemplate = templateDirectory.get_child("about.ui").get_uri();
     if (aboutTemplate === null) {
