@@ -7,7 +7,7 @@ XGETTEXT_METADATA = \
 	--package-name=$(UUID) \
 	--copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>"
 
-DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2 icon/
+DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2 icons/
 BLUEPRINTS = $(wildcard ui/*.blp)
 UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 

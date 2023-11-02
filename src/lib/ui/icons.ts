@@ -18,15 +18,34 @@
 // GNU General Public License for more details.
 
 import Gio from "gi://Gio";
+import St from "gi://St";
 
 export interface IconLoader {
   loadIcon(name: string): Gio.Icon;
 }
 
 export class ExtensionIcons implements IconLoader {
-  constructor(private readonly iconDirectory: Gio.File) {}
+  private theme: St.IconTheme = St.IconTheme.new();
+
+  constructor(iconDirectory: Gio.File) {
+    const iconPath = iconDirectory.get_path();
+    if (iconPath === null) {
+      throw new Error("Failed to get path of icon directory");
+    }
+    this.theme.append_search_path(iconPath);
+  }
 
   loadIcon(name: string): Gio.Icon {
-    return Gio.FileIcon.new(this.iconDirectory.get_child(`${name}.svg`));
+    // We only include SVG icons currently, so we can just specify any size and
+    // ignore the scale.  We force SVG to be on the safe side.
+    const icon = this.theme.lookup_icon(name, 16, St.IconLookupFlags.FORCE_SVG);
+    if (icon === null) {
+      throw new Error(`Icon ${name} not found`);
+    }
+    const iconFilename = icon.get_filename();
+    if (iconFilename === null) {
+      throw new Error(`Icon ${name} had no file`);
+    }
+    return Gio.FileIcon.new(Gio.File.new_for_path(iconFilename));
   }
 }

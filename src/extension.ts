@@ -48,7 +48,7 @@ class EnabledExtension {
 
   constructor(private readonly extension: Extension) {
     const iconLoader = new ExtensionIcons(
-      extension.metadata.dir.get_child("icon"),
+      extension.metadata.dir.get_child("icons"),
     );
     const baseDirectories = this.getBaseDirectories();
     this.refreshService.setDownloader(this.createDownloader(baseDirectories));
