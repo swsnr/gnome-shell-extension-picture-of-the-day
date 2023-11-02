@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-01 20:33+0100\n"
+"POT-Creation-Date: 2023-11-02 22:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lib/sources/apod.ts:68
+#: src/lib/sources/apod.ts:62
 #, javascript-format
 msgid "Media type not supported: %s"
 msgstr ""
 
-#: src/lib/sources/apod.ts:174
+#: src/lib/sources/apod.ts:168
 msgid ""
 "Please configure an API key for the NASA Astronomy Picture of the Day in the "
 "extension settings."
@@ -45,12 +45,32 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: ui/about.blp:30
+#: ui/AboutPage.blp:5
+msgid "About"
+msgstr ""
+
+#: ui/AboutPage.blp:36
 msgctxt "about link"
 msgid "Github"
 msgstr ""
 
-#: ui/about.blp:35
+#: ui/AboutPage.blp:41
 msgctxt "about link"
 msgid "Issue tracker"
+msgstr ""
+
+#: ui/SourcesPage.blp:5
+msgid "Picture Sources"
+msgstr ""
+
+#: ui/SourcesPage.blp:6
+msgid "Configure sources for the Picture of the Day."
+msgstr ""
+
+#: ui/SourcesPage.blp:11
+msgid "API key"
+msgstr ""
+
+#: ui/SourcesPage.blp:15
+msgid "Get API key"
 msgstr ""

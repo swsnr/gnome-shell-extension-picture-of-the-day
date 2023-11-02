@@ -1,0 +1,20 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $SourcesPage : Adw.PreferencesPage {
+  title: _("Picture Sources");
+  description: _("Configure sources for the Picture of the Day.");
+  icon-name: "picture-of-the-day-symbolic";
+
+  Adw.PreferencesGroup apodGroup {
+    Adw.EntryRow apodApiKey {
+      title: _("API key");
+
+      [suffix]
+      Gtk.LinkButton {
+        label: _("Get API key");
+        uri: "https://api.nasa.gov/";
+      }
+    }
+  }
+}

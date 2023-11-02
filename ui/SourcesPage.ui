@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="SourcesPage" parent="AdwPreferencesPage">
+    <property name="title" translatable="true">Picture Sources</property>
+    <property name="description" translatable="true">Configure sources for the Picture of the Day.</property>
+    <property name="icon-name">picture-of-the-day-symbolic</property>
+    <child>
+      <object class="AdwPreferencesGroup" id="apodGroup">
+        <child>
+          <object class="AdwEntryRow" id="apodApiKey">
+            <property name="title" translatable="true">API key</property>
+            <child type="suffix">
+              <object class="GtkLinkButton">
+                <property name="label" translatable="true">Get API key</property>
+                <property name="uri">https://api.nasa.gov/</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

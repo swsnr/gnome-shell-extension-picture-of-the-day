@@ -2,6 +2,8 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="AboutPage" parent="AdwPreferencesPage">
+    <property name="title" translatable="true">About</property>
+    <property name="icon-name">dialog-information-symbolic</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">1</property>
