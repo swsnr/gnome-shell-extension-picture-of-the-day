@@ -124,6 +124,37 @@ class ImageInfoSection extends PopupMenuSection {
   }
 }
 
+class ImageOpenSection extends PopupMenuSection {
+  private imageFileToOpen: Gio.File | null = null;
+
+  constructor() {
+    super();
+
+    this.addAction(_("Open image"), () => {
+      const imageUri = this.imageFileToOpen?.get_uri();
+      if (imageUri) {
+        Gio.app_info_launch_default_for_uri(
+          imageUri,
+          Shell.Global.get().create_app_launch_context(0, -1),
+        );
+      }
+    });
+    this.addAction(_("Open image folder"), () => {
+      const folderUri = this.imageFileToOpen?.get_parent()?.get_uri();
+      if (folderUri) {
+        Gio.app_info_launch_default_for_uri(
+          folderUri,
+          Shell.Global.get().create_app_launch_context(0, -1),
+        );
+      }
+    });
+  }
+
+  setImage(image: Image) {
+    this.imageFileToOpen = image.file;
+  }
+}
+
 /**
  * The main indicator of this extension.
  */
@@ -137,6 +168,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
   },
   class PictureOfTheDayIndicator extends PanelMenu.Button {
     private readonly imageInfoSection: ImageInfoSection;
+    private readonly imageOpenSection: ImageOpenSection;
     private readonly refresh: PopupMenuItem;
 
     private refreshAction: "refresh" | "cancel-refresh" = "refresh";
@@ -151,6 +183,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       );
 
       this.imageInfoSection = new ImageInfoSection();
+      this.imageOpenSection = new ImageOpenSection();
 
       const refreshItems = new PopupMenuSection();
       this.refresh = new PopupMenuItem("");
@@ -179,6 +212,8 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
         new PopupSeparatorMenuItem(),
         refreshItems,
         new PopupSeparatorMenuItem(),
+        this.imageOpenSection,
+        new PopupSeparatorMenuItem(),
         generalItems,
       ]) {
         this.menu.addMenuItem(section);
@@ -197,6 +232,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
 
     showImageMetadata(image: Image): void {
       this.imageInfoSection.setImage(image);
+      this.imageOpenSection.setImage(image);
     }
   },
 );
