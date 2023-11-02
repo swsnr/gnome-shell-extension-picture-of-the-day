@@ -19,7 +19,6 @@ dist: compile
 	gnome-extensions pack --force --out-dir dist build \
 		--podir=../po --extra-source=../metadata.json \
 		--extra-source=ui --extra-source=lib \
-		$(addprefix --extra-source=,$(wildcard src/*)) \
 		$(addprefix --extra-source=../,$(DIST-EXTRA-SRC)) \
 		$(addprefix --schema=../,$(wildcard schemas/*.gschema.xml))
 
