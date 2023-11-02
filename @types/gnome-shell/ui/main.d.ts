@@ -27,7 +27,7 @@ export declare class Panel {
     indicator: PanelMenu.Button,
     position?: number,
     box?: PanelBox,
-  );
+  ): void;
 }
 
 export declare const panel: Panel;
