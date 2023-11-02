@@ -9,14 +9,19 @@
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs5" />
+  <ellipse
+     style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+     id="path5"
+     cx="3.0257568"
+     cy="7.2944698"
+     rx="0.61420894"
+     ry="1.184176" />
   <path
      style="color:#000000;fill:#000000;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
-     d="M 2.3632813,1.3632812 A 1.0001,1.0001 0 0 0 1.3632812,2.3632813 V 13.636719 a 1.0001,1.0001 0 0 0 1.0000001,1 H 13.636719 a 1.0001,1.0001 0 0 0 1,-1 V 2.3632813 a 1.0001,1.0001 0 0 0 -1,-1.0000001 z m 1,2.0000001 H 12.636719 V 12.636719 H 3.3632813 Z"
-     id="rect5" />
-  <circle
-     style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.354;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-     id="path5"
-     cx="8"
-     cy="8"
-     r="2.5" />
+     d="M 4.9960937,0 C 2.2451304,0 0,2.2451304 0,4.9960937 V 11.003906 C 0,13.75487 2.2451304,16 4.9960937,16 H 11.003906 C 13.75487,16 16,13.75487 16,11.003906 V 4.9960937 C 16,2.2451304 13.75487,0 11.003906,0 Z m 0,2 H 11.003906 C 12.681465,2 14,3.3185348 14,4.9960937 V 11.003906 C 14,12.681465 12.681465,14 11.003906,14 H 4.9960937 C 3.3185348,14 2,12.681465 2,11.003906 V 4.9960937 C 2,3.3185348 3.3185348,2 4.9960937,2 Z"
+     id="rect6" />
+  <path
+     id="path7"
+     style="stroke-width:2.63903;stroke-linecap:round;stroke-linejoin:round"
+     d="M 12,8 A 4,4 0 0 1 8.0237891,11.999929 4,4 0 0 1 4.000283,8.0475773 4,4 0 0 1 7.9286362,4.0006367 4,4 0 0 1 11.998868,7.9048521" />
 </svg>

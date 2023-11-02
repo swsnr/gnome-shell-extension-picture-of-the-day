@@ -5,8 +5,9 @@
 /build/
 /dist/
 
-# Leave markdown files alone
+# Leave markdown files and icon files alone
 *.md
+/icon/
 
 # npm configuration and packages
 /package.json
