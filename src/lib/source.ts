@@ -19,6 +19,10 @@
 
 import Gio from "gi://Gio";
 
+import { SourceMetadata } from "./source/metadata.js";
+
+export type { SourceMetadata } from "./source/metadata.js";
+
 /**
  * A downloaded image.
  */
@@ -91,28 +95,6 @@ export type DownloadImageFactory = (
   settings: Gio.Settings,
   directories: DownloadDirectories,
 ) => DownloadImage;
-
-/**
- * An abstract interface for a source of a picture of the day.
- */
-export interface SourceMetadata {
-  /**
-   * The internal key for this source.
-   *
-   * Used mainly in settings.
-   */
-  readonly key: string;
-
-  /**
-   * The human readable name for this source.
-   */
-  readonly name: string;
-
-  /**
-   * The URL for the website of this source.
-   */
-  readonly website: string;
-}
 
 /**
  * An image source.

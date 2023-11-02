@@ -27,20 +27,14 @@ import {
   DownloadImageFactory,
   Image,
   Source,
-  SourceMetadata,
 } from "../source.js";
 import { ConfigurationError } from "../util/configuration.js";
 import { QueryList, encodeQuery } from "../network/uri.js";
 import { HttpError, downloadToFile } from "../network/http.js";
+import metadata from "./metadata/apod.js";
 
 // eslint-disable-next-line no-restricted-properties
 const vprintf = imports.format.vprintf;
-
-const metadata: SourceMetadata = {
-  key: "apod",
-  name: "Astronomy Picture of the Day",
-  website: "https://apod.nasa.gov/",
-};
 
 /**
  * The APOD API did not return any body data.
