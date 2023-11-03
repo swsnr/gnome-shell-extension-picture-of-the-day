@@ -19,6 +19,8 @@
 
 import Gio from "gi://Gio";
 
+import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
+
 import { SourceMetadata } from "./source/metadata.js";
 
 export type { SourceMetadata } from "./source/metadata.js";
@@ -104,10 +106,12 @@ export interface DownloadDirectories {
 /**
  * A factory for a download function.
  *
+ * @param metadata Metadata about this extension, to use e.g. in User-Agent strings.
  * @param settings The settings for this source.
  * @param targetDirectory The target directory to download the image to.
  */
 export type DownloadImageFactory = (
+  extensionMetadata: ExtensionMetadata,
   settings: Gio.Settings,
   directories: DownloadDirectories,
 ) => DownloadImage;

@@ -143,7 +143,11 @@ class EnabledExtension {
       ),
     };
 
-    return APOD.createDownloader(sourceSettings, directories);
+    return APOD.createDownloader(
+      this.extension.metadata,
+      sourceSettings,
+      directories,
+    );
   }
 
   destroy() {

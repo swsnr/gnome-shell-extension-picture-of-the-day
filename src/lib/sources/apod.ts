@@ -20,7 +20,10 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
+import {
+  ExtensionMetadata,
+  gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
 
 import {
   DownloadDirectories,
@@ -152,11 +155,13 @@ const queryMetadata = async (
  * @returns A download function
  */
 const createDownloader: DownloadImageFactory = (
+  extensionMetadata: ExtensionMetadata,
   settings: Gio.Settings,
   directories: DownloadDirectories,
 ) => {
+  const version = extensionMetadata["version-name"] ?? "n/a";
   const session = new Soup.Session({
-    user_agent: `gnome-shell-extension-picture-of-the-day`,
+    user_agent: `${extensionMetadata.uuid}/${version} GNOME Shell extension`,
   });
 
   return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {

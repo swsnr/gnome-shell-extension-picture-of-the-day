@@ -33,6 +33,8 @@ export declare interface ExtensionMetadata {
   readonly uuid: string;
   readonly name: string;
   readonly description: string;
+  readonly "version-name"?: string | null;
+
   readonly "shell-version": readonly string[];
   readonly dir: Gio.File;
   readonly path: string;
