@@ -66,6 +66,7 @@ interface SourcesPageChildren {
 interface AboutPageChildren {
   readonly _extensionName: Gtk.Label;
   readonly _extensionDescription: Gtk.Label;
+  readonly _extensionVersion: Gtk.Label;
   readonly _linkGithub: Gtk.LinkButton;
   readonly _linkIssues: Gtk.LinkButton;
   readonly _extensionLicense: Gtk.TextView;
@@ -124,6 +125,7 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
         Template: getTemplateUri(templateDirectory, "AboutPage"),
         InternalChildren: [
           "extensionName",
+          "extensionVersion",
           "extensionDescription",
           "linkGithub",
           "linkIssues",
@@ -137,6 +139,11 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
           // TODO: Find a better way to declare that an instance has a set of props
           const children = this as unknown as AboutPageChildren;
           children._extensionName.set_text(metadata.name);
+          if (metadata["version-name"]) {
+            children._extensionVersion.set_text(metadata["version-name"]);
+          } else {
+            children._extensionVersion.visible = false;
+          }
           children._extensionDescription.set_text(metadata.description);
           children._linkGithub.set_uri(metadata.url);
           children._linkIssues.set_uri(`${metadata.url}/issues`);

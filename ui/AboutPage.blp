@@ -12,10 +12,21 @@ template $AboutPage : Adw.PreferencesPage {
     margin-top: 12;
     margin-bottom: 12;
 
-    Label extensionName {
-      label: "The name of this extension";
+    Box {
+      orientation: vertical;
+      halign: center;
       margin-bottom: 15;
-      styles ["title-1"]
+
+      Label extensionName {
+        label: "The name of this extension";
+        margin-bottom: 5;
+        styles ["title-1"]
+      }
+
+      Label extensionVersion {
+        label: "0.0.0";
+        styles ["caption"]
+      }
     }
 
     Box {
