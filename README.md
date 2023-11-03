@@ -4,7 +4,7 @@
 [![](https://img.shields.io/github/v/release/swsnr/gnome-shell-extension-picture-of-the-day)](https://github.com/swsnr/mdcat/releases/)
 [![CI status](https://img.shields.io/github/actions/workflow/status/swsnr/gnome-shell-extension-picture-of-the-day/ci.yaml)](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/actions)
 
-Use a picture of the day from various sources as desktop background.
+Use a picture of the day from various sources as GNOME desktop background.
 
 ![](./screenshot.png)
 
