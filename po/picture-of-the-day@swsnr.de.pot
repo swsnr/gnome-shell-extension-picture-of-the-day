@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-02 22:09+0100\n"
+"POT-Creation-Date: 2023-11-03 09:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,15 +33,23 @@ msgstr ""
 msgid "Copyright %s"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:173
+#: src/lib/ui/indicator.ts:133
+msgid "Open image"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:142
+msgid "Open image folder"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:206
 msgid "Settings"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:190
+#: src/lib/ui/indicator.ts:225
 msgid "Cancel refresh…"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:193
+#: src/lib/ui/indicator.ts:228
 msgid "Refresh"
 msgstr ""
 
