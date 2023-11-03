@@ -93,25 +93,15 @@ class EnabledExtension {
    * @returns The base directories for this extension.
    */
   private getBaseDirectories(): DownloadDirectories {
-    const picturesDirectory = GLib.get_user_special_dir(
-      GLib.UserDirectory.DIRECTORY_PICTURES,
-    );
-    const imageDirectory = picturesDirectory
-      ? Gio.File.new_for_path(picturesDirectory).get_child(
-          this.extension.metadata.name,
-        )
-      : // If the user has no directory for pictures, put files into the state directory.
-        Gio.File.new_for_path(GLib.get_user_state_dir())
-          .get_child(this.extension.metadata.uuid)
-          .get_child("images");
+    const stateDirectory = Gio.File.new_for_path(
+      GLib.get_user_state_dir(),
+    ).get_child(this.extension.metadata.uuid);
     return {
-      stateDirectory: Gio.File.new_for_path(
-        GLib.get_user_state_dir(),
-      ).get_child(this.extension.metadata.uuid),
+      stateDirectory: stateDirectory.get_child("sources"),
       cacheDirectory: Gio.File.new_for_path(
         GLib.get_user_cache_dir(),
       ).get_child(this.extension.metadata.uuid),
-      imageDirectory,
+      imageDirectory: stateDirectory.get_child("images"),
     };
   }
 
