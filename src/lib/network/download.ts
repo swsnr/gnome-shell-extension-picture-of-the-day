@@ -19,7 +19,7 @@
 
 import Gio from "gi://Gio";
 
-import { Image } from "../source.js";
+import { ImageFile } from "../source.js";
 import { CancellableResult, runCancellable } from "../util/gio.js";
 
 /**
@@ -33,7 +33,7 @@ interface CurrentDownload {
   /**
    * The result of the download.
    */
-  readonly promise: Promise<CancellableResult<Image>>;
+  readonly promise: Promise<CancellableResult<ImageFile>>;
 }
 
 /**
@@ -75,8 +75,8 @@ export class DownloadScheduler {
   }
 
   private doDownload(
-    download: (cancellable: Gio.Cancellable) => Promise<Image>,
-  ): Promise<CancellableResult<Image>> {
+    download: (cancellable: Gio.Cancellable) => Promise<ImageFile>,
+  ): Promise<CancellableResult<ImageFile>> {
     const [promise, cancellable] = runCancellable(download);
     this.currentDownload = { promise, cancellable };
     return promise.finally(() => {
@@ -88,8 +88,8 @@ export class DownloadScheduler {
    * Start a new download if no download is ongoing, otherwise return the ongoing download.
    */
   async maybeStartDownload(
-    download: (cancellable: Gio.Cancellable) => Promise<Image>,
-  ): Promise<CancellableResult<Image>> {
+    download: (cancellable: Gio.Cancellable) => Promise<ImageFile>,
+  ): Promise<CancellableResult<ImageFile>> {
     if (this.currentDownload) {
       return this.currentDownload.promise;
     } else {
@@ -107,8 +107,8 @@ export class DownloadScheduler {
    * @returns The result of the download
    */
   async forceStartDownload(
-    download: (cancellable: Gio.Cancellable) => Promise<Image>,
-  ): Promise<CancellableResult<Image>> {
+    download: (cancellable: Gio.Cancellable) => Promise<ImageFile>,
+  ): Promise<CancellableResult<ImageFile>> {
     await this.cancelCurrentDownload();
     return this.doDownload(download);
   }

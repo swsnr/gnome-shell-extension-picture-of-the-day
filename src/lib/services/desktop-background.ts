@@ -39,15 +39,30 @@ export class DesktopBackgroundService {
   }
 
   /**
-   * Change the background image.
+   * Get the current background image.
    *
-   * @param image The image file to use as new background
+   * Only looks at the key for the default theme.
    */
-  setBackgroundImage(image: Gio.File): void {
-    const uri = image.get_uri();
+  get backgroundImage(): string | null {
+    return this.settings.get_string("picture-uri");
+  }
+
+  /**
+   * Set the current background image, for both default and dark themes.
+   */
+  set backgroundImage(uri: string | null) {
     console.log("Changing desktop background", uri);
     for (const key of ["picture-uri", "picture-uri-dark"]) {
       this.settings.set_string(key, uri);
     }
+  }
+
+  /**
+   * Change the background image.
+   *
+   * @param image The image file to use as new background
+   */
+  setBackgroundImageFile(image: Gio.File): void {
+    this.backgroundImage = image.get_uri();
   }
 }

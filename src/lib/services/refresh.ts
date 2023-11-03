@@ -20,7 +20,7 @@
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { DownloadScheduler } from "../network/download.js";
-import { DownloadImage, Image } from "../source.js";
+import { DownloadImage, ImageFile } from "../source.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
@@ -33,7 +33,7 @@ interface RefreshServiceSignals {
   /**
    * The image was refreshed successfully.
    */
-  readonly "image-changed": [image: Image];
+  readonly "image-changed": [image: ImageFile];
 }
 
 /**

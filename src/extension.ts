@@ -30,6 +30,7 @@ import { RefreshService } from "./lib/services/refresh.js";
 import APOD from "./lib/sources/apod.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
 import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
+import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -45,6 +46,7 @@ class EnabledExtension {
   private readonly refreshService: RefreshService = new RefreshService();
   private readonly desktopBackgroundService: DesktopBackgroundService =
     DesktopBackgroundService.default();
+  private readonly imageMetadataStore: ImageMetadataStore;
 
   constructor(private readonly extension: Extension) {
     const iconLoader = new ExtensionIcons(
@@ -55,6 +57,16 @@ class EnabledExtension {
 
     this.indicator = new PictureOfTheDayIndicator(iconLoader);
     Main.panel.addToStatusArea(extension.metadata.uuid, this.indicator);
+
+    // Restore metadata for the current image
+    this.imageMetadataStore = new ImageMetadataStore(extension.getSettings());
+    const storedImage = this.imageMetadataStore.loadFromMetadata();
+    if (storedImage !== null) {
+      const currentWallpaperUri = this.desktopBackgroundService.backgroundImage;
+      if (storedImage.file.get_uri() === currentWallpaperUri) {
+        this.indicator.showImageMetadata(storedImage);
+      }
+    }
 
     // React on user actions on the indicator
     this.indicator.connect("activated::settings", () => {
@@ -70,7 +82,8 @@ class EnabledExtension {
     // Make everyone react on a new picture of the day
     this.refreshService.connect("image-changed", (_, image): undefined => {
       this.indicator.showImageMetadata(image);
-      this.desktopBackgroundService.setBackgroundImage(image.file);
+      this.imageMetadataStore.storedMetadataForImage(image);
+      this.desktopBackgroundService.setBackgroundImageFile(image.file);
     });
   }
 

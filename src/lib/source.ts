@@ -24,9 +24,13 @@ import { SourceMetadata } from "./source/metadata.js";
 export type { SourceMetadata } from "./source/metadata.js";
 
 /**
- * A downloaded image.
+ * Metadata of a downloaded image.
+ *
+ * This metadata contain plain data types in all leaf properties, to maintain
+ * JSON compatibility, because various parts of this extension may serialize
+ * and deserialize metadata for storage.
  */
-export interface Image {
+export interface ImageMetadata {
   /**
    * The image title.
    */
@@ -46,6 +50,16 @@ export interface Image {
    * Direct URL for this image.
    */
   readonly url: string | null;
+}
+
+/**
+ * A downloaded image.
+ */
+export interface ImageFile {
+  /**
+   * The metadata of this image.
+   */
+  readonly metadata: ImageMetadata;
 
   /**
    * The downloaded file.
@@ -58,7 +72,9 @@ export interface Image {
  *
  * @param cancellable Used to cancel any ongoing IO operations.
  */
-export type DownloadImage = (cancellable: Gio.Cancellable) => Promise<Image>;
+export type DownloadImage = (
+  cancellable: Gio.Cancellable,
+) => Promise<ImageFile>;
 
 /**
  * Directories where sources can store data.

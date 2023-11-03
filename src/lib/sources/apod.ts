@@ -25,7 +25,7 @@ import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.j
 import {
   DownloadDirectories,
   DownloadImageFactory,
-  Image,
+  ImageFile,
   Source,
 } from "../source.js";
 import { ConfigurationError } from "../util/configuration.js";
@@ -159,7 +159,7 @@ const createDownloader: DownloadImageFactory = (
     user_agent: `gnome-shell-extension-picture-of-the-day`,
   });
 
-  return async (cancellable: Gio.Cancellable): Promise<Image> => {
+  return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
     const apiKey = settings.get_string("api-key");
     if (apiKey === null || apiKey.length === 0) {
       throw new ConfigurationError(
@@ -189,10 +189,12 @@ const createDownloader: DownloadImageFactory = (
     const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
     return {
       file: targetFile,
-      title: imageMetadata.title,
-      description: imageMetadata.explanation,
-      url,
-      copyright: imageMetadata.copyright ?? null,
+      metadata: {
+        title: imageMetadata.title,
+        description: imageMetadata.explanation,
+        url,
+        copyright: imageMetadata.copyright ?? null,
+      },
     };
   };
 };

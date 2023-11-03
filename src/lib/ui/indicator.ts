@@ -30,7 +30,7 @@ import {
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
 import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { Image } from "../source.js";
+import { ImageFile, ImageMetadata } from "../source.js";
 import { IconLoader } from "./icons.js";
 import { RefreshState } from "../services/refresh.js";
 
@@ -90,7 +90,7 @@ class ImageInfoSection extends PopupMenuSection {
     }
   }
 
-  setImage(image: Image): void {
+  setImage(image: ImageMetadata): void {
     this.urlToOpen = image.url;
     for (const item of this.allItems) {
       item.visible = true;
@@ -150,7 +150,7 @@ class ImageOpenSection extends PopupMenuSection {
     });
   }
 
-  setImage(image: Image) {
+  setImage(image: ImageFile) {
     this.imageFileToOpen = image.file;
   }
 }
@@ -230,8 +230,8 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       }
     }
 
-    showImageMetadata(image: Image): void {
-      this.imageInfoSection.setImage(image);
+    showImageMetadata(image: ImageFile): void {
+      this.imageInfoSection.setImage(image.metadata);
       this.imageOpenSection.setImage(image);
     }
   },
