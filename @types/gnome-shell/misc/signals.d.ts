@@ -17,7 +17,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-export declare class EventEmitter<Signals> {
+type SignalMap<K> = {
+  [Signal in keyof K]: unknown[];
+};
+
+export declare class EventEmitter<Signals extends SignalMap<Signals>> {
   connect<Name extends keyof Signals>(
     name: Name,
     callback: (obj: this, ...args: Signals[Name]) => boolean | undefined,
