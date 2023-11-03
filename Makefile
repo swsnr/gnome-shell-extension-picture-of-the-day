@@ -85,8 +85,12 @@ format:
 lint:
 	npm run lint
 
+.PHONY: check-types
+check-types:
+	npm run check:types
+
 .PHONY: check
-check: lint
+check: lint check-types
 	npm run format -- --check
 
 .PHONY: fix
