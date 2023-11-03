@@ -20,24 +20,24 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import {
-  ExtensionMetadata,
-  gettext as _,
-} from "resource:///org/gnome/shell/extensions/extension.js";
+import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import {
   DownloadDirectories,
   DownloadImageFactory,
   ImageFile,
+  ImageMetadata,
   Source,
 } from "../source.js";
-import { ConfigurationError } from "../util/configuration.js";
+import { NotAnImageError, InvalidAPIKeyError } from "../source/errors.js";
 import { QueryList, encodeQuery } from "../network/uri.js";
-import { HttpError, downloadToFile } from "../network/http.js";
+import {
+  HttpRequestError,
+  HttpStatusError,
+  downloadToFile,
+  getJSON,
+} from "../network/http.js";
 import metadata from "./metadata/apod.js";
-
-// eslint-disable-next-line no-restricted-properties
-const vprintf = imports.format.vprintf;
 
 /**
  * The APOD API did not return any body data.
@@ -55,14 +55,9 @@ export class ApodError extends Error {
   constructor(
     readonly code: string,
     message: string,
+    options?: ErrorOptions,
   ) {
-    super(message);
-  }
-}
-
-export class UnsupportedMediaType extends Error {
-  constructor(readonly mediaType: string) {
-    super(vprintf(_(`Media type not supported: %s`), [mediaType]));
+    super(message, options);
   }
 }
 
@@ -125,24 +120,34 @@ const queryMetadata = async (
 ): Promise<ApodMetadata> => {
   const query: QueryList = [["api_key", apiKey]];
   const url = `https://api.nasa.gov/planetary/apod?${encodeQuery(query)}`;
-  const message = Soup.Message.new("GET", url);
-  const response = await session.send_and_read_async(message, 0, cancellable);
-  const data = response.get_data();
-  if (message.get_status() === Soup.Status.OK) {
-    if (data === null) {
-      throw new ApodErrorDataMissing();
-    }
-    return JSON.parse(new TextDecoder().decode(data)) as ApodMetadata;
-  } else {
-    if (data === null) {
-      throw new HttpError(message.get_status(), message.get_reason_phrase());
-    } else {
-      const body = JSON.parse(new TextDecoder().decode(data)) as unknown;
-      if (isApodErrorBody(body)) {
-        throw new ApodError(body.error.code, body.error.message);
-      } else {
-        throw new HttpError(message.get_status(), message.get_reason_phrase());
+  try {
+    const response = await getJSON(session, url, cancellable);
+    return response as ApodMetadata;
+  } catch (error) {
+    // Check if the API gave us a more specific response
+    if (
+      error instanceof HttpRequestError &&
+      error.cause instanceof HttpStatusError &&
+      error.cause.body
+    ) {
+      let body = undefined;
+      try {
+        body = JSON.parse(
+          new TextDecoder().decode(error.cause.body),
+        ) as unknown;
+      } catch {
+        body = undefined;
       }
+      if (body && isApodErrorBody(body)) {
+        // TODO: Inspect code and map to more precise errors
+        throw new ApodError(body.error.code, body.error.message, {
+          cause: error,
+        });
+      } else {
+        throw error;
+      }
+    } else {
+      throw error;
     }
   }
 };
@@ -167,39 +172,36 @@ const createDownloader: DownloadImageFactory = (
   return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
     const apiKey = settings.get_string("api-key");
     if (apiKey === null || apiKey.length === 0) {
-      throw new ConfigurationError(
-        metadata,
-        _(
-          "Please configure an API key for the NASA Astronomy Picture of the Day in the extension settings.",
-        ),
-      );
+      throw new InvalidAPIKeyError(metadata);
     }
 
-    const imageMetadata = await queryMetadata(session, apiKey, cancellable);
-    if (imageMetadata.media_type !== "image") {
-      throw new UnsupportedMediaType(imageMetadata.media_type);
+    const apodImageMetadata = await queryMetadata(session, apiKey, cancellable);
+    const urlDate = apodImageMetadata.date.replaceAll("-", "").slice(2);
+    const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
+    const imageMetadata: ImageMetadata = {
+      title: apodImageMetadata.title,
+      description: apodImageMetadata.explanation,
+      url,
+      copyright: apodImageMetadata.copyright ?? null,
+    };
+    if (apodImageMetadata.media_type !== "image") {
+      throw new NotAnImageError(imageMetadata, apodImageMetadata.media_type);
     }
 
-    const imageUrl = imageMetadata.hdurl ?? imageMetadata.url;
+    const imageUrl = apodImageMetadata.hdurl ?? apodImageMetadata.url;
     const urlBasename = imageUrl.split("/").reverse()[0];
     const filename =
       urlBasename && 0 < urlBasename.length
         ? urlBasename
-        : imageMetadata.title.replaceAll(/\/|\n/, "_");
+        : apodImageMetadata.title.replaceAll(/\/|\n/, "_");
     const targetFile = directories.imageDirectory.get_child(
-      `${imageMetadata.date}-${filename}`,
+      `${apodImageMetadata.date}-${filename}`,
     );
     await downloadToFile(session, imageUrl, targetFile, cancellable);
-    const urlDate = imageMetadata.date.replaceAll("-", "").slice(2);
-    const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
+
     return {
       file: targetFile,
-      metadata: {
-        title: imageMetadata.title,
-        description: imageMetadata.explanation,
-        url,
-        copyright: imageMetadata.copyright ?? null,
-      },
+      metadata: imageMetadata,
     };
   };
 };

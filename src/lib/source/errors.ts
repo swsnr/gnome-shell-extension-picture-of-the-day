@@ -17,12 +17,12 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import { SourceMetadata } from "../source.js";
+import { ImageMetadata, SourceMetadata } from "../source.js";
 
 /**
  * An error denoting a wrong configuration for a source.
  */
-export class ConfigurationError extends Error {
+export abstract class ConfigurationError extends Error {
   /**
    * Create a new error.
    *
@@ -32,7 +32,30 @@ export class ConfigurationError extends Error {
   constructor(
     readonly metadata: SourceMetadata,
     message: string,
+    options?: ErrorOptions,
   ) {
-    super(message);
+    super(message, options);
+  }
+}
+
+/**
+ * No valid API was configured, or the API was rejected by the remote side.
+ */
+export class InvalidAPIKeyError extends ConfigurationError {
+  constructor(metadata: SourceMetadata, options?: ErrorOptions) {
+    super(metadata, `API key invalid for ${metadata.key}`, options);
+  }
+}
+
+/**
+ * Today's picture was not a picture, but some other media, e.g. an image.
+ */
+export class NotAnImageError extends Error {
+  constructor(
+    readonly metadata: ImageMetadata,
+    readonly mediaType: string,
+    options?: ErrorOptions,
+  ) {
+    super(`Media type not supported: %s`, options);
   }
 }

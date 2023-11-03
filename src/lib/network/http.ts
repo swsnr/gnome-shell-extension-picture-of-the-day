@@ -24,16 +24,85 @@ import Soup from "gi://Soup";
 /**
  * A non-200 status code.
  */
-export class HttpError extends Error {
+export class HttpStatusError extends Error {
   constructor(
     /** The status */
     readonly status: Soup.Status,
     /** The status reason. */
     readonly reason?: string | null,
+    /** The body returned with the response */
+    readonly body?: Uint8Array | null,
   ) {
     super(`HTTP request failed with HTTP status ${status} ${reason ?? ""}`);
   }
 }
+
+/**
+ * No data in a response that was expected to have data.
+ */
+export class NoDataError extends Error {}
+
+/**
+ * An error which occurred while processing a HTTP request
+ */
+export class HttpRequestError extends Error {
+  constructor(
+    readonly url: string,
+    message: string,
+    options?: ErrorOptions,
+  ) {
+    super(message, options);
+  }
+}
+
+/**
+ * Make a request and read a JSON response.
+ *
+ * @param session The HTTP session to use
+ * @param url The URL to request from
+ * @param cancellable A handle to cancel the IO operation
+ * @returns The deserialized JSON data
+ */
+export const getJSON = async (
+  session: Soup.Session,
+  url: string,
+  cancellable: Gio.Cancellable,
+): Promise<unknown> => {
+  const message = Soup.Message.new("GET", url);
+  const response = await session
+    .send_and_read_async(message, 0, cancellable)
+    .catch((cause: unknown) => {
+      throw new HttpRequestError(url, `Failed to get data from ${url}`, {
+        cause,
+      });
+    });
+  const data = response.get_data();
+  if (message.get_status() === Soup.Status.OK) {
+    try {
+      if (data === null || data.byteLength === 0) {
+        throw new NoDataError(
+          `Response with status code ${message.get_status()} contained no data`,
+        );
+      }
+      return JSON.parse(new TextDecoder().decode(data)) as unknown;
+    } catch (cause) {
+      throw new HttpRequestError(url, `Failed to parse data from ${url}`, {
+        cause,
+      });
+    }
+  } else {
+    throw new HttpRequestError(
+      url,
+      `Request to ${url} received error response`,
+      {
+        cause: new HttpStatusError(
+          message.get_status(),
+          message.get_reason_phrase(),
+        ),
+      },
+    );
+  }
+};
 
 /**
  * Download a URL to a file.
@@ -54,33 +123,67 @@ export const downloadToFile = async (
     return;
   }
   const message = Soup.Message.new("GET", url);
-  const source = await session.send_async(message, 0, cancellable);
+  const source = await session
+    .send_async(message, 0, cancellable)
+    .catch((cause: unknown) => {
+      throw new HttpRequestError(url, `Failed to make GET request to ${url}`, {
+        cause,
+      });
+    });
   if (message.get_status() !== Soup.Status.OK) {
-    throw new HttpError(message.get_status(), message.get_reason_phrase());
+    throw new HttpRequestError(url, `GET request to ${url} returned error`, {
+      cause: new HttpStatusError(
+        message.get_status(),
+        message.get_reason_phrase(),
+      ),
+    });
   }
   // TODO: We should make this async, but there's no async equivalent…
-  try {
-    target.get_parent()?.make_directory_with_parents(cancellable);
-  } catch (error) {
-    // We've to cast around here because the type signature of `matches` doesn't allow for enums…
-    if (
-      !(
-        error instanceof GLib.Error &&
-        error.matches(
-          Gio.IOErrorEnum as unknown as number,
-          Gio.IOErrorEnum.EXISTS,
+  const parentDirectory = target.get_parent();
+  if (parentDirectory) {
+    try {
+      target.get_parent()?.make_directory_with_parents(cancellable);
+    } catch (cause) {
+      // We've to cast around here because the type signature of `matches` doesn't allow for enums…
+      if (
+        !(
+          cause instanceof GLib.Error &&
+          cause.matches(
+            Gio.IOErrorEnum as unknown as number,
+            Gio.IOErrorEnum.EXISTS,
+          )
         )
-      )
-    ) {
-      throw error;
+      ) {
+        throw new HttpRequestError(
+          url,
+          `Failed to create target directory at ${parentDirectory.get_path()} to download from ${url}`,
+          { cause },
+        );
+      }
     }
   }
-  const sink = await target.create_async(Gio.FileCreateFlags.NONE, 0, null);
-  await sink.splice_async(
-    source,
-    Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
-      Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
-    0,
-    cancellable,
-  );
+  const sink = await target
+    .create_async(Gio.FileCreateFlags.NONE, 0, null)
+    .catch((cause: unknown) => {
+      throw new HttpRequestError(
+        url,
+        `Failed to open target file at ${target.get_path()} to download from ${url}`,
+        { cause },
+      );
+    });
+  await sink
+    .splice_async(
+      source,
+      Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+        Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+      0,
+      cancellable,
+    )
+    .catch((cause: unknown) => {
+      throw new HttpRequestError(
+        url,
+        `Failed to download data from ${url} to ${target.get_path()}`,
+        { cause },
+      );
+    });
 };
