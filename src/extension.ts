@@ -161,6 +161,9 @@ export default class PictureOfTheDayExtension extends Extension {
 
   override enable(): void {
     if (!this.enabledExtension) {
+      console.log(
+        `Enabled extension ${this.metadata.uuid} ${this.metadata["version-name"]}`,
+      );
       this.enabledExtension = new EnabledExtension(this);
     }
   }
