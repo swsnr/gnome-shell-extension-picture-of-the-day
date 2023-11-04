@@ -45,7 +45,9 @@ rules:
   no-new-object: error
   no-new-wrappers: error
   no-proto: error
-  no-shadow: warn
+  # This rule causes false positives with typescript, see
+  # https://github.com/typescript-eslint/tslint-to-eslint-config/pull/860
+  # no-shadow: warn
   no-unused-vars:
     - error
     - varsIgnorePattern: ^_

@@ -15,7 +15,9 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "promise"],
   root: true,
-  rules: {},
+  rules: {
+    "@typescript-eslint/no-shadow": "warn"
+  },
   // These are either generated or config files or no real typescript
   ignorePatterns: [
     "/build/**/*",
