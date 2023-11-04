@@ -17,12 +17,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import GLib from "gi://GLib";
-
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { DownloadScheduler } from "../network/download.js";
 import { DownloadImage, ImageFile } from "../source.js";
+import { unfoldCauses } from "../util/error.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
@@ -36,6 +35,11 @@ interface RefreshServiceSignals {
    * The image was refreshed successfully.
    */
   readonly "image-changed": [image: ImageFile];
+
+  /**
+   * A refresh operation failed.
+   */
+  readonly "refresh-failed": [error: unknown];
 }
 
 /**
@@ -75,24 +79,12 @@ export class RefreshService extends EventEmitter<RefreshServiceSignals> {
           this.emit("image-changed", image.value);
         }
       } catch (error) {
-        // TODO: Emit error signal and handle the error properly
         console.error("Refresh failed", error);
-        if (error instanceof Error) {
-          // Recursively log the inner causes of errorss
-          let cause = error.cause;
-          while (cause !== null) {
-            if (cause instanceof Error) {
-              console.error("Caused by", cause);
-              cause = cause.cause;
-            } else if (cause instanceof GLib.Error) {
-              console.error("Caused by", cause);
-              cause = null;
-            } else {
-              cause = null;
-            }
-          }
+        for (const cause of unfoldCauses(error)) {
+          console.error("Caused by", cause);
         }
         this.emit("state-changed", "failed");
+        this.emit("refresh-failed", error);
       }
     }
   }

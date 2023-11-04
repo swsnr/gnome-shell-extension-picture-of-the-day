@@ -31,6 +31,7 @@ import APOD from "./lib/sources/apod.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
 import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
 import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
+import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -47,16 +48,22 @@ class EnabledExtension {
   private readonly desktopBackgroundService: DesktopBackgroundService =
     DesktopBackgroundService.default();
   private readonly imageMetadataStore: ImageMetadataStore;
+  private readonly errorHandler: RefreshErrorHandler;
 
   constructor(private readonly extension: Extension) {
+    // SOme additional infrastructure.
     const iconLoader = new ExtensionIcons(
       extension.metadata.dir.get_child("icons"),
     );
     const baseDirectories = this.getBaseDirectories();
     this.refreshService.setDownloader(this.createDownloader(baseDirectories));
 
+    // Set up the UI
     this.indicator = new PictureOfTheDayIndicator(iconLoader);
     Main.panel.addToStatusArea(extension.metadata.uuid, this.indicator);
+
+    // Set up notifications by this extension.
+    this.errorHandler = new RefreshErrorHandler(iconLoader);
 
     // Restore metadata for the current image
     this.imageMetadataStore = new ImageMetadataStore(extension.getSettings());
@@ -67,6 +74,8 @@ class EnabledExtension {
         this.indicator.showImageMetadata(storedImage);
       }
     }
+
+    // Now wire up all the signals between the services and the UI.
 
     // React on user actions on the indicator
     this.indicator.connect("activated::settings", () => {
@@ -84,6 +93,10 @@ class EnabledExtension {
       this.indicator.showImageMetadata(image);
       this.imageMetadataStore.storedMetadataForImage(image);
       this.desktopBackgroundService.setBackgroundImageFile(image.file);
+    });
+
+    this.refreshService.connect("refresh-failed", (_, error): undefined => {
+      this.errorHandler.showError(error);
     });
   }
 
@@ -141,15 +154,20 @@ class EnabledExtension {
   }
 
   destroy() {
+    // Things that we should disconnect signals from.
+    const disconnectables = [this.refreshService];
+    // Things that we should explicitly destroy.
+    const destructibles = [this.indicator];
+
     // Disconnect all signals on our services, to free all references to the
     // signal handlers and prevent reference cycles keeping objects alive beyond
     // destruction of this extension.
-    for (const obj of [this.refreshService]) {
+    for (const obj of disconnectables) {
       obj.disconnectAll();
     }
-    // This should automatically disconnect all signals on the indicator and
-    // thus free all references to signal handlers
-    this.indicator.destroy();
+    for (const obj of destructibles) {
+      obj.destroy();
+    }
   }
 }
 

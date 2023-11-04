@@ -17,20 +17,24 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import { MessageTray } from "./messageTray.js";
-import * as PanelMenu from "./panelMenu.js";
-
-export type PanelBox = "left" | "center" | "right";
-
-export declare class Panel {
-  addToStatusArea(
-    role: string,
-    indicator: PanelMenu.Button,
-    position?: number,
-    box?: PanelBox,
-  ): void;
-}
-
-export declare const panel: Panel;
-
-export declare const messageTray: MessageTray;
+/**
+ * Unfold the nested causes of an error into an array.
+ *
+ * @param error The error to unfold
+ * @returns An array of all nested error causes, excluding `error` itself.
+ */
+export const unfoldCauses = (error: unknown): readonly unknown[] => {
+  const causes = [];
+  if (error instanceof Error) {
+    let cause = error.cause;
+    while (cause) {
+      causes.push(cause);
+      if (cause instanceof Error) {
+        cause = cause.cause;
+      } else {
+        cause = undefined;
+      }
+    }
+  }
+  return causes;
+};
