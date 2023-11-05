@@ -20,6 +20,7 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
+import { IOError } from "../util/gio.js";
 
 /**
  * A non-200 status code.
@@ -144,6 +145,8 @@ export const downloadToFile = async (
     try {
       target.get_parent()?.make_directory_with_parents(cancellable);
     } catch (cause) {
+      // If the directory already exists don't propagate the error
+      //
       // We've to cast around here because the type signature of `matches` doesn't allow for enums…
       if (
         !(
@@ -154,8 +157,7 @@ export const downloadToFile = async (
           )
         )
       ) {
-        throw new HttpRequestError(
-          url,
+        throw new IOError(
           `Failed to create target directory at ${parentDirectory.get_path()} to download from ${url}`,
           { cause },
         );
@@ -165,8 +167,7 @@ export const downloadToFile = async (
   const sink = await target
     .create_async(Gio.FileCreateFlags.NONE, 0, null)
     .catch((cause: unknown) => {
-      throw new HttpRequestError(
-        url,
+      throw new IOError(
         `Failed to open target file at ${target.get_path()} to download from ${url}`,
         { cause },
       );

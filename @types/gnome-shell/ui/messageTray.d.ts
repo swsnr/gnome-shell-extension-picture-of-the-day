@@ -113,7 +113,7 @@ export declare class Notification extends GObject.Object {
     params?: NotificationParams,
   );
 
-  update(title: string, banner: string, params: NotificationParams): void;
+  update(title: string, banner: string, params?: NotificationParams): void;
   addAction(
     label: NotificationAction["label"],
     callback: NotificationAction["callback"],

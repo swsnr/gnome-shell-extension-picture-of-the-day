@@ -32,6 +32,7 @@ import { ExtensionIcons } from "./lib/ui/icons.js";
 import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
 import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
 import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
+import { launchSettingsPanel } from "./lib/ui/settings.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -98,6 +99,17 @@ class EnabledExtension {
     this.refreshService.connect("refresh-failed", (_, error): undefined => {
       this.errorHandler.showError(error);
     });
+
+    // Handle user reactions on errors
+    this.errorHandler.connect("action::open-preferences", (): undefined => {
+      this.extension.openPreferences();
+    });
+    this.errorHandler.connect(
+      "action::open-network-settings",
+      (): undefined => {
+        launchSettingsPanel("network");
+      },
+    );
   }
 
   /**
@@ -155,7 +167,7 @@ class EnabledExtension {
 
   destroy() {
     // Things that we should disconnect signals from.
-    const disconnectables = [this.refreshService];
+    const disconnectables = [this.refreshService, this.errorHandler];
     // Things that we should explicitly destroy.
     const destructibles = [this.indicator];
 

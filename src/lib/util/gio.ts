@@ -66,3 +66,10 @@ export const runCancellable = <T>(
     });
   return [promise, cancellable];
 };
+
+/**
+ * Denotes an IO error.
+ *
+ * Use this error to wrap GIO errors which do not have a more specific context.
+ */
+export class IOError extends Error {}
