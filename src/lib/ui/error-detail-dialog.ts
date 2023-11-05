@@ -64,7 +64,7 @@ const formatOneError = (error: unknown): string => {
     return `<b>${e(error.name)}: ${e(error.message)}</b>\n${stack}`;
   } else if (error instanceof GLib.Error) {
     const stack = formatStacktrace(error.stack);
-    return `<b>${error.toString()})}</b>\n${stack}`;
+    return `<b>${error.toString()}</b>\n${stack}`;
   } else if (typeof error === "string") {
     return e(`<b>${error}</b>`);
   } else {
