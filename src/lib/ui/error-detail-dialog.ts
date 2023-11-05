@@ -41,6 +41,15 @@ function e(s: string | null): string | null {
   return GLib.markup_escape_text(s, -1);
 }
 
+const formatStacktrace = (stack: string | undefined): string => {
+  return (
+    stack
+      ?.split("\n")
+      .map((l) => `  <i><small>${e(l)}</small></i>`)
+      .join("\n") ?? `  <i><small>no stacktrace</small></i>`
+  );
+};
+
 /**
  * Format a single error as pango markup.
  *
@@ -51,17 +60,11 @@ function e(s: string | null): string | null {
  */
 const formatOneError = (error: unknown): string => {
   if (error instanceof Error) {
-    const indent = "  ";
-    const stack =
-      error.stack
-        ?.split("\n")
-        .map((l) => `${indent}<i><small>${e(l)}</small></i>`)
-        .join("\n") ?? `${indent}<i><small>no stacktrace</small></i>`;
+    const stack = formatStacktrace(error.stack);
     return `<b>${e(error.name)}: ${e(error.message)}</b>\n${stack}`;
   } else if (error instanceof GLib.Error) {
-    // TODO: How to get the stacktrace for a GLib error?
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    return `<b>${e(`${error}`)}</b>`;
+    const stack = formatStacktrace(error.stack);
+    return `<b>${error.toString()})}</b>\n${stack}`;
   } else if (typeof error === "string") {
     return e(`<b>${error}</b>`);
   } else {
