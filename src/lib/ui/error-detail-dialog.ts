@@ -76,10 +76,12 @@ const formatOneError = (error: unknown): string => {
 /**
  * Build a complete error message for error, including all nested causes.
  */
-const buildErrorMessage = (error: unknown): string =>
-  [formatOneError(error), ...unfoldCauses(error).map(formatOneError)].join(
-    "\n",
+const buildErrorMessage = (error: unknown): string => {
+  const causes = unfoldCauses(error).map(
+    (cause) => `Caused by: ${formatOneError(cause)}`,
   );
+  return [`Error: ${formatOneError(error)}`, ...causes].join("\n");
+};
 
 /**
  * A dialog to show details of an error.
