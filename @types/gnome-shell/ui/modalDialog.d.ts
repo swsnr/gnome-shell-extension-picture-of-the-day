@@ -34,13 +34,6 @@ export declare enum State {
   FADED_OUT = 4,
 }
 
-export interface DialogButtonInfo {
-  readonly label: string;
-  readonly action: () => void;
-  readonly isDefault?: boolean;
-  readonly key?: number;
-}
-
 export interface ModalDialogParams {
   readonly shellReactive?: boolean;
   readonly styleClass?: string | null;
