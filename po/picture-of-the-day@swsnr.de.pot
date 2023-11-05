@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-03 09:06+0100\n"
+"POT-Creation-Date: 2023-11-05 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,17 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: src/lib/sources/apod.ts:62
-#, javascript-format
-msgid "Media type not supported: %s"
-msgstr ""
-
-#: src/lib/sources/apod.ts:168
-msgid ""
-"Please configure an API key for the NASA Astronomy Picture of the Day in the "
-"extension settings."
-msgstr ""
 
 #: src/lib/ui/indicator.ts:116
 #, javascript-format
@@ -42,7 +31,7 @@ msgid "Open image folder"
 msgstr ""
 
 #: src/lib/ui/indicator.ts:206
-msgid "Settings"
+msgid "Preferences"
 msgstr ""
 
 #: src/lib/ui/indicator.ts:225
@@ -53,16 +42,140 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
+#: src/lib/ui/notifications.ts:40
+msgid "Picture of the Day"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:122
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:144
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:153
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:162
+msgctxt "Error Dialog"
+msgid "Close"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:66
+msgctxt "Error notification"
+msgid "Picture of the Day needs an API key"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:69
+msgctxt "Error notification"
+msgid ""
+"Please configure a valid API key for the configured source in the extensions "
+"settings."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:73
+#: src/lib/services/refresh-error-handler.ts:90
+msgctxt "Error notification"
+msgid "Open preferences"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:82
+msgctxt "Error notification"
+msgid "Picture of the Day has some invalid configuration"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:86
+msgctxt "Error notification"
+msgid "Please correct the invalid configuration in the extension settings."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:98
+msgctxt "Error notification"
+msgid "Picture of the Day failed to fetch today's picture."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:107
+msgctxt "Error notification"
+msgid ""
+"The system seems to have limited network connectivity. Try to connect to the "
+"internet. If the error persists, try again later."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:111
+msgctxt "Error notification"
+msgid "Open network settings"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:119
+msgctxt "Error notification"
+msgid ""
+"The server for the configured source seems to have issues. Try to configure "
+"a different image source or try again later."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:125
+msgctxt "Error notification"
+msgid "No image today"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:128
+#, javascript-format
+msgctxt "Error notification"
+msgid ""
+"%s is not an image, and cannot be used as background. You can perhaps view "
+"it directly on the website."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:133
+msgctxt "Error notification"
+msgid "Open website"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:145
+#, javascript-format
+msgctxt "Error notification"
+msgid ""
+"An I/O error occurred while fetching today's image, with this message %s. "
+"Check your network connection and the permissions in the download folder."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:154
+msgctxt "Error notification"
+msgid "Image could not be downloaded"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:177
+msgctxt "Error notification"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:180
+msgctxt "Error notification"
+msgid "We are sorry but there seems to be an error."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:184
+msgid "Details"
+msgstr ""
+
 #: ui/AboutPage.blp:5
 msgid "About"
 msgstr ""
 
-#: ui/AboutPage.blp:36
+#: ui/AboutPage.blp:47
 msgctxt "about link"
 msgid "Github"
 msgstr ""
 
-#: ui/AboutPage.blp:41
+#: ui/AboutPage.blp:52
 msgctxt "about link"
 msgid "Issue tracker"
 msgstr ""
