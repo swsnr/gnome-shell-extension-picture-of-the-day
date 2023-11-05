@@ -79,7 +79,7 @@ class EnabledExtension {
     // Now wire up all the signals between the services and the UI.
 
     // React on user actions on the indicator
-    this.indicator.connect("activated::settings", () => {
+    this.indicator.connect("activated::preferences", () => {
       extension.openPreferences();
     });
     this.indicator.connect("activated::refresh", () => {

@@ -104,7 +104,7 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
       ) {
         description = pgettext(
           "Error notification",
-          "The system seems to have limited network connectivity.  Try to connect to the internet. " +
+          "The system seems to have limited network connectivity. Try to connect to the internet. " +
             "If the error persists, try again later.",
         );
         notification.addAction(
@@ -116,7 +116,7 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
       } else {
         description = pgettext(
           "Error notification",
-          "The server for the configured source seems to have issues.  Try to configure a different image source or try again later.",
+          "The server for the configured source seems to have issues. Try to configure a different image source or try again later.",
         );
       }
       notification.update(title, description);
@@ -125,7 +125,7 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
         pgettext("Error notification", "No image today"),
         pgettext(
           "Error notification",
-          "%s is not an image, and cannot be used as background.  You can perhaps view it directly on the website.",
+          "%s is not an image, and cannot be used as background. You can perhaps view it directly on the website.",
         ),
       );
       if (error.metadata.url) {
@@ -142,7 +142,7 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
     } else if (error instanceof IOError) {
       const description = pgettext(
         "Error notification",
-        "An I/O error occurred while fetching today's image, with this message %s.  Check your network connection and the permissions in the download folder.",
+        "An I/O error occurred while fetching today's image, with this message %s. Check your network connection and the permissions in the download folder.",
       );
       // If the inner error is a GLib error use its message instead of the wrapper message for better accuracy
       // and locatization.

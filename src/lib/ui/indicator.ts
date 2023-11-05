@@ -203,8 +203,8 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       });
 
       const generalItems = new PopupMenuSection();
-      generalItems.addAction(_("Settings"), () => {
-        this.emit("activated::settings");
+      generalItems.addAction(_("Preferences"), () => {
+        this.emit("activated::preferences");
       });
 
       for (const section of [
