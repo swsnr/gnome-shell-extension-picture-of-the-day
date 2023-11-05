@@ -41,7 +41,7 @@ export declare enum NotificationDestroyedReason {
   REPLACED = 4,
 }
 
-export declare class NotificationPolicy extends GObject.GObject {
+export declare class NotificationPolicy extends GObject.Object {
   readonly enable: boolean;
   readonly enableSound: boolean;
   readonly showBanners: boolean;
