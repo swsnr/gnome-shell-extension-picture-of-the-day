@@ -36,6 +36,7 @@ import {
   ConfigurationError,
   InvalidAPIKeyError,
   NotAnImageError,
+  RateLimitedError,
 } from "../source/errors.js";
 import { HttpRequestError } from "../network/http.js";
 import { IOError } from "../util/gio.js";
@@ -74,6 +75,15 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
         () => {
           this.openPreferences();
         },
+      );
+    } else if (error instanceof RateLimitedError) {
+      notification.update(
+        pgettext("Error notification", "Picutre of the Day was rate-limited"),
+        pgettext(
+          "Error notification",
+          "The server for the configured source is rate-limited and does not permit to fetch an image currently. " +
+            "Try again later, or try a different image source.",
+        ),
       );
     } else if (error instanceof ConfigurationError) {
       notification.update(

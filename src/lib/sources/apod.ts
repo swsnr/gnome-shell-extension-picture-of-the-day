@@ -29,7 +29,11 @@ import {
   ImageMetadata,
   Source,
 } from "../source.js";
-import { NotAnImageError, InvalidAPIKeyError } from "../source/errors.js";
+import {
+  NotAnImageError,
+  InvalidAPIKeyError,
+  RateLimitedError,
+} from "../source/errors.js";
 import { QueryList, encodeQuery } from "../network/uri.js";
 import {
   HttpRequestError,
@@ -139,10 +143,19 @@ const queryMetadata = async (
         body = undefined;
       }
       if (body && isApodErrorBody(body)) {
-        // TODO: Inspect code and map to more precise errors
-        throw new ApodError(body.error.code, body.error.message, {
+        const apodError = new ApodError(body.error.code, body.error.message, {
           cause: error,
         });
+        switch (body.error.code) {
+          case "API_KEY_INVALID":
+            throw new InvalidAPIKeyError(metadata, { cause: apodError });
+          case "OVER_RATE_LIMIT":
+            throw new RateLimitedError("Request rejected due to rate limit", {
+              cause: apodError,
+            });
+          default:
+            throw apodError;
+        }
       } else {
         throw error;
       }

@@ -59,3 +59,8 @@ export class NotAnImageError extends Error {
     super(`Media type not supported: %s`, options);
   }
 }
+
+/**
+ * The provider of today's image has rate limited the current client.
+ */
+export class RateLimitedError extends Error {}
