@@ -123,9 +123,12 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
     } else if (error instanceof NotAnImageError) {
       notification.update(
         pgettext("Error notification", "No image today"),
-        pgettext(
-          "Error notification",
-          "%s is not an image, and cannot be used as background. You can perhaps view it directly on the website.",
+        vprintf(
+          pgettext(
+            "Error notification",
+            "%s is not an image, and cannot be used as background. You can perhaps view it directly on the website.",
+          ),
+          [error.metadata.title],
         ),
       );
       if (error.metadata.url) {
