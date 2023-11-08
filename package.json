@@ -1,6 +1,6 @@
 {
   "name": "gnome-shell-extension-picture-of-the-day",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Get the picture of the day from various sources as your wallpaper",
   "repository": {
     "type": "git",
