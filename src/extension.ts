@@ -90,6 +90,9 @@ class EnabledExtension {
     });
 
     // Make everyone react on a new picture of the day
+    this.refreshService.connect("state-changed", (_, state): undefined => {
+      this.indicator.updateRefreshState(state);
+    });
     this.refreshService.connect("image-changed", (_, image): undefined => {
       this.indicator.showImageMetadata(image);
       this.imageMetadataStore.storedMetadataForImage(image);
