@@ -38,6 +38,7 @@ import { QueryList, encodeQuery } from "../network/uri.js";
 import {
   HttpRequestError,
   HttpStatusError,
+  createSession,
   downloadToFile,
   getJSON,
 } from "../network/http.js";
@@ -177,10 +178,7 @@ const createDownloader: DownloadImageFactory = (
   settings: Gio.Settings,
   directories: DownloadDirectories,
 ) => {
-  const version = extensionMetadata["version-name"] ?? "n/a";
-  const session = new Soup.Session({
-    user_agent: `${extensionMetadata.uuid}/${version} GNOME Shell extension`,
-  });
+  const session = createSession(extensionMetadata);
 
   return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
     const apiKey = settings.get_string("api-key");

@@ -17,12 +17,12 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import APOD from "./sources/apod.js";
-import EOPOD from "./sources/eopod.js";
+import { SourceMetadata } from "../../source/metadata.js";
 
-/**
- * All registered sources.
- */
-export const sources = [APOD, EOPOD];
+const metadata: SourceMetadata = {
+  key: "eopod",
+  name: "Earth Observatory Image of the Day",
+  website: "https://earthobservatory.nasa.gov/topic/image-of-the-day",
+};
 
-export default sources;
+export default metadata;

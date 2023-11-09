@@ -22,6 +22,17 @@ import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 import { IOError } from "../util/gio.js";
 
+import type { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
+
+export const createSession = (
+  extensionMetadata: ExtensionMetadata,
+): Soup.Session => {
+  const version = extensionMetadata["version-name"] ?? "n/a";
+  return new Soup.Session({
+    user_agent: `${extensionMetadata.uuid}/${version} GNOME Shell extension`,
+  });
+};
+
 /**
  * A non-200 status code.
  */
