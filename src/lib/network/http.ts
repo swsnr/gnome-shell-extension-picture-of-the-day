@@ -57,18 +57,18 @@ export class HttpRequestError extends Error {
 }
 
 /**
- * Make a request and read a JSON response.
+ * Make a request and read a string response.
  *
  * @param session The HTTP session to use
  * @param url The URL to request from
  * @param cancellable A handle to cancel the IO operation
- * @returns The deserialized JSON data
+ * @returns The returned string
  */
-export const getJSON = async (
+export const getString = async (
   session: Soup.Session,
   url: string,
   cancellable: Gio.Cancellable,
-): Promise<unknown> => {
+): Promise<string> => {
   const message = Soup.Message.new("GET", url);
   const response = await session
     .send_and_read_async(message, 0, cancellable)
@@ -85,9 +85,9 @@ export const getJSON = async (
           `Response with status code ${message.get_status()} contained no data`,
         );
       }
-      return JSON.parse(new TextDecoder().decode(data)) as unknown;
+      return new TextDecoder().decode(data);
     } catch (cause) {
-      throw new HttpRequestError(url, `Failed to parse data from ${url}`, {
+      throw new HttpRequestError(url, `Failed to decode data from ${url}`, {
         cause,
       });
     }
@@ -102,6 +102,29 @@ export const getJSON = async (
         ),
       },
     );
+  }
+};
+
+/**
+ * Make a request and read a JSON response.
+ *
+ * @param session The HTTP session to use
+ * @param url The URL to request from
+ * @param cancellable A handle to cancel the IO operation
+ * @returns The deserialized JSON data
+ */
+export const getJSON = async (
+  session: Soup.Session,
+  url: string,
+  cancellable: Gio.Cancellable,
+): Promise<unknown> => {
+  const data = await getString(session, url, cancellable);
+  try {
+    return JSON.parse(data) as unknown;
+  } catch (cause) {
+    throw new HttpRequestError(url, `Failed to parse data from ${url}`, {
+      cause,
+    });
   }
 };
 
