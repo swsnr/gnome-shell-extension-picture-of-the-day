@@ -76,7 +76,7 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
       );
     } else if (error instanceof RateLimitedError) {
       notification.update(
-        pgettext("Error notification", "Picutre of the Day was rate-limited"),
+        pgettext("Error notification", "Picture of the Day was rate-limited"),
         pgettext(
           "Error notification",
           "The server for the configured source is rate-limited and does not permit to fetch an image currently. " +
