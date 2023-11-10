@@ -49,6 +49,7 @@ install-package: dist
 	mv -T --no-clobber \
 		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/schemas \
 		$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas
+	rm -f $(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/gschemas.compiled
 	mv -T --no-clobber \
 		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/locale \
 		$(DESTDIR)/$(PREFIX)/share/locale
