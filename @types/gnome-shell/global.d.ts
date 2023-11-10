@@ -17,17 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-/**
- * Dynamically format `args` into `s`, for i18n purposes.
- *
- * Isolate the sorry state of dynamic string formatting in Gjs (Format all out deprecated,
- * flagged in reviews, no actual replacement in sight) into a single function,
- * so that we hopefully only need to change a single place to change should GJs
- * ever figure out how they'd like to have this done.
- */
-export const format = (s: string, ...args: unknown[]): string =>
-  s.format(...args);
-
-export default {
-  format,
-};
+interface String {
+  // GNOME Shell pollutes the String prototype with its own format function
+  format(...args: unknown[]): string;
+}

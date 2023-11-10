@@ -35,7 +35,9 @@
     // Include GJS global environment types
     "@types/gir-generated/ambient.d.ts",
     "@types/gir-generated/gjs.d.ts",
-    "@types/gir-generated/dom.d.ts"
+    "@types/gir-generated/dom.d.ts",
+    // Include GNOME Shell globals
+    "@types/gnome-shell/global.d.ts"
   ],
   "exclude": [".ts-for-girrc.js", ".eslintrc.cjs"]
 }
