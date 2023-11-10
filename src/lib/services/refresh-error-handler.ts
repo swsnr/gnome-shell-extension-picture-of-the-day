@@ -40,9 +40,7 @@ import {
 } from "../source/errors.js";
 import { HttpRequestError } from "../network/http.js";
 import { IOError } from "../util/gio.js";
-
-// eslint-disable-next-line no-restricted-properties
-const vprintf = imports.format.vprintf;
+import i18n from "../util/i18n.js";
 
 export interface RefreshErrorHandlerSignals {
   readonly "action::open-preferences": [];
@@ -133,12 +131,12 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
     } else if (error instanceof NotAnImageError) {
       notification.update(
         pgettext("Error notification", "No image today"),
-        vprintf(
+        i18n.format(
           pgettext(
             "Error notification",
             "%s is not an image, and cannot be used as background. You can perhaps view it directly on the website.",
           ),
-          [error.metadata.title],
+          error.metadata.title,
         ),
       );
       if (error.metadata.url) {
@@ -165,7 +163,7 @@ export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals
           : error.message) ?? "";
       notification.update(
         pgettext("Error notification", "Image could not be downloaded"),
-        vprintf(description, [errorMessage]),
+        i18n.format(description, errorMessage),
       );
     }
   }
