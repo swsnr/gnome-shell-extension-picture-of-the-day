@@ -3,7 +3,7 @@
   "uuid": "picture-of-the-day@swsnr.de",
   "description": "Get a picture of the day as desktop background.\n\nSupports the following sources:\n\n* NASA Astronomy Picture of the Day",
   "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day",
-  "version-name": "0.2",
+  "version-name": "0.2.1",
   "shell-version": ["45"],
   "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day",
   "gettext-domain": "picture-of-the-day@swsnr.de",
