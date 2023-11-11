@@ -45,7 +45,7 @@ interface BingImage {
   readonly copyright: string;
   readonly coprightlink: string;
   readonly startdate: string;
-  readonly url: string;
+  readonly urlbase: string;
 }
 
 interface BingResponse {
@@ -84,15 +84,16 @@ export const getTodaysImage = async (
     });
   }
   const image = response.images[0];
+  const urlbaseUHD = `${image.urlbase}_UHD.jpg`;
   const imageUrl = GLib.uri_resolve_relative(
     "https://www.bing.com",
-    image.url,
+    urlbaseUHD,
     GLib.UriFlags.NONE,
   );
   if (imageUrl === null) {
     throw new HttpRequestError(
       url,
-      `Failed to join ${image.url} to https://www.bing.com`,
+      `Failed to join ${urlbaseUHD} to https://www.bing.com`,
     );
   }
   const startdate = image.startdate;
