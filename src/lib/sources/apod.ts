@@ -27,7 +27,6 @@ import {
   DownloadImage,
   DownloadImageFactoryWithSettings,
   ImageFile,
-  ImageMetadata,
   Source,
 } from "../source.js";
 import {
@@ -40,10 +39,10 @@ import {
   HttpRequestError,
   HttpStatusError,
   createSession,
-  downloadToFile,
   getJSON,
 } from "../network/http.js";
 import metadata from "./metadata/apod.js";
+import { DownloadableImage, downloadImage } from "../util/download.js";
 
 /**
  * The APOD API did not return any body data.
@@ -190,34 +189,30 @@ export const downloadFactory: DownloadImageFactoryWithSettings = {
       );
       const urlDate = apodImageMetadata.date.replaceAll("-", "").slice(2);
       const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
-      const imageMetadata: ImageMetadata = {
-        title: apodImageMetadata.title,
-        description: apodImageMetadata.explanation,
-        url,
-        copyright: apodImageMetadata.copyright ?? null,
+      const downloadableImage: DownloadableImage = {
+        imageUrl: apodImageMetadata.hdurl ?? apodImageMetadata.url,
+        pubdate: apodImageMetadata.date,
+        metadata: {
+          title: apodImageMetadata.title,
+          description: apodImageMetadata.explanation,
+          url,
+          copyright: apodImageMetadata.copyright ?? null,
+        },
       };
+
       if (apodImageMetadata.media_type !== "image") {
-        throw new NotAnImageError(imageMetadata, apodImageMetadata.media_type);
+        throw new NotAnImageError(
+          downloadableImage.metadata,
+          apodImageMetadata.media_type,
+        );
       }
 
-      const imageUrl = apodImageMetadata.hdurl ?? apodImageMetadata.url;
-      const urlBasename = imageUrl.split("/").reverse()[0];
-      const filename =
-        urlBasename && 0 < urlBasename.length
-          ? urlBasename
-          : apodImageMetadata.title.replaceAll(/\/|\n/, "_");
-      const targetFile = directories.imageDirectory.get_child(
-        `${apodImageMetadata.date}-${filename}`,
+      return downloadImage(
+        session,
+        directories,
+        cancellable,
+        downloadableImage,
       );
-      console.log(
-        `Downloading APOD image from ${imageUrl} to ${targetFile.get_path()}`,
-      );
-      await downloadToFile(session, imageUrl, targetFile, cancellable);
-
-      return {
-        file: targetFile,
-        metadata: imageMetadata,
-      };
     };
   },
 };

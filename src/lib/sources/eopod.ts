@@ -22,22 +22,17 @@ import Soup from "gi://Soup";
 
 import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import {
-  HttpRequestError,
-  createSession,
-  downloadToFile,
-  getString,
-} from "../network/http.js";
+import { HttpRequestError, createSession, getString } from "../network/http.js";
 import * as dom from "../util/simpledom.js";
 import {
   DownloadDirectories,
   DownloadImage,
   ImageFile,
-  ImageMetadata,
   SimpleDownloadImageFactory,
   Source,
 } from "../source.js";
 import metadata from "./metadata/eopod.js";
+import { DownloadableImage, downloadImage } from "../util/download.js";
 
 const findImgs = (nodes: readonly dom.Node[]): readonly dom.Element[] => {
   const elements = nodes.filter(dom.isElement);
@@ -46,16 +41,10 @@ const findImgs = (nodes: readonly dom.Node[]): readonly dom.Element[] => {
     .concat(elements.flatMap((e) => findImgs(e.children)));
 };
 
-interface EpodImage {
-  readonly metadata: ImageMetadata;
-  readonly imageUrl: string;
-  readonly pubdate: string;
-}
-
 const getLatestImage = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
-): Promise<EpodImage> => {
+): Promise<DownloadableImage> => {
   const url = "https://earthobservatory.nasa.gov/feeds/image-of-the-day.rss";
   console.log(`Requesting EOPOD feed from ${url}`);
   const rss = await getString(session, url, cancellable);
@@ -125,25 +114,7 @@ export const downloadFactory: SimpleDownloadImageFactory = {
 
     return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
       const image = await getLatestImage(session, cancellable);
-      const urlBasename = image.imageUrl.split("/").reverse()[0];
-      const filename =
-        urlBasename && 0 < urlBasename.length
-          ? urlBasename
-          : image.metadata.title.replaceAll(/\/|\n/, "_");
-      const targetFile = directories.imageDirectory.get_child(
-        `${image.pubdate}-${filename}`,
-      );
-      console.log(
-        `Downloading EOPOD image from ${
-          image.imageUrl
-        } to ${targetFile.get_path()}`,
-      );
-      await downloadToFile(session, image.imageUrl, targetFile, cancellable);
-
-      return {
-        file: targetFile,
-        metadata: image.metadata,
-      };
+      return downloadImage(session, directories, cancellable, image);
     };
   },
 };

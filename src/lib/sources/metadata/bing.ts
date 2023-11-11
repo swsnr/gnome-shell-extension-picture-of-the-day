@@ -17,13 +17,12 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import APOD from "./apod.js";
-import EOPOD from "./eopod.js";
-import Bing from "./bing.js";
+import { SourceMetadata } from "../../source/metadata.js";
 
-/**
- * All registered sources.
- */
-export const sources = [APOD, EOPOD, Bing];
+const metadata: SourceMetadata = {
+  key: "bing",
+  name: "Bing",
+  website: "https://bing.com",
+};
 
-export default sources;
+export default metadata;
