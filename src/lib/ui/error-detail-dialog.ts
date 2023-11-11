@@ -153,7 +153,6 @@ export const ErrorDetailDialog = GObject.registerClass(
         label: pgettext("ErrorDetailDialog", "Copy to clipboard"),
         action: () => {
           const text = this.messageLabel.get_text();
-          console.log("CLIPBOARD", text);
           const clipboard = St.Clipboard.get_default();
           clipboard.set_text(St.ClipboardType.CLIPBOARD, text);
         },
