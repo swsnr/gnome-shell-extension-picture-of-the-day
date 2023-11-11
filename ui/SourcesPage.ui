@@ -13,9 +13,6 @@
             <child type="suffix">
               <object class="GtkDropDown" id="sourcesBox">
                 <property name="model" bind-source="SourcesPage" bind-property="sources" bind-flags="sync-create"/>
-                <style>
-                  <class name="flat"/>
-                </style>
               </object>
             </child>
           </object>
