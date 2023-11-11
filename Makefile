@@ -7,7 +7,7 @@ XGETTEXT_METADATA = \
 	--package-name=$(UUID) \
 	--copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>"
 
-DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2 icons/
+DIST-EXTRA-SRC = README.md LICENSE-GPL2 LICENSE-MPL2 icons/
 BLUEPRINTS = $(wildcard ui/*.blp)
 UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 CATALOGS = $(wildcard po/*.po)
@@ -19,7 +19,6 @@ dist: compile
 	cp -t ./build/ui $(UIDEFS)
 	cp -t ./build/lib/vendor/saxes ./src/lib/vendor/saxes/README.md
 	cp -t ./build/lib/vendor/xmlchars ./src/lib/vendor/xmlchars/README.md
-	cp -t ./build/ README.md
 	gnome-extensions pack --force --out-dir dist build \
 		--podir=../po --extra-source=../metadata.json \
 		--extra-source=ui --extra-source=lib \
