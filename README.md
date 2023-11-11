@@ -13,6 +13,7 @@ Use a picture of the day from various sources as GNOME desktop background.
 ## Supported sources
 
 - [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html)
+- [NASA Earth Observatory Image of the Day](https://earthobservatory.nasa.gov/topic/image-of-the-day)
 - [More to come](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/issues/2)
 
 ## Install
