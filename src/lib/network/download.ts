@@ -61,8 +61,10 @@ export class DownloadScheduler {
     if (this.currentDownload === null) {
       return Promise.resolve();
     } else {
+      console.log("Cancelling ongoing download");
       return this.currentDownload.promise
         .finally(() => {
+          console.log("Ongoing download cancelled");
           this.currentDownload = null;
         })
         .then(() => {
@@ -93,6 +95,7 @@ export class DownloadScheduler {
     if (this.currentDownload) {
       return this.currentDownload.promise;
     } else {
+      console.log("Starting image download");
       return this.doDownload(download);
     }
   }

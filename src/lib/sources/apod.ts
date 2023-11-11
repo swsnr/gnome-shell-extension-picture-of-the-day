@@ -188,6 +188,7 @@ const createDownloader: DownloadImageFactory = (
       throw new InvalidAPIKeyError(metadata);
     }
 
+    console.log("Querying APOD image metadata");
     const apodImageMetadata = await queryMetadata(session, apiKey, cancellable);
     const urlDate = apodImageMetadata.date.replaceAll("-", "").slice(2);
     const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
@@ -209,6 +210,9 @@ const createDownloader: DownloadImageFactory = (
         : apodImageMetadata.title.replaceAll(/\/|\n/, "_");
     const targetFile = directories.imageDirectory.get_child(
       `${apodImageMetadata.date}-${filename}`,
+    );
+    console.log(
+      `Downloading APOD image from ${imageUrl} to ${targetFile.get_path()}`,
     );
     await downloadToFile(session, imageUrl, targetFile, cancellable);
 
