@@ -18,6 +18,7 @@
 // GNU General Public License for more details.
 
 import GObject from "gi://GObject";
+import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Gtk from "gi://Gtk";
 import Adw from "gi://Adw";
@@ -48,20 +49,50 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.`;
 
-const getTemplateUri = (templateDirectory: Gio.File, name: string): string => {
-  const template = templateDirectory.get_child(`${name}.ui`).get_uri();
-  if (template === null) {
-    throw new Error(
-      `Failed to get URI for template ${name}.ui in ${templateDirectory.get_path()}`,
-    );
+const getTemplate = (name: string): string => {
+  const uri = GLib.uri_resolve_relative(
+    import.meta.url,
+    `ui/${name}.ui`,
+    GLib.UriFlags.NONE,
+  );
+  if (uri === null) {
+    throw new Error(`Failed to resolve URI for template ${name}!`);
   }
-  return template;
+  return uri;
 };
+
+interface AllSettings {
+  readonly extension: Gio.Settings;
+  readonly sourceAPOD: Gio.Settings;
+}
 
 interface SourcesPageChildren {
   readonly _apodGroup: Adw.PreferencesGroup;
   readonly _apodApiKey: Adw.EntryRow;
 }
+
+const SourcesPage = GObject.registerClass(
+  {
+    GTypeName: "SourcesPage",
+    Template: getTemplate("SourcesPage"),
+    InternalChildren: ["apodGroup", "apodApiKey"],
+  },
+  class SourcesPage extends Adw.PreferencesPage {
+    constructor(settings: AllSettings) {
+      super();
+
+      const children = this as unknown as SourcesPageChildren;
+      children._apodGroup.title = apod.name;
+      children._apodGroup.description = `<a href="${apod.website}">${apod.website}</a>`;
+      settings.sourceAPOD.bind(
+        "api-key",
+        children._apodApiKey,
+        "text",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
+    }
+  },
+);
 
 interface AboutPageChildren {
   readonly _extensionName: Gtk.Label;
@@ -72,89 +103,43 @@ interface AboutPageChildren {
   readonly _extensionLicense: Gtk.TextView;
 }
 
+const AboutPage = GObject.registerClass(
+  {
+    GTypeName: "AboutPage",
+    Template: getTemplate("AboutPage"),
+    InternalChildren: [
+      "extensionName",
+      "extensionVersion",
+      "extensionDescription",
+      "linkGithub",
+      "linkIssues",
+      "extensionLicense",
+    ],
+  },
+  class AboutPage extends Adw.PreferencesPage {
+    constructor(metadata: ExtensionMetadata) {
+      super();
+
+      const children = this as unknown as AboutPageChildren;
+      children._extensionName.set_text(metadata.name);
+      if (metadata["version-name"]) {
+        children._extensionVersion.set_text(metadata["version-name"]);
+      } else {
+        children._extensionVersion.visible = false;
+      }
+      children._extensionDescription.set_text(metadata.description);
+      children._linkGithub.set_uri(metadata.url);
+      children._linkIssues.set_uri(`${metadata.url}/issues`);
+      children._extensionLicense.buffer.set_text(LICENSE, -1);
+    }
+  },
+);
+
 interface WindowSettingRegistry {
-  _settings: Gio.Settings;
-  _sourceSettings: Map<string, Gio.Settings>;
+  _settings: AllSettings;
 }
 
 export default class PictureOfTheDayPreferences extends ExtensionPreferences {
-  /**
-   * Load all pages.
-   *
-   * @param templateDirectory The directory for UI templates
-   * @param settings A registry for settings
-   * @returns All page classes
-   */
-  private loadPages(
-    templateDirectory: Gio.File,
-    settings: WindowSettingRegistry,
-  ) {
-    const getSettings = (schema: string): Gio.Settings =>
-      this.getSettings(schema);
-
-    const SourcesPage = GObject.registerClass(
-      {
-        GTypeName: "SourcesPage",
-        Template: getTemplateUri(templateDirectory, "SourcesPage"),
-        InternalChildren: ["apodGroup", "apodApiKey"],
-      },
-      class SourcesPage extends Adw.PreferencesPage {
-        constructor() {
-          super();
-
-          const apodSettings = getSettings(
-            `${settings._settings.schema_id}.source.${apod.key}`,
-          );
-
-          const children = this as unknown as SourcesPageChildren;
-          children._apodGroup.title = apod.name;
-          children._apodGroup.description = `<a href="${apod.website}">${apod.website}</a>`;
-          apodSettings.bind(
-            "api-key",
-            children._apodApiKey,
-            "text",
-            Gio.SettingsBindFlags.DEFAULT,
-          );
-        }
-      },
-    );
-
-    const AboutPage = GObject.registerClass(
-      {
-        GTypeName: "AboutPage",
-        Template: getTemplateUri(templateDirectory, "AboutPage"),
-        InternalChildren: [
-          "extensionName",
-          "extensionVersion",
-          "extensionDescription",
-          "linkGithub",
-          "linkIssues",
-          "extensionLicense",
-        ],
-      },
-      class AboutPage extends Adw.PreferencesPage {
-        constructor(metadata: ExtensionMetadata) {
-          super();
-
-          // TODO: Find a better way to declare that an instance has a set of props
-          const children = this as unknown as AboutPageChildren;
-          children._extensionName.set_text(metadata.name);
-          if (metadata["version-name"]) {
-            children._extensionVersion.set_text(metadata["version-name"]);
-          } else {
-            children._extensionVersion.visible = false;
-          }
-          children._extensionDescription.set_text(metadata.description);
-          children._linkGithub.set_uri(metadata.url);
-          children._linkIssues.set_uri(`${metadata.url}/issues`);
-          children._extensionLicense.buffer.set_text(LICENSE, -1);
-        }
-      },
-    );
-
-    return { AboutPage, SourcesPage };
-  }
-
   override fillPreferencesWindow(
     window: Adw.PreferencesWindow & WindowSettingRegistry,
   ): void {
@@ -167,14 +152,20 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
     }
     iconTheme.add_search_path(iconsDirectory);
 
-    // Attach our settings to the window to keep them alive as long as the window lives
-    window._settings = this.getSettings();
-    window._sourceSettings = new Map();
+    // Load relevant settings
+    const extensionSettings = this.getSettings();
+    const allSettings: AllSettings = {
+      extension: extensionSettings,
+      sourceAPOD: this.getSettings(
+        `${extensionSettings.schema_id}.source.${apod.key}`,
+      ),
+    };
 
-    // Load pages from templates and add them to the window.
-    const uiDir = this.metadata.dir.get_child("ui");
-    const Pages = this.loadPages(uiDir, window);
-    window.add(new Pages.SourcesPage());
-    window.add(new Pages.AboutPage(this.metadata));
+    // Add pages to the window.
+    window.add(new SourcesPage(allSettings));
+    window.add(new AboutPage(this.metadata));
+
+    // Attach our settings to the window to keep them alive as long as the window lives
+    window._settings = allSettings;
   }
 }
