@@ -17,6 +17,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+import GLib from "gi://GLib";
+
 /**
  * The type of a query as list of pairs.
  */
@@ -34,4 +36,30 @@ export const encodeQuery = (query: QueryList): string => {
     parts.push(`${key}=${encodeURIComponent(value)}`);
   }
   return parts.join("&");
+};
+
+export class UriError extends Error {}
+
+/**
+ * Decode the query string of an URL.
+ *
+ * @param url The URL whose query parameters to parse
+ * @returns The query parameters
+ */
+export const decodeQuery = (url: string): Record<string, string> => {
+  try {
+    const query = GLib.Uri.parse(url, GLib.UriFlags.NONE).get_query();
+    if (!query) {
+      return {};
+    } else {
+      return GLib.Uri.parse_params(
+        query,
+        -1,
+        "&",
+        GLib.UriParamsFlags.WWW_FORM,
+      ) as Record<string, string>;
+    }
+  } catch (cause) {
+    throw new UriError(`Failed to parse query out of ${url}`, { cause });
+  }
 };
