@@ -1,7 +1,7 @@
 {
   "name": "Picture of the Day",
   "uuid": "picture-of-the-day@swsnr.de",
-  "description": "Get a picture of the day as desktop background.\n\nSupports the following sources:\n\n* NASA Astronomy Picture of the Day (APOD) from https://apod.nasa.gov/apod/astropix.html\n* NASA Earth Observatory Image of the Day from https://earthobservatory.nasa.gov/topic/image-of-the-day",
+  "description": "Get a picture of the day as desktop background.\n\nSupports the following sources:\n\n* NASA Astronomy Picture of the Day (APOD) from https://apod.nasa.gov/apod/astropix.html\n* NASA Earth Observatory Image of the Day from https://earthobservatory.nasa.gov/topic/image-of-the-day\n* Bing from https://www.bing.com",
   "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day",
   "version-name": "0.3",
   "shell-version": ["45"],
