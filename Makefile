@@ -10,6 +10,7 @@ XGETTEXT_METADATA = \
 DIST-EXTRA-SRC = LICENSE-GPL2 LICENSE-MPL2 icons/
 BLUEPRINTS = $(wildcard ui/*.blp)
 UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
+CATALOGS = $(wildcard po/*.po)
 
 .PHONY: dist
 dist: compile
@@ -60,6 +61,7 @@ install-package: dist
 .PHONY: clean
 clean:
 	rm -rf dist build
+	rm -rf $(addsuffix .mo,$(basename $(CATALOGS)))
 
 .PHONY: compile
 compile: $(UIDEFS)
@@ -80,6 +82,9 @@ pot:
 		--join-existing --output=po/$(UUID).pot \
 		 --add-comments --keyword=_ --keyword=C_:1c,2 \
 		$(wildcard ui/*.blp)
+
+.PHONY: messages
+messages: $(CATALOGS)
 
 .PHONY: format
 format:
@@ -103,3 +108,6 @@ fix: format
 
 $(UIDEFS): %.ui: %.blp
 	blueprint-compiler compile --output $@ $<
+
+$(CATALOGS): %.po: pot
+	msgmerge --update --backup=none --lang=$(notdir $(basename $@)) $@ po/picture-of-the-day@swsnr.de.pot
