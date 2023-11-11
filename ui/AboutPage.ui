@@ -39,7 +39,7 @@
             <property name="margin-bottom">5</property>
             <child>
               <object class="GtkLabel" id="extensionDescription">
-                <property name="label">The description of this extension</property>
+                <property name="label" translatable="true">Get a picture of the day as desktop background.</property>
                 <property name="justify">2</property>
               </object>
             </child>

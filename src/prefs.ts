@@ -164,7 +164,6 @@ const AboutPage = GObject.registerClass(
     InternalChildren: [
       "extensionName",
       "extensionVersion",
-      "extensionDescription",
       "linkGithub",
       "linkIssues",
       "extensionLicense",
@@ -181,7 +180,6 @@ const AboutPage = GObject.registerClass(
       } else {
         children._extensionVersion.visible = false;
       }
-      children._extensionDescription.set_text(metadata.description);
       children._linkGithub.set_uri(metadata.url);
       children._linkIssues.set_uri(`${metadata.url}/issues`);
       children._extensionLicense.buffer.set_text(LICENSE, -1);
