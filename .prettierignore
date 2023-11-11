@@ -12,3 +12,6 @@
 # npm configuration and packages
 /package.json
 /node_modules/
+
+# Vendored code
+/src/lib/vendor/

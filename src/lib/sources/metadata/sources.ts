@@ -17,8 +17,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import APOD from "./sources/apod.js";
-import EOPOD from "./sources/eopod.js";
+import APOD from "./apod.js";
+import EOPOD from "./eopod.js";
 
 /**
  * All registered sources.

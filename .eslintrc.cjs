@@ -18,11 +18,15 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-shadow": "warn",
   },
-  // These are either generated or config files or no real typescript
   ignorePatterns: [
+    // Build outputs
     "/build/**/*",
     "/dist/**/*",
+    // NPM modules
     "/node_modules/**/*",
+    // Generated code
     "/@types/gir-generated/**/*",
+    // Vendored dependencies
+    "/src/lib/vendor/**",
   ],
 };

@@ -86,6 +86,8 @@ export class RefreshService extends EventEmitter<RefreshServiceSignals> {
         this.emit("state-changed", "failed");
         this.emit("refresh-failed", error);
       }
+    } else {
+      console.warn("No download function configured yet?");
     }
   }
 

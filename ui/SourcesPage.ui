@@ -6,6 +6,23 @@
     <property name="description" translatable="true">Configure sources for the Picture of the Day.</property>
     <property name="icon-name">picture-of-the-day-symbolic</property>
     <child>
+      <object class="AdwPreferencesGroup" id="general">
+        <child>
+          <object class="AdwActionRow" id="sourcesRow">
+            <property name="title" translatable="true">Source</property>
+            <child type="suffix">
+              <object class="GtkDropDown" id="sourcesBox">
+                <property name="model" bind-source="SourcesPage" bind-property="sources" bind-flags="sync-create"/>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="AdwPreferencesGroup" id="apodGroup">
         <child>
           <object class="AdwEntryRow" id="apodApiKey">

@@ -104,17 +104,45 @@ export interface DownloadDirectories {
 }
 
 /**
- * A factory for a download function.
- *
- * @param metadata Metadata about this extension, to use e.g. in User-Agent strings.
- * @param settings The settings for this source.
- * @param targetDirectory The target directory to download the image to.
+ * A simple download factory which requires no settings.
  */
-export type DownloadImageFactory = (
-  extensionMetadata: ExtensionMetadata,
-  settings: Gio.Settings,
-  directories: DownloadDirectories,
-) => DownloadImage;
+export interface SimpleDownloadImageFactory {
+  readonly type: "simple";
+  /**
+   * Create the download function.
+   *
+   * @param metadata The extension metadata
+   * @param directories The directories to use for downloading
+   * @returns The download function
+   */
+  readonly create: (
+    metadata: ExtensionMetadata,
+    directories: DownloadDirectories,
+  ) => DownloadImage;
+}
+
+/**
+ * A download factory which requires settings.
+ */
+export interface DownloadImageFactoryWithSettings {
+  readonly type: "needs_settings";
+  /**
+   * A factory for a download function.
+   *
+   * @param metadata Metadata about this extension, to use e.g. in User-Agent strings.
+   * @param settings Settings to create the download function with
+   * @param targetDirectory The target directory to download the image to.
+   */
+  readonly create: (
+    extensionMetadata: ExtensionMetadata,
+    settings: Gio.Settings,
+    directories: DownloadDirectories,
+  ) => DownloadImage;
+}
+
+export type DownloadImageFactory =
+  | SimpleDownloadImageFactory
+  | DownloadImageFactoryWithSettings;
 
 /**
  * An image source.
@@ -128,5 +156,5 @@ export interface Source {
   /**
    * Create a downloader for images of this source.
    */
-  readonly createDownloader: DownloadImageFactory;
+  readonly downloadFactory: DownloadImageFactory;
 }

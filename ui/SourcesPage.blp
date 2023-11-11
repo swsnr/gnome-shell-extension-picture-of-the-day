@@ -1,10 +1,28 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $SourcesPage : Adw.PreferencesPage {
+template $SourcesPage: Adw.PreferencesPage {
   title: _("Picture Sources");
   description: _("Configure sources for the Picture of the Day.");
   icon-name: "picture-of-the-day-symbolic";
+
+  Adw.PreferencesGroup general {
+    // We'd like to use a Adw.ComboRow here, but it apparently has a fixed width
+    // for display, which effectively ellipsizes the larger part of our source names,
+    // which I don't think is helpful :|
+    //
+    // Hence, we're doing our own poor man's combo row here, by placing a dropdown
+    // into an action row.
+    Adw.ActionRow sourcesRow {
+      title: _("Source");
+
+      [suffix]
+      Gtk.DropDown sourcesBox {
+        model: bind template.sources;
+        styles ["flat"]
+      }
+    }
+  }
 
   Adw.PreferencesGroup apodGroup {
     Adw.EntryRow apodApiKey {
