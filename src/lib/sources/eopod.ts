@@ -31,9 +31,10 @@ import {
 import * as dom from "../util/simpledom.js";
 import {
   DownloadDirectories,
-  DownloadImageFactory,
+  DownloadImage,
   ImageFile,
   ImageMetadata,
+  SimpleDownloadImageFactory,
   Source,
 } from "../source.js";
 import metadata from "./metadata/eopod.js";
@@ -114,35 +115,37 @@ const getLatestImage = async (
   }
 };
 
-const createDownloader: DownloadImageFactory = (
-  extensionMetadata: ExtensionMetadata,
-  _settings: Gio.Settings,
-  directories: DownloadDirectories,
-) => {
-  const session = createSession(extensionMetadata);
+export const downloadFactory: SimpleDownloadImageFactory = {
+  type: "simple",
+  create(
+    extensionMetadata: ExtensionMetadata,
+    directories: DownloadDirectories,
+  ): DownloadImage {
+    const session = createSession(extensionMetadata);
 
-  return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
-    const image = await getLatestImage(session, cancellable);
-    const urlBasename = image.imageUrl.split("/").reverse()[0];
-    const filename =
-      urlBasename && 0 < urlBasename.length
-        ? urlBasename
-        : image.metadata.title.replaceAll(/\/|\n/, "_");
-    const targetFile = directories.imageDirectory.get_child(
-      `${image.pubdate}-${filename}`,
-    );
+    return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
+      const image = await getLatestImage(session, cancellable);
+      const urlBasename = image.imageUrl.split("/").reverse()[0];
+      const filename =
+        urlBasename && 0 < urlBasename.length
+          ? urlBasename
+          : image.metadata.title.replaceAll(/\/|\n/, "_");
+      const targetFile = directories.imageDirectory.get_child(
+        `${image.pubdate}-${filename}`,
+      );
       console.log(
         `Downloading EOPOD image from ${
           image.imageUrl
         } to ${targetFile.get_path()}`,
       );
-    await downloadToFile(session, image.imageUrl, targetFile, cancellable);
+      await downloadToFile(session, image.imageUrl, targetFile, cancellable);
 
-    return {
-      file: targetFile,
-      metadata: image.metadata,
+      return {
+        file: targetFile,
+        metadata: image.metadata,
+      };
     };
-  };
+  },
 };
 
 /**
@@ -150,7 +153,7 @@ const createDownloader: DownloadImageFactory = (
  */
 export const source: Source = {
   metadata,
-  createDownloader,
+  downloadFactory,
 };
 
 export default source;

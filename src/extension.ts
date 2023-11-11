@@ -98,9 +98,11 @@ class EnabledExtension {
       }
     });
     this.signalsToDisconnect.push([this.settings, signalNo]);
-    this.sourceSelector = SourceSelector.forKey(
-      this.settings.get_string("source") ?? "apod",
-    );
+    const currentSource = this.settings.get_string("selected-source");
+    if (currentSource === null) {
+      throw new Error("Current source 'null'?");
+    }
+    this.sourceSelector = SourceSelector.forKey(currentSource);
     this.updateDownloader();
     this.sourceSelector.connect("source-changed", (): undefined => {
       this.updateDownloader();
@@ -113,6 +115,7 @@ class EnabledExtension {
       extension.openPreferences();
     });
     this.indicator.connect("activated::refresh", () => {
+      console.log("Refresh emitted");
       this.refreshService.startRefresh();
     });
     this.indicator.connect("activated::cancel-refresh", () => {
@@ -181,13 +184,11 @@ class EnabledExtension {
    * @param source The selected source
    * @returns A function to download images from the source
    */
+  // eslint-disable-next-line consistent-return
   private createDownloader(
     baseDirectories: DownloadDirectories,
     source: Source,
   ): DownloadImage {
-    const sourceSettings = this.extension.getSettings(
-      `${this.extension.getSettings().schema_id}.source.${source.metadata.key}`,
-    );
     const directories: DownloadDirectories = {
       stateDirectory: baseDirectories.stateDirectory.get_child(
         source.metadata.key,
@@ -201,11 +202,25 @@ class EnabledExtension {
       ),
     };
 
-    return source.createDownloader(
-      this.extension.metadata,
-      sourceSettings,
-      directories,
-    );
+    switch (source.downloadFactory.type) {
+      case "simple":
+        return source.downloadFactory.create(
+          this.extension.metadata,
+          directories,
+        );
+      case "needs_settings": {
+        const settings = this.extension.getSettings(
+          `${this.extension.getSettings().schema_id}.source.${
+            source.metadata.key
+          }`,
+        );
+        return source.downloadFactory.create(
+          this.extension.metadata,
+          settings,
+          directories,
+        );
+      }
+    }
   }
 
   destroy() {
