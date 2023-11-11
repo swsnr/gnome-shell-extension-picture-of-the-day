@@ -29,6 +29,17 @@ import {
 } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 import apod from "./lib/sources/metadata/apod.js";
+import SOURCES from "./lib/sources/metadata/sources.js";
+
+const getSourceIndexByKey = (key: string): number => {
+  const index = SOURCES.findIndex((s) => s.key === key);
+  if (0 <= index) {
+    return index;
+  } else {
+    console.warn(`Selected source ${key} not known, defaulting to APOD`);
+    return 0;
+  }
+};
 
 const LICENSE = `Copyright Sebastian Wiesner <sebastian@swsnr.de>
 
@@ -66,30 +77,73 @@ interface AllSettings {
   readonly sourceAPOD: Gio.Settings;
 }
 
-interface SourcesPageChildren {
+interface SourcesPageProperties {
+  readonly _sourcesBox: Gtk.DropDown;
   readonly _apodGroup: Adw.PreferencesGroup;
   readonly _apodApiKey: Adw.EntryRow;
+  sources: Gtk.StringList;
 }
 
 const SourcesPage = GObject.registerClass(
   {
     GTypeName: "SourcesPage",
     Template: getTemplate("SourcesPage"),
-    InternalChildren: ["apodGroup", "apodApiKey"],
+    InternalChildren: ["apodGroup", "apodApiKey", "sourcesBox"],
+    Properties: {
+      sources: GObject.ParamSpec.object(
+        "sources",
+        "Sources",
+        "Available image sources",
+        GObject.ParamFlags.READWRITE,
+        Gtk.StringList.$gtype,
+      ),
+    },
   },
   class SourcesPage extends Adw.PreferencesPage {
-    constructor(settings: AllSettings) {
+    constructor(private readonly settings: AllSettings) {
       super();
+      (this as unknown as SourcesPage & SourcesPageProperties).initialize();
+    }
 
-      const children = this as unknown as SourcesPageChildren;
-      children._apodGroup.title = apod.name;
-      children._apodGroup.description = `<a href="${apod.website}">${apod.website}</a>`;
-      settings.sourceAPOD.bind(
+    private initialize(this: SourcesPage & SourcesPageProperties): void {
+      // Fill the model with known sources
+      this.sources = Gtk.StringList.new(SOURCES.map(({ name }) => name));
+
+      // I have no idea how to data-bind dropdowns, so we'll do a poor mans binding here
+      this.initializeSelectedSource();
+      this.settings.extension.connect("changed::selected-source", () => {
+        const newKey = this.settings.extension.get_string("selected-source");
+        if (newKey === null) {
+          throw new Error("'selected-source' is null?");
+        }
+        this._sourcesBox.selected = getSourceIndexByKey(newKey);
+      });
+      this._sourcesBox.connect("notify::selected", () => {
+        const index = this._sourcesBox.selected;
+        const key = SOURCES[index]?.key;
+        if (typeof key === "undefined") {
+          throw new Error(`No source at index ${index}?`);
+        }
+        this.settings.extension.set_string("selected-source", key);
+      });
+
+      this._apodGroup.description = `<a href="${apod.website}">${apod.website}</a>`;
+      this.settings.sourceAPOD.bind(
         "api-key",
-        children._apodApiKey,
+        this._apodApiKey,
         "text",
         Gio.SettingsBindFlags.DEFAULT,
       );
+    }
+
+    private initializeSelectedSource(
+      this: SourcesPage & SourcesPageProperties,
+    ): void {
+      const selectedKey = this.settings.extension.get_string("selected-source");
+      if (selectedKey === null) {
+        throw new Error("'selected-source' is null?");
+      }
+      this._sourcesBox.selected = getSourceIndexByKey(selectedKey);
     }
   },
 );
