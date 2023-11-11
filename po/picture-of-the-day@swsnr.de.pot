@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-10 20:56+0100\n"
+"POT-Creation-Date: 2023-11-11 15:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,29 +19,6 @@ msgstr ""
 
 #: src/lib/ui/notifications.ts:40
 msgid "Picture of the Day"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:122
-msgctxt "ErrorDetailDialog"
-msgid ""
-"The following text contains the internal error messages and stacktraces of "
-"the error.  You may find additional details which may help you to fix the "
-"error, or you may use this data to report an issue on Github."
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:144
-msgctxt "ErrorDetailDialog"
-msgid "Picture of the Day failed"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:153
-msgctxt "ErrorDetailDialog"
-msgid "Copy to clipboard"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:162
-msgctxt "Error Dialog"
-msgid "Close"
 msgstr ""
 
 #: src/lib/ui/indicator.ts:115
@@ -67,6 +44,29 @@ msgstr ""
 
 #: src/lib/ui/indicator.ts:227
 msgid "Refresh"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:122
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:144
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:153
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:161
+msgctxt "Error Dialog"
+msgid "Close"
 msgstr ""
 
 #: src/lib/services/refresh-error-handler.ts:65
@@ -182,12 +182,12 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: ui/AboutPage.blp:47
+#: ui/AboutPage.blp:44
 msgctxt "about link"
 msgid "Github"
 msgstr ""
 
-#: ui/AboutPage.blp:52
+#: ui/AboutPage.blp:49
 msgctxt "about link"
 msgid "Issue tracker"
 msgstr ""
@@ -200,10 +200,14 @@ msgstr ""
 msgid "Configure sources for the Picture of the Day."
 msgstr ""
 
-#: ui/SourcesPage.blp:11
+#: ui/SourcesPage.blp:17
+msgid "Source"
+msgstr ""
+
+#: ui/SourcesPage.blp:29
 msgid "API key"
 msgstr ""
 
-#: ui/SourcesPage.blp:15
+#: ui/SourcesPage.blp:33
 msgid "Get API key"
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-10 20:56+0100\n"
+"POT-Creation-Date: 2023-11-11 15:17+0100\n"
 "PO-Revision-Date: 2023-11-10 21:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,33 +20,6 @@ msgstr ""
 #: src/lib/ui/notifications.ts:40
 msgid "Picture of the Day"
 msgstr "Bild des Tages"
-
-#: src/lib/ui/error-detail-dialog.ts:122
-msgctxt "ErrorDetailDialog"
-msgid ""
-"The following text contains the internal error messages and stacktraces of "
-"the error.  You may find additional details which may help you to fix the "
-"error, or you may use this data to report an issue on Github."
-msgstr ""
-"Der folgende Text enthält die interne Fehlermeldung und den Stacktrace des "
-"Fehlers. Der Text kann zusätzliche Informationen zur Beseitigung des Fehlers "
-"enthalten, oder zum Einreichen eines Fehlerberichts auf Github genutzt "
-"werden."
-
-#: src/lib/ui/error-detail-dialog.ts:144
-msgctxt "ErrorDetailDialog"
-msgid "Picture of the Day failed"
-msgstr "Bild des Tages fehlgeschlagen"
-
-#: src/lib/ui/error-detail-dialog.ts:153
-msgctxt "ErrorDetailDialog"
-msgid "Copy to clipboard"
-msgstr "In die Zwischenablage kopieren"
-
-#: src/lib/ui/error-detail-dialog.ts:162
-msgctxt "Error Dialog"
-msgid "Close"
-msgstr "Schließen"
 
 #: src/lib/ui/indicator.ts:115
 #, javascript-format
@@ -72,6 +45,33 @@ msgstr "Aktualisierung abbrechen…"
 #: src/lib/ui/indicator.ts:227
 msgid "Refresh"
 msgstr "Aktualisieren"
+
+#: src/lib/ui/error-detail-dialog.ts:122
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
+msgstr ""
+"Der folgende Text enthält die interne Fehlermeldung und den Stacktrace des "
+"Fehlers. Der Text kann zusätzliche Informationen zur Beseitigung des Fehlers "
+"enthalten, oder zum Einreichen eines Fehlerberichts auf Github genutzt "
+"werden."
+
+#: src/lib/ui/error-detail-dialog.ts:144
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr "Bild des Tages fehlgeschlagen"
+
+#: src/lib/ui/error-detail-dialog.ts:153
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
+
+#: src/lib/ui/error-detail-dialog.ts:161
+msgctxt "Error Dialog"
+msgid "Close"
+msgstr "Schließen"
 
 #: src/lib/services/refresh-error-handler.ts:65
 msgctxt "Error notification"
@@ -204,12 +204,12 @@ msgstr "Details"
 msgid "About"
 msgstr "Über"
 
-#: ui/AboutPage.blp:47
+#: ui/AboutPage.blp:44
 msgctxt "about link"
 msgid "Github"
 msgstr "Github"
 
-#: ui/AboutPage.blp:52
+#: ui/AboutPage.blp:49
 msgctxt "about link"
 msgid "Issue tracker"
 msgstr "Issue tracker"
@@ -222,10 +222,14 @@ msgstr "Bildquellen"
 msgid "Configure sources for the Picture of the Day."
 msgstr "Quellen für das Bild des Tages einrichten."
 
-#: ui/SourcesPage.blp:11
+#: ui/SourcesPage.blp:17
+msgid "Source"
+msgstr ""
+
+#: ui/SourcesPage.blp:29
 msgid "API key"
 msgstr "API Schlüssel"
 
-#: ui/SourcesPage.blp:15
+#: ui/SourcesPage.blp:33
 msgid "Get API key"
 msgstr "API Schlüssel erhalten"
