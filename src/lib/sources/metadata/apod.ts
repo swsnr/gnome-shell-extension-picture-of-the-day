@@ -21,7 +21,7 @@ import { SourceMetadata } from "../../source/metadata.js";
 
 const metadata: SourceMetadata = {
   key: "apod",
-  name: "Astronomy Picture of the Day",
+  name: "NASA Astronomy Picture of the Day",
   website: "https://apod.nasa.gov/",
 };
 

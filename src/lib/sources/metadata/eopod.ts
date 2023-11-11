@@ -21,7 +21,7 @@ import { SourceMetadata } from "../../source/metadata.js";
 
 const metadata: SourceMetadata = {
   key: "eopod",
-  name: "Earth Observatory Image of the Day",
+  name: "NASA Earth Observatory Image of the Day",
   website: "https://earthobservatory.nasa.gov/topic/image-of-the-day",
 };
 
