@@ -126,6 +126,7 @@ const queryMetadata = async (
 ): Promise<ApodMetadata> => {
   const query: QueryList = [["api_key", apiKey]];
   const url = `https://api.nasa.gov/planetary/apod?${encodeQuery(query)}`;
+  console.log(`Querying APOD image metadata from ${url}`);
   try {
     const response = await getJSON(session, url, cancellable);
     return response as ApodMetadata;
@@ -182,7 +183,6 @@ export const downloadFactory: DownloadImageFactoryWithSettings = {
         throw new InvalidAPIKeyError(metadata);
       }
 
-      console.log("Querying APOD image metadata");
       const apodImageMetadata = await queryMetadata(
         session,
         apiKey,
