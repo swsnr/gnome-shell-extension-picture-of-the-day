@@ -34,6 +34,20 @@ Use "Settings" in the Extension apps, or in the indicator menu. Or run
 $ gnome-extensions prefs picture-of-the-day@swsnr.de
 ```
 
+## Credits and Acknowledgments
+
+I'd like to thank the following people and projects without whom this extension would never have existed:
+
+* [Elia Argentieri](https://github.com/Elinvention) for [gnome-shell-extension-nasa-apod](https://github.com/Elinvention/gnome-shell-extension-nasa-apod)
+which was a great inspiration for this extension, and has served me well for years.
+* Each and every person involved in the heroic effort to bring modern Javascript, and in particular ES modules, to GNOME Shell, which cummulated in the awesome GNOME 45 release.
+This made extension development so much more fun.
+* [ts-for-gir](https://github.com/gjsify/ts-for-gir) which, together with ES modules, finally brings the power of Typescript to GNOME Shell extensions, without which Javascript has become unbearable for me.
+* The people behind <https://gjs-docs.gnome.org/> which is a great API reference for Gjs and all the libraries in its ecosystem, in one place, with a powerful search.
+* [Evan Welsh](https://gitlab.gnome.org/ewlsh/) for their amazing work on the magnificent <https://gjs.guide/> whose [extensions section](https://gjs.guide/extensions/) helps so much in getting things right, and finding your way around extension development.
+* [Javad Rahmatzadeh](https://gitlab.gnome.org/jrahmatzadeh, the author of [Just Perfection](https://gitlab.gnome.org/jrahmatzadeh/just-perfection), for their tireless reviewing of my extensions, and carefully dissecting all the flaws therein;  an ungrateful work which is so absolutely essential to keep the extension system in good shape.
+* All the people on the GNOME Extensions, GJS, and libadwaita Matrix channels, for patiently answering all my questions.
+
 ## License
 
 Copyright Sebastian Wiesner <sebastian@swsnr.de>
