@@ -13,6 +13,12 @@
       The metadata for the current image, in JSON, automatically stored by this extension.
       </description>
     </key>
+    <key name="last-scheduled-refresh" type="s">
+      <default>""</default>
+      <description>
+      The ISO 8601-formatted timestamp of the last refresh of the image.
+      </description>
+    </key>
   </schema>
   <schema id="org.gnome.shell.extensions.swsnr-picture-of-the-day.source.apod" path="/org/gnome/shell/extensions/swsnr-picture-of-the-day/source/apod/">
     <key name="api-key" type="s">

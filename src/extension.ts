@@ -34,6 +34,7 @@ import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
 import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
 import { launchSettingsPanel } from "./lib/ui/settings.js";
 import { SourceSelector } from "./lib/services/source-selector.js";
+import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -57,6 +58,7 @@ class EnabledExtension {
   private readonly imageMetadataStore: ImageMetadataStore;
   private readonly errorHandler: RefreshErrorHandler;
   private readonly sourceSelector: SourceSelector;
+  private readonly refreshScheduler: RefreshScheduler;
 
   private readonly signalsToDisconnect: [GObject.Object, number][] = [];
 
@@ -109,8 +111,31 @@ class EnabledExtension {
       this.updateDownloader();
     });
 
-    // Now wire up all the signals between the services and the UI.
+    // Setup automatic refreshing
+    this.refreshScheduler = new RefreshScheduler(
+      this.refreshService,
+      this.errorHandler,
+    );
+    // Restore and persist the last schedule refresh.
+    const lastRefresh = this.settings.get_string("last-scheduled-refresh");
+    if (lastRefresh && 0 < lastRefresh.length) {
+      this.refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
+        lastRefresh,
+        null,
+      );
+    }
+    this.refreshScheduler.connect(
+      "refresh-completed",
+      (_, timestamp): undefined => {
+        this.settings.set_string(
+          "last-scheduled-refresh",
+          timestamp.format_iso8601(),
+        );
+      },
+    );
+    this.refreshScheduler.start();
 
+    // Now wire up all the signals between the services and the UI.
     // React on user actions on the indicator
     this.indicator.connect("activated::preferences", () => {
       extension.openPreferences();
@@ -230,6 +255,7 @@ class EnabledExtension {
       this.refreshService,
       this.errorHandler,
       this.sourceSelector,
+      this.refreshScheduler,
     ];
     // Things that we should explicitly destroy.
     const destructibles = [this.indicator];
