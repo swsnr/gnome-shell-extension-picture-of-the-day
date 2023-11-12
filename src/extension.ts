@@ -117,24 +117,24 @@ class EnabledExtension {
     });
     this.indicator.connect("activated::refresh", () => {
       console.log("Refresh emitted");
-      this.refreshService.startRefresh();
+      this.refreshService.refresh().catch((error) => {
+        // For any refresh triggered manually we always show any error, including
+        // network errors.
+        this.errorHandler.showError(error);
+      });
     });
     this.indicator.connect("activated::cancel-refresh", () => {
-      this.refreshService.cancelRefresh();
+      void this.refreshService.cancelRefresh();
     });
 
     // Make everyone react on a new picture of the day
     this.refreshService.connect("state-changed", (_, state): undefined => {
       this.indicator.updateRefreshState(state);
     });
-    this.refreshService.connect("image-changed", (_, image): undefined => {
+    this.refreshService.connect("refresh-completed", (_, image): undefined => {
       this.indicator.showImageMetadata(image);
       this.imageMetadataStore.storedMetadataForImage(image);
       this.desktopBackgroundService.setBackgroundImageFile(image.file);
-    });
-
-    this.refreshService.connect("refresh-failed", (_, error): undefined => {
-      this.errorHandler.showError(error);
     });
 
     // Handle user reactions on errors

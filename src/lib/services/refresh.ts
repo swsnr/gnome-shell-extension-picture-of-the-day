@@ -22,6 +22,7 @@ import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 import { DownloadScheduler } from "./download-scheduler.js";
 import { DownloadImage, ImageFile } from "../source.js";
 import { unfoldCauses } from "../util/error.js";
+import { CancellableResult } from "../util/gio.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
@@ -34,12 +35,7 @@ interface RefreshServiceSignals {
   /**
    * The image was refreshed successfully.
    */
-  readonly "image-changed": [image: ImageFile];
-
-  /**
-   * A refresh operation failed.
-   */
-  readonly "refresh-failed": [error: unknown];
+  readonly "refresh-completed": [image: ImageFile];
 }
 
 /**
@@ -65,7 +61,12 @@ export class RefreshService extends EventEmitter<RefreshServiceSignals> {
     this.download = download;
   }
 
-  private async doRefresh(): Promise<void> {
+  /**
+   * Trigger a refresh of the image
+   *
+   * @return A promise for the completed download
+   */
+  async refresh(): Promise<CancellableResult<ImageFile>> {
     if (this.download) {
       await this.downloadScheduler.cancelCurrentDownload();
       this.emit("state-changed", "ongoing");
@@ -76,32 +77,26 @@ export class RefreshService extends EventEmitter<RefreshServiceSignals> {
         console.log("image finished", image);
         this.emit("state-changed", image.result);
         if (image.result === "completed") {
-          this.emit("image-changed", image.value);
+          this.emit("refresh-completed", image.value);
         }
+        return image;
       } catch (error) {
         console.error("Refresh failed", error);
         for (const cause of unfoldCauses(error)) {
           console.error("Caused by", cause);
         }
         this.emit("state-changed", "failed");
-        this.emit("refresh-failed", error);
+        throw error;
       }
     } else {
-      console.warn("No download function configured yet?");
+      throw new Error("No download function configured yet");
     }
-  }
-
-  /**
-   * Trigger a refresh of the image
-   */
-  startRefresh(): void {
-    void this.doRefresh();
   }
 
   /**
    * Cancel an ongoing refresh of the image.
    */
-  cancelRefresh(): void {
-    void this.downloadScheduler.cancelCurrentDownload();
+  cancelRefresh(): Promise<void> {
+    return this.downloadScheduler.cancelCurrentDownload();
   }
 }
