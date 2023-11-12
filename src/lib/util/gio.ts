@@ -58,7 +58,11 @@ export const runCancellable = <T>(
           : { result: "completed", value },
     )
     .catch((error): CancellableResult<T> => {
-      if (isGioErrorCancelled(error)) {
+      if (isGioErrorCancelled(error) || cancellable.is_cancelled()) {
+        // If the error represents a cancelled operation, or if we hit another
+        // error while the operation was already cancelled, just swallow the
+        // error and return a cancelled result, under the assumption, that the
+        // caller is never interested in errors of cancelled operations.
         return { result: "cancelled" };
       } else {
         throw error;
