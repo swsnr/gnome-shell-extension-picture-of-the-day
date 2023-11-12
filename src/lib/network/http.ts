@@ -139,6 +139,20 @@ export const getJSON = async (
   }
 };
 
+const deletePartialDownloadIgnoreError = async (
+  file: Gio.File,
+  cancellable: Gio.Cancellable | null,
+): Promise<void> => {
+  try {
+    await file.delete_async(0, cancellable);
+  } catch (error) {
+    console.warn(
+      `Failed to delete result of partial download at ${file.get_path()}`,
+      error,
+    );
+  }
+};
+
 /**
  * Download a URL to a file.
  *
@@ -154,7 +168,6 @@ export const downloadToFile = async (
   cancellable: Gio.Cancellable,
 ): Promise<void> => {
   if (target.query_exists(cancellable)) {
-    // TODO: Make this a lot smarter: Make a HEAD preflight request and only download if size doesn't match content-length?
     return;
   }
   const message = Soup.Message.new("GET", url);
@@ -198,27 +211,41 @@ export const downloadToFile = async (
       }
     }
   }
-  const sink = await target
-    .create_async(Gio.FileCreateFlags.NONE, 0, null)
-    .catch((cause: unknown) => {
-      throw new IOError(
-        `Failed to open target file at ${target.get_path()} to download from ${url}`,
-        { cause },
+  // Now open the target file for reading, and safely delete it in case of error.
+  try {
+    const sink = await target
+      .create_async(Gio.FileCreateFlags.NONE, 0, null)
+      .catch((cause: unknown) => {
+        throw new IOError(
+          `Failed to open target file at ${target.get_path()} to download from ${url}`,
+          { cause },
+        );
+      });
+    await sink
+      .splice_async(
+        source,
+        Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
+          Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
+        0,
+        cancellable,
+      )
+      .catch((cause: unknown) => {
+        throw new HttpRequestError(
+          url,
+          `Failed to download data from ${url} to ${target.get_path()}`,
+          { cause },
+        );
+      });
+  } catch (error) {
+    // If we're deleting a partial download after error, we don't actually want
+    // to cancel this operation, lest we leave the partial file behind, hence
+    // we're passing null for all cancellables here.
+    if (target.query_exists(null)) {
+      console.warn(
+        `Download failed, deleting partial target file at ${target.get_path()}`,
       );
-    });
-  await sink
-    .splice_async(
-      source,
-      Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
-        Gio.OutputStreamSpliceFlags.CLOSE_TARGET,
-      0,
-      cancellable,
-    )
-    .catch((cause: unknown) => {
-      throw new HttpRequestError(
-        url,
-        `Failed to download data from ${url} to ${target.get_path()}`,
-        { cause },
-      );
-    });
+      await deletePartialDownloadIgnoreError(target, null);
+    }
+    throw error;
+  }
 };
