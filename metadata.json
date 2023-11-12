@@ -6,8 +6,5 @@
   "version-name": "0.3",
   "shell-version": ["45"],
   "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day",
-  "gettext-domain": "picture-of-the-day@swsnr.de",
-  "donations": {
-    "paypal": "swsnr"
-  }
+  "gettext-domain": "picture-of-the-day@swsnr.de"
 }
