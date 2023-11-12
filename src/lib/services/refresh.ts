@@ -19,7 +19,7 @@
 
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
-import { DownloadScheduler } from "../network/download.js";
+import { DownloadScheduler } from "./download-scheduler.js";
 import { DownloadImage, ImageFile } from "../source.js";
 import { unfoldCauses } from "../util/error.js";
 
