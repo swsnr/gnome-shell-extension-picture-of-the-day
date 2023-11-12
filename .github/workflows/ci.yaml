@@ -11,6 +11,7 @@ jobs:
         with:
           node-version: latest
       - run: npm ci
+      - run: "jq -r .description < metadata.json"
       - run: make check
       - run: make compile
 
