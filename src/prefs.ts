@@ -127,7 +127,7 @@ const SourcesPage = GObject.registerClass(
         this.settings.extension.set_string("selected-source", key);
       });
 
-      this._apodGroup.description = `<a href="${apod.website}">${apod.website}</a>`;
+      this._apodGroup.description = `<a href="${apod.website}">${apod.name}</a>`;
       this.settings.sourceAPOD.bind(
         "api-key",
         this._apodApiKey,
