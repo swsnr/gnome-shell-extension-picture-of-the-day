@@ -50,7 +50,7 @@ This made extension development so much more fun.
 * [ts-for-gir](https://github.com/gjsify/ts-for-gir) which, together with ES modules, finally brings the power of Typescript to GNOME Shell extensions, without which Javascript has become unbearable for me.
 * The people behind <https://gjs-docs.gnome.org/> which is a great API reference for Gjs and all the libraries in its ecosystem, in one place, with a powerful search.
 * [Evan Welsh](https://gitlab.gnome.org/ewlsh/) for their amazing work on the magnificent <https://gjs.guide/> whose [extensions section](https://gjs.guide/extensions/) helps so much in getting things right, and finding your way around extension development.
-* [Javad Rahmatzadeh](https://gitlab.gnome.org/jrahmatzadeh, the author of [Just Perfection](https://gitlab.gnome.org/jrahmatzadeh/just-perfection), for their tireless reviewing of my extensions, and carefully dissecting all the flaws therein;  an ungrateful work which is so absolutely essential to keep the extension system in good shape.
+* [Javad Rahmatzadeh](https://gitlab.gnome.org/jrahmatzadeh), the author of [Just Perfection](https://gitlab.gnome.org/jrahmatzadeh/just-perfection), for their tireless reviewing of my extensions, and carefully dissecting all the flaws therein;  an ungrateful work which is so absolutely essential to keep the extension system in good shape.
 * All the people on the GNOME Extensions, GJS, and libadwaita Matrix channels, for patiently answering all my questions.
 
 ## License
