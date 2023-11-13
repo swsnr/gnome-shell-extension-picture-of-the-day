@@ -133,7 +133,19 @@ class EnabledExtension {
         );
       },
     );
-    this.refreshScheduler.start();
+    if (this.settings.get_boolean("refresh-automatically")) {
+      this.refreshScheduler.start();
+    }
+    this.signalsToDisconnect.push([
+      this.settings,
+      this.settings.connect("changed::refresh-automatically", () => {
+        if (this.settings.get_boolean("refresh-automatically")) {
+          this.refreshScheduler.start();
+        } else {
+          this.refreshScheduler.stop();
+        }
+      }),
+    ]);
 
     // Now wire up all the signals between the services and the UI.
     // React on user actions on the indicator
