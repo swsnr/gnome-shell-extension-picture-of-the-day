@@ -3,15 +3,28 @@
   <schema id="org.gnome.shell.extensions.swsnr-picture-of-the-day" path="/org/gnome/shell/extensions/swsnr-picture-of-the-day/">
     <key name="selected-source" type="s">
       <default>"apod"</default>
+      <description>
+      The identifier of the selected image source to obtain the picture of the day from.
+      </description>
     </key>
     <key name="current-metadata" type="s">
       <default>""</default>
+      <description>
+      The metadata for the current image, in JSON, automatically stored by this extension.
+      </description>
     </key>
   </schema>
   <schema id="org.gnome.shell.extensions.swsnr-picture-of-the-day.source.apod" path="/org/gnome/shell/extensions/swsnr-picture-of-the-day/source/apod/">
     <key name="api-key" type="s">
       <!-- API key account ID: dcc2671f-ef8d-4c1a-93cc-c5edeba69695 -->
       <default>"OmoiiKAC40a83uIjibcFmwfRKa8hfbCK9HLv90DI"</default>
+      <description>
+      The API key to use for requests to the APOD API.
+
+      The default key is usually fine, but if you find that you are rate-limited,
+      you may wish to use your own API key, which you can obtain free of charge
+      at https://api.nasa.gov/.
+      </description
     </key>
   </schema>
 </schemalist>
