@@ -24,7 +24,7 @@
       The default key is usually fine, but if you find that you are rate-limited,
       you may wish to use your own API key, which you can obtain free of charge
       at https://api.nasa.gov/.
-      </description
+      </description>
     </key>
   </schema>
 </schemalist>
