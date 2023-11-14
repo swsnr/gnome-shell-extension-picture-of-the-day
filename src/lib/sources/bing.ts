@@ -43,7 +43,7 @@ import { decodeQuery, encodeQuery } from "../network/uri.js";
 interface BingImage {
   readonly title: string;
   readonly copyright: string;
-  readonly coprightlink: string;
+  readonly copyrightlink: string;
   readonly startdate: string;
   readonly urlbase: string;
 }
@@ -106,8 +106,8 @@ export const getTodaysImage = async (
     metadata: {
       title: image.title,
       // The copyright fields really seem to be more of a description really
-      url: image.coprightlink,
-      description: image.coprightlink,
+      url: image.copyrightlink,
+      description: image.copyright,
       copyright: null,
     },
   };
