@@ -18,6 +18,7 @@
 // GNU General Public License for more details.
 
 import GLib from "gi://GLib";
+import Gio from "gi://Gio";
 
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 import { RefreshService } from "./refresh.js";
@@ -128,7 +129,18 @@ export class RefreshScheduler extends EventEmitter<RefreshSchedulerSignals> {
         } else {
           // For othe errors show the error to the user and try again at the
           // regular interval.
-          this.errorHandler.showError(error);
+          const connectivity = Gio.NetworkMonitor.get_default().connectivity;
+          if (connectivity === Gio.NetworkConnectivity.FULL) {
+            // Only show error if we're actually fully connected to the internet,
+            // otherwise the error is likely missing network connectivity, and
+            // we shouldn't spam the user about the obivous fact that they're not
+            // connect to a network.
+            this.errorHandler.showError(error);
+          } else {
+            console.warn(
+              `Failed to refresh automatically, resuming at regular interval`,
+            );
+          }
           this.scheduleRegularRefresh();
         }
         return;
