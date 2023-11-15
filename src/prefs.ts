@@ -30,16 +30,7 @@ import {
 
 import apod from "./lib/sources/metadata/apod.js";
 import SOURCES from "./lib/sources/metadata/sources.js";
-
-const getSourceIndexByKey = (key: string): number => {
-  const index = SOURCES.findIndex((s) => s.key === key);
-  if (0 <= index) {
-    return index;
-  } else {
-    console.warn(`Selected source ${key} not known, defaulting to APOD`);
-    return 0;
-  }
-};
+import { SourceMetadata } from "./lib/source.js";
 
 const LICENSE = `Copyright Sebastian Wiesner <sebastian@swsnr.de>
 
@@ -78,11 +69,10 @@ interface AllSettings {
 }
 
 interface SourcesPageProperties {
-  readonly _sourcesBox: Gtk.DropDown;
+  readonly _sourcesRow: Adw.ExpanderRow;
   readonly _apodGroup: Adw.PreferencesGroup;
   readonly _apodApiKey: Adw.EntryRow;
   readonly _refreshAutomatically: Adw.SwitchRow;
-  sources: Gtk.StringList;
 }
 
 const SourcesPage = GObject.registerClass(
@@ -92,18 +82,9 @@ const SourcesPage = GObject.registerClass(
     InternalChildren: [
       "apodGroup",
       "apodApiKey",
-      "sourcesBox",
+      "sourcesRow",
       "refreshAutomatically",
     ],
-    Properties: {
-      sources: GObject.ParamSpec.object(
-        "sources",
-        "Sources",
-        "Available image sources",
-        GObject.ParamFlags.READWRITE,
-        Gtk.StringList.$gtype,
-      ),
-    },
   },
   class SourcesPage extends Adw.PreferencesPage {
     constructor(private readonly settings: AllSettings) {
@@ -111,26 +92,64 @@ const SourcesPage = GObject.registerClass(
       (this as unknown as SourcesPage & SourcesPageProperties).initialize();
     }
 
-    private initialize(this: SourcesPage & SourcesPageProperties): void {
-      // Fill the model with known sources
-      this.sources = Gtk.StringList.new(SOURCES.map(({ name }) => name));
+    private showSelectedSource(
+      this: SourcesPage & SourcesPageProperties,
+      source: SourceMetadata,
+    ): void {
+      this._sourcesRow.set_subtitle(
+        `<a href="${source.website}">${source.name}</a>`,
+      );
+    }
 
-      // I have no idea how to data-bind dropdowns, so we'll do a poor mans binding here
-      this.initializeSelectedSource();
+    private initialize(this: SourcesPage & SourcesPageProperties): void {
+      // Fill the expander with all sources
+      const buttons = new Map(
+        SOURCES.map((source) => {
+          const button = new Gtk.CheckButton();
+          const row = new Adw.ActionRow({
+            title: source.name,
+            subtitle: `<a href="${source.website}">${source.website}</a>`,
+          });
+          row.add_suffix(button);
+          button.connect("toggled", () => {
+            if (button.active) {
+              this.settings.extension.set_string("selected-source", source.key);
+            }
+          });
+          this._sourcesRow.add_row(row);
+          return [source.key, { source, button }];
+        }),
+      );
+
+      // TODO: We should find a way to make this more elegant
+      const values = Array.from(buttons.values());
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const firstButton = values[0]!.button;
+      values.slice(1).forEach(({ button }) => {
+        button.group = firstButton;
+      });
+
+      const selectedKey = this.settings.extension.get_string("selected-source");
+      if (selectedKey === null) {
+        throw new Error("'selected-source' is null?");
+      }
+      const selectedSource = buttons.get(selectedKey)?.source;
+      if (typeof selectedSource === "undefined") {
+        throw new Error(`${selectedKey} does not denote a known source!`);
+      }
+      this.showSelectedSource(selectedSource);
+      buttons.get(selectedKey)?.button.set_active(true);
       this.settings.extension.connect("changed::selected-source", () => {
         const newKey = this.settings.extension.get_string("selected-source");
         if (newKey === null) {
           throw new Error("'selected-source' is null?");
         }
-        this._sourcesBox.selected = getSourceIndexByKey(newKey);
-      });
-      this._sourcesBox.connect("notify::selected", () => {
-        const index = this._sourcesBox.selected;
-        const key = SOURCES[index]?.key;
-        if (typeof key === "undefined") {
-          throw new Error(`No source at index ${index}?`);
+        const item = buttons.get(newKey);
+        if (typeof item === "undefined") {
+          throw new Error(`Source ${newKey} not known?`);
         }
-        this.settings.extension.set_string("selected-source", key);
+        this.showSelectedSource(item.source);
+        item.button.set_active(true);
       });
 
       this.settings.extension.bind(
@@ -147,16 +166,6 @@ const SourcesPage = GObject.registerClass(
         "text",
         Gio.SettingsBindFlags.DEFAULT,
       );
-    }
-
-    private initializeSelectedSource(
-      this: SourcesPage & SourcesPageProperties,
-    ): void {
-      const selectedKey = this.settings.extension.get_string("selected-source");
-      if (selectedKey === null) {
-        throw new Error("'selected-source' is null?");
-      }
-      this._sourcesBox.selected = getSourceIndexByKey(selectedKey);
     }
   },
 );
