@@ -21,6 +21,10 @@ template $SourcesPage: Adw.PreferencesPage {
         model: bind template.sources;
       }
     }
+
+    Adw.SwitchRow refreshAutomatically {
+      title: _("Refresh automatically");
+    }
   }
 
   Adw.PreferencesGroup apodGroup {

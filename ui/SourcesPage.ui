@@ -17,6 +17,11 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="AdwSwitchRow" id="refreshAutomatically">
+            <property name="title" translatable="true">Refresh automatically</property>
+          </object>
+        </child>
       </object>
     </child>
     <child>

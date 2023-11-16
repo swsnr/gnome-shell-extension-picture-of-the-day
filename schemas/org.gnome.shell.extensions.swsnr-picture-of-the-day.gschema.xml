@@ -7,10 +7,20 @@
       The identifier of the selected image source to obtain the picture of the day from.
       </description>
     </key>
+    <key name="refresh-automatically" type="b">
+      <default>true</default>
+      <description>Whether to refresh the picture of the day automatically</description>
+    </key>
     <key name="current-metadata" type="s">
       <default>""</default>
       <description>
       The metadata for the current image, in JSON, automatically stored by this extension.
+      </description>
+    </key>
+    <key name="last-scheduled-refresh" type="s">
+      <default>""</default>
+      <description>
+      The ISO 8601-formatted timestamp of the last refresh of the image.
       </description>
     </key>
   </schema>

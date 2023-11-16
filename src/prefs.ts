@@ -81,6 +81,7 @@ interface SourcesPageProperties {
   readonly _sourcesBox: Gtk.DropDown;
   readonly _apodGroup: Adw.PreferencesGroup;
   readonly _apodApiKey: Adw.EntryRow;
+  readonly _refreshAutomatically: Adw.SwitchRow;
   sources: Gtk.StringList;
 }
 
@@ -88,7 +89,12 @@ const SourcesPage = GObject.registerClass(
   {
     GTypeName: "SourcesPage",
     Template: getTemplate("SourcesPage"),
-    InternalChildren: ["apodGroup", "apodApiKey", "sourcesBox"],
+    InternalChildren: [
+      "apodGroup",
+      "apodApiKey",
+      "sourcesBox",
+      "refreshAutomatically",
+    ],
     Properties: {
       sources: GObject.ParamSpec.object(
         "sources",
@@ -126,6 +132,13 @@ const SourcesPage = GObject.registerClass(
         }
         this.settings.extension.set_string("selected-source", key);
       });
+
+      this.settings.extension.bind(
+        "refresh-automatically",
+        this._refreshAutomatically,
+        "active",
+        Gio.SettingsBindFlags.DEFAULT,
+      );
 
       this._apodGroup.description = `<a href="${apod.website}">${apod.name}</a>`;
       this.settings.sourceAPOD.bind(
