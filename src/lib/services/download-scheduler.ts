@@ -21,6 +21,7 @@ import Gio from "gi://Gio";
 
 import { ImageFile } from "../source.js";
 import { CancellableResult, runCancellable } from "../util/gio.js";
+import { Destructible } from "../util/lifecycle.js";
 
 /**
  * An ongoing download.
@@ -42,7 +43,7 @@ interface CurrentDownload {
  * Currently this class permits just one ongoing image download, and cancels
  * ongoing downloads when a new download is requested.
  */
-export class DownloadScheduler {
+export class DownloadScheduler implements Destructible {
   private currentDownload: CurrentDownload | null = null;
 
   /**
@@ -74,6 +75,13 @@ export class DownloadScheduler {
           return;
         });
     }
+  }
+
+  /**
+   * Cancel any ongoing download when destroyed.
+   */
+  destroy(): void {
+    void this.cancelCurrentDownload();
   }
 
   private doDownload(

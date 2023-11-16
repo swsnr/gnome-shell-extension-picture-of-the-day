@@ -280,6 +280,7 @@ class EnabledExtension implements Destructible {
     // Things that we should explicitly destroy.
     const destructibles: readonly Destructible[] = [
       this.indicator,
+      this.refreshService,
       this.refreshScheduler,
     ];
 
