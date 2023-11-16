@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-11 18:19+0100\n"
+"POT-Creation-Date: 2023-11-16 22:36+0100\n"
 "PO-Revision-Date: 2023-11-11 18:19+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,28 +21,28 @@ msgstr ""
 msgid "Picture of the Day"
 msgstr "Bild des Tages"
 
-#: src/lib/ui/indicator.ts:115
+#: src/lib/ui/indicator.ts:116
 #, javascript-format
 msgid "Copyright %s"
 msgstr "Urheberrecht: %s"
 
-#: src/lib/ui/indicator.ts:132
+#: src/lib/ui/indicator.ts:133
 msgid "Open image"
 msgstr "Bild öffnen"
 
-#: src/lib/ui/indicator.ts:141
+#: src/lib/ui/indicator.ts:142
 msgid "Open image folder"
 msgstr "Bildverzeichnis öffnen"
 
-#: src/lib/ui/indicator.ts:205
+#: src/lib/ui/indicator.ts:209
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: src/lib/ui/indicator.ts:224
+#: src/lib/ui/indicator.ts:228
 msgid "Cancel refresh…"
 msgstr "Aktualisierung abbrechen…"
 
-#: src/lib/ui/indicator.ts:227
+#: src/lib/ui/indicator.ts:231
 msgid "Refresh"
 msgstr "Aktualisieren"
 
@@ -73,12 +73,12 @@ msgctxt "Error Dialog"
 msgid "Close"
 msgstr "Schließen"
 
-#: src/lib/services/refresh-error-handler.ts:65
+#: src/lib/services/refresh-error-handler.ts:69
 msgctxt "Error notification"
 msgid "Picture of the Day needs an API key"
 msgstr "Das Bild des Tages benötigt einen API-Schlüssel"
 
-#: src/lib/services/refresh-error-handler.ts:68
+#: src/lib/services/refresh-error-handler.ts:72
 msgctxt "Error notification"
 msgid ""
 "Please configure a valid API key for the configured source in the extensions "
@@ -87,18 +87,18 @@ msgstr ""
 "Bitte richten Sie in den Einstellungen dieser Erweiterung einen API-"
 "Schlüssel für die gewählte Bildquelle ein."
 
-#: src/lib/services/refresh-error-handler.ts:72
-#: src/lib/services/refresh-error-handler.ts:98
+#: src/lib/services/refresh-error-handler.ts:76
+#: src/lib/services/refresh-error-handler.ts:102
 msgctxt "Error notification"
 msgid "Open preferences"
 msgstr "Einstellungen öffnen"
 
-#: src/lib/services/refresh-error-handler.ts:79
+#: src/lib/services/refresh-error-handler.ts:83
 msgctxt "Error notification"
 msgid "Picture of the Day was rate-limited"
 msgstr "Abruf des Bild des Tages wurde begrenzt"
 
-#: src/lib/services/refresh-error-handler.ts:82
+#: src/lib/services/refresh-error-handler.ts:86
 msgctxt "Error notification"
 msgid ""
 "The server for the configured source is rate-limited and does not permit to "
@@ -108,24 +108,24 @@ msgstr ""
 "erlaubt aktuell nicht, das Bild abzurufen. Versuchen Sie es später erneut, "
 "oder nutzen Sie eine andere Quelle."
 
-#: src/lib/services/refresh-error-handler.ts:90
+#: src/lib/services/refresh-error-handler.ts:94
 msgctxt "Error notification"
 msgid "Picture of the Day has some invalid configuration"
 msgstr "Die Konfiguration für das Bild des Tages ist nicht gültig"
 
-#: src/lib/services/refresh-error-handler.ts:94
+#: src/lib/services/refresh-error-handler.ts:98
 msgctxt "Error notification"
 msgid "Please correct the invalid configuration in the extension settings."
 msgstr ""
 "Bitte korrigieren Sie die ungültige Konfiguration in den Einstellungen "
 "dieser Erweiterung."
 
-#: src/lib/services/refresh-error-handler.ts:106
+#: src/lib/services/refresh-error-handler.ts:110
 msgctxt "Error notification"
 msgid "Picture of the Day failed to fetch today's picture."
 msgstr "Das heutige Bild konnte nicht abgerufen werden."
 
-#: src/lib/services/refresh-error-handler.ts:115
+#: src/lib/services/refresh-error-handler.ts:119
 msgctxt "Error notification"
 msgid ""
 "The system seems to have limited network connectivity. Try to connect to the "
@@ -135,12 +135,12 @@ msgstr ""
 "eine Internetverbindung her, oder versuchen Sie es später noch einmal, wenn "
 "der Fehler weiterhin auftritt."
 
-#: src/lib/services/refresh-error-handler.ts:119
+#: src/lib/services/refresh-error-handler.ts:123
 msgctxt "Error notification"
 msgid "Open network settings"
 msgstr "Netzwerkeinstellungen öffnen"
 
-#: src/lib/services/refresh-error-handler.ts:127
+#: src/lib/services/refresh-error-handler.ts:131
 msgctxt "Error notification"
 msgid ""
 "The server for the configured source seems to have issues. Try to configure "
@@ -150,12 +150,12 @@ msgstr ""
 "SIe eine andere Bildquelle zu nutzen, oder versuchen Sie es später noch "
 "einmal."
 
-#: src/lib/services/refresh-error-handler.ts:133
+#: src/lib/services/refresh-error-handler.ts:137
 msgctxt "Error notification"
 msgid "No image today"
 msgstr "Heute kein Bild"
 
-#: src/lib/services/refresh-error-handler.ts:137
+#: src/lib/services/refresh-error-handler.ts:141
 #, javascript-format
 msgctxt "Error notification"
 msgid ""
@@ -165,12 +165,12 @@ msgstr ""
 "%s ist kein Bild, und kann nicht als Hintergrund verwendet werden. Es kann "
 "unter Umständen direkt auf der Website angesehen werden."
 
-#: src/lib/services/refresh-error-handler.ts:144
+#: src/lib/services/refresh-error-handler.ts:148
 msgctxt "Error notification"
 msgid "Open website"
 msgstr "Website öffnen"
 
-#: src/lib/services/refresh-error-handler.ts:156
+#: src/lib/services/refresh-error-handler.ts:160
 #, javascript-format
 msgctxt "Error notification"
 msgid ""
@@ -181,22 +181,22 @@ msgstr ""
 "aufgetreten, mit folgender Fehlermeldung: %s. Prüfen Sie Ihre "
 "Internetverbindung, und die Berechtigungen im Download-Verzeichnis."
 
-#: src/lib/services/refresh-error-handler.ts:165
+#: src/lib/services/refresh-error-handler.ts:169
 msgctxt "Error notification"
 msgid "Image could not be downloaded"
 msgstr "Das Bild konnte nicht heruntergeladen werden"
 
-#: src/lib/services/refresh-error-handler.ts:188
+#: src/lib/services/refresh-error-handler.ts:192
 msgctxt "Error notification"
 msgid "Picture of the Day failed"
 msgstr "Bild des Tages fehlgeschlagen"
 
-#: src/lib/services/refresh-error-handler.ts:191
+#: src/lib/services/refresh-error-handler.ts:195
 msgctxt "Error notification"
 msgid "We are sorry but there seems to be an error."
 msgstr "Leider scheint ein Fehler aufgetreten zu sein."
 
-#: src/lib/services/refresh-error-handler.ts:195
+#: src/lib/services/refresh-error-handler.ts:199
 msgid "Details"
 msgstr "Details"
 
@@ -226,14 +226,22 @@ msgstr "Bildquellen"
 msgid "Configure sources for the Picture of the Day."
 msgstr "Quellen für das Bild des Tages einrichten."
 
-#: ui/SourcesPage.blp:17
-msgid "Source"
-msgstr "Quelle"
+#: ui/SourcesPage.blp:11
+#, fuzzy
+msgid "Selected source"
+msgstr "Bildquellen"
 
-#: ui/SourcesPage.blp:28
+#: ui/SourcesPage.blp:16
+msgid "Refresh automatically"
+msgstr ""
+
+#: ui/SourcesPage.blp:22
 msgid "API key"
 msgstr "API Schlüssel"
 
-#: ui/SourcesPage.blp:32
+#: ui/SourcesPage.blp:26
 msgid "Get API key"
 msgstr "API Schlüssel erhalten"
+
+#~ msgid "Source"
+#~ msgstr "Quelle"
