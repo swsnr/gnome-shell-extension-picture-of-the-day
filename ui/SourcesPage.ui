@@ -8,13 +8,11 @@
     <child>
       <object class="AdwPreferencesGroup" id="general">
         <child>
-          <object class="AdwActionRow" id="sourcesRow">
-            <property name="title" translatable="true">Source</property>
-            <child type="suffix">
-              <object class="GtkDropDown" id="sourcesBox">
-                <property name="model" bind-source="SourcesPage" bind-property="sources" bind-flags="sync-create"/>
-              </object>
-            </child>
+          <object class="AdwExpanderRow" id="sourcesRow">
+            <property name="title" translatable="true">Selected source</property>
+            <style>
+              <class name="property"/>
+            </style>
           </object>
         </child>
         <child>
