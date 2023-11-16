@@ -5,6 +5,7 @@
   "scripts": {
     "generate:gir-types": "ts-for-gir generate",
     "compile": "tsc --build tsconfig.json",
+    "dist:format": "eslint --no-eslintrc --config .eslintrc.dist.cjs --quiet --fix build/",
     "check:types": "tsc --build tsconfig.types.json",
     "lint": "eslint .",
     "format": "prettier ."
