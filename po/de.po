@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-16 22:36+0100\n"
-"PO-Revision-Date: 2023-11-11 18:19+0100\n"
+"PO-Revision-Date: 2023-11-16 22:39+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: src/lib/ui/notifications.ts:40
 msgid "Picture of the Day"
@@ -206,7 +206,7 @@ msgstr "Über"
 
 #: ui/AboutPage.blp:35
 msgid "Get a picture of the day as desktop background."
-msgstr "Bilder des Tages als Desktop-Hintergrund"
+msgstr "Bilder des Tages als Desktop-Hintergrund."
 
 #: ui/AboutPage.blp:44
 msgctxt "about link"
@@ -227,13 +227,12 @@ msgid "Configure sources for the Picture of the Day."
 msgstr "Quellen für das Bild des Tages einrichten."
 
 #: ui/SourcesPage.blp:11
-#, fuzzy
 msgid "Selected source"
 msgstr "Bildquellen"
 
 #: ui/SourcesPage.blp:16
 msgid "Refresh automatically"
-msgstr ""
+msgstr "Automatisch aktualisieren"
 
 #: ui/SourcesPage.blp:22
 msgid "API key"
@@ -242,6 +241,3 @@ msgstr "API Schlüssel"
 #: ui/SourcesPage.blp:26
 msgid "Get API key"
 msgstr "API Schlüssel erhalten"
-
-#~ msgid "Source"
-#~ msgstr "Quelle"
