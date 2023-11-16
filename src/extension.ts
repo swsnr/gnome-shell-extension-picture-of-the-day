@@ -278,7 +278,10 @@ class EnabledExtension implements Destructible {
       this.trackedSignalConnections,
     ];
     // Things that we should explicitly destroy.
-    const destructibles: readonly Destructible[] = [this.indicator];
+    const destructibles: readonly Destructible[] = [
+      this.indicator,
+      this.refreshScheduler,
+    ];
 
     // Disconnect all signals on our services, to free all references to the
     // signal handlers and prevent reference cycles keeping objects alive beyond

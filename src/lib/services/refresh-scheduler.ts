@@ -26,7 +26,7 @@ import { IOError } from "../util/gio.js";
 import { HttpRequestError } from "../network/http.js";
 import { RateLimitedError } from "../source/errors.js";
 import { RefreshErrorHandler } from "./refresh-error-handler.js";
-import { SignalDisconnectable } from "../util/lifecycle.js";
+import { Destructible, SignalDisconnectable } from "../util/lifecycle.js";
 
 interface RefreshSchedulerSignals {
   "refresh-completed": [timestamp: GLib.DateTime];
@@ -48,7 +48,7 @@ const ERROR_REFRESH_LIMIT = 3;
  */
 export class RefreshScheduler
   extends EventEmitter<RefreshSchedulerSignals>
-  implements SignalDisconnectable
+  implements SignalDisconnectable, Destructible
 {
   lastRefresh: GLib.DateTime | null = null;
   private timerSourceTag: number | null = null;
@@ -103,6 +103,15 @@ export class RefreshScheduler
       GLib.source_remove(this.timerSourceTag);
       this.timerSourceTag = null;
     }
+  }
+
+  /**
+   * Destroy all resources claimed by this service.
+   *
+   * Simply calls stop internally to remove the scheduled timer source, if any.
+   */
+  destroy(): void {
+    this.stop();
   }
 
   private doRefresh(): boolean {
