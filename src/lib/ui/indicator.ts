@@ -34,6 +34,7 @@ import { ImageFile, ImageMetadata } from "../source.js";
 import { IconLoader } from "./icons.js";
 import { RefreshState } from "../services/refresh.js";
 import i18n from "../util/i18n.js";
+import { Destructible } from "../util/lifecycle.js";
 
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;
@@ -165,7 +166,10 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       },
     },
   },
-  class PictureOfTheDayIndicator extends PanelMenu.Button {
+  class PictureOfTheDayIndicator
+    extends PanelMenu.Button
+    implements Destructible
+  {
     private readonly imageInfoSection: ImageInfoSection;
     private readonly imageOpenSection: ImageOpenSection;
     private readonly refresh: PopupMenuItem;

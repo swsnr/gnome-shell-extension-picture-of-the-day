@@ -26,6 +26,7 @@ import { IOError } from "../util/gio.js";
 import { HttpRequestError } from "../network/http.js";
 import { RateLimitedError } from "../source/errors.js";
 import { RefreshErrorHandler } from "./refresh-error-handler.js";
+import { SignalDisconnectable } from "../util/lifecycle.js";
 
 interface RefreshSchedulerSignals {
   "refresh-completed": [timestamp: GLib.DateTime];
@@ -45,7 +46,10 @@ const ERROR_REFRESH_LIMIT = 3;
 /**
  * Schedule regular refreshes of the picture of the day.
  */
-export class RefreshScheduler extends EventEmitter<RefreshSchedulerSignals> {
+export class RefreshScheduler
+  extends EventEmitter<RefreshSchedulerSignals>
+  implements SignalDisconnectable
+{
   lastRefresh: GLib.DateTime | null = null;
   private timerSourceTag: number | null = null;
   private errorRefreshCount = 0;

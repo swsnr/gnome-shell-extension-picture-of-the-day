@@ -21,6 +21,7 @@ import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { Source } from "../source.js";
 import sources from "../sources.js";
+import { SignalDisconnectable } from "../util/lifecycle.js";
 
 export class NoSuchSource extends Error {
   constructor(
@@ -44,7 +45,10 @@ interface SourceSelectorSignals {
   readonly "source-changed": [Source];
 }
 
-export class SourceSelector extends EventEmitter<SourceSelectorSignals> {
+export class SourceSelector
+  extends EventEmitter<SourceSelectorSignals>
+  implements SignalDisconnectable
+{
   private _selectedSource: Source;
 
   constructor(source: Source) {

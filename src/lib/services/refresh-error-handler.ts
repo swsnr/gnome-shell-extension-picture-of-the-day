@@ -41,6 +41,7 @@ import {
 import { HttpRequestError } from "../network/http.js";
 import { IOError } from "../util/gio.js";
 import i18n from "../util/i18n.js";
+import { SignalDisconnectable } from "../util/lifecycle.js";
 
 export interface RefreshErrorHandlerSignals {
   readonly "action::open-preferences": [];
@@ -50,7 +51,10 @@ export interface RefreshErrorHandlerSignals {
 /**
  * Handle user-visible errors.
  */
-export class RefreshErrorHandler extends EventEmitter<RefreshErrorHandlerSignals> {
+export class RefreshErrorHandler
+  extends EventEmitter<RefreshErrorHandlerSignals>
+  implements SignalDisconnectable
+{
   constructor(private readonly iconLoader: IconLoader) {
     super();
   }

@@ -23,6 +23,7 @@ import { DownloadScheduler } from "./download-scheduler.js";
 import { DownloadImage, ImageFile } from "../source.js";
 import { unfoldCauses } from "../util/error.js";
 import { CancellableResult } from "../util/gio.js";
+import { SignalDisconnectable } from "../util/lifecycle.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
@@ -43,7 +44,10 @@ interface RefreshServiceSignals {
  *
  * Downloads the image of the day and notifies about a new image.
  */
-export class RefreshService extends EventEmitter<RefreshServiceSignals> {
+export class RefreshService
+  extends EventEmitter<RefreshServiceSignals>
+  implements SignalDisconnectable
+{
   private download: DownloadImage | null;
   private downloadScheduler: DownloadScheduler = new DownloadScheduler();
 

@@ -17,7 +17,6 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import GObject from "gi://GObject";
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
@@ -35,6 +34,11 @@ import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
 import { launchSettingsPanel } from "./lib/ui/settings.js";
 import { SourceSelector } from "./lib/services/source-selector.js";
 import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
+import {
+  Destructible,
+  SignalConnectionTracker,
+  SignalDisconnectable,
+} from "./lib/util/lifecycle.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -46,7 +50,7 @@ Gio._promisify(Soup.Session.prototype, "send_async");
 /**
  * Track the state of this extension.
  */
-class EnabledExtension {
+class EnabledExtension implements Destructible {
   private readonly indicator: PictureOfTheDayIndicator;
 
   private readonly settings: Gio.Settings;
@@ -60,7 +64,8 @@ class EnabledExtension {
   private readonly sourceSelector: SourceSelector;
   private readonly refreshScheduler: RefreshScheduler;
 
-  private readonly signalsToDisconnect: [GObject.Object, number][] = [];
+  private readonly trackedSignalConnections: SignalConnectionTracker =
+    new SignalConnectionTracker();
 
   constructor(private readonly extension: Extension) {
     // Our settings
@@ -90,17 +95,19 @@ class EnabledExtension {
     }
 
     // Wire up the current source
-    const signalNo = this.settings.connect("changed::selected-source", () => {
-      const key = this.settings.get_string("selected-source");
-      if (key) {
-        try {
-          this.sourceSelector.selectSource(key);
-        } catch (error) {
-          console.error("Source could not be loaded", key);
+    this.trackedSignalConnections.track(
+      this.settings,
+      this.settings.connect("changed::selected-source", () => {
+        const key = this.settings.get_string("selected-source");
+        if (key) {
+          try {
+            this.sourceSelector.selectSource(key);
+          } catch (error) {
+            console.error("Source could not be loaded", key);
+          }
         }
-      }
-    });
-    this.signalsToDisconnect.push([this.settings, signalNo]);
+      }),
+    );
     const currentSource = this.settings.get_string("selected-source");
     if (currentSource === null) {
       throw new Error("Current source 'null'?");
@@ -136,7 +143,7 @@ class EnabledExtension {
     if (this.settings.get_boolean("refresh-automatically")) {
       this.refreshScheduler.start();
     }
-    this.signalsToDisconnect.push([
+    this.trackedSignalConnections.track(
       this.settings,
       this.settings.connect("changed::refresh-automatically", () => {
         if (this.settings.get_boolean("refresh-automatically")) {
@@ -145,7 +152,7 @@ class EnabledExtension {
           this.refreshScheduler.stop();
         }
       }),
-    ]);
+    );
 
     // Now wire up all the signals between the services and the UI.
     // React on user actions on the indicator
@@ -263,23 +270,21 @@ class EnabledExtension {
 
   destroy() {
     // Things that we should disconnect signals from.
-    const disconnectables = [
+    const disconnectables: readonly SignalDisconnectable[] = [
       this.refreshService,
       this.errorHandler,
       this.sourceSelector,
       this.refreshScheduler,
+      this.trackedSignalConnections,
     ];
     // Things that we should explicitly destroy.
-    const destructibles = [this.indicator];
+    const destructibles: readonly Destructible[] = [this.indicator];
 
     // Disconnect all signals on our services, to free all references to the
     // signal handlers and prevent reference cycles keeping objects alive beyond
     // destruction of this extension.
     for (const obj of disconnectables) {
       obj.disconnectAll();
-    }
-    for (const [obj, handlerId] of this.signalsToDisconnect) {
-      obj.disconnect(handlerId);
     }
     for (const obj of destructibles) {
       obj.destroy();
@@ -291,7 +296,7 @@ class EnabledExtension {
  * An extension to use a picture of the day from various sources as wallpaper.
  */
 export default class PictureOfTheDayExtension extends Extension {
-  private enabledExtension?: EnabledExtension | null;
+  private enabledExtension?: Destructible | null;
 
   override enable(): void {
     if (!this.enabledExtension) {
