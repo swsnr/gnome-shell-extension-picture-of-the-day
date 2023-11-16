@@ -17,7 +17,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import { SaxesParser } from "../vendor/saxes/saxes.js";
+// Note: We deliberatly only import types here, because we'll lazy-load saxes
+// when required, to avoid making everyone pay the burden of this library even
+// if they don't use corresponding sources.
+import type { SaxesOptions, SaxesParser } from "../vendor/saxes/saxes.js";
 
 /**
  * A dead stupid DOM, just sufficient to parse some simple XML documents.
@@ -124,30 +127,33 @@ const runParser = (
   return toplevels;
 };
 
+type Parser<O> = new (opts?: O) => SaxesParser;
+
 /**
  * Parse an XML document in `s`.
  *
  * @returns The single root element
  */
-export const parse = (s: string, options?: ParseOptions): Element => {
-  const roots = runParser(new SaxesParser(), s, options);
-  if (roots.length === 1 && isElement(roots[0])) {
-    return roots[0];
-  } else {
-    throw new XmlError("Expected exactly one root element");
-  }
-};
+export const parse =
+  (Parser: Parser<object>) =>
+  (s: string, options?: ParseOptions): Element => {
+    const roots = runParser(new Parser(), s, options);
+    if (roots.length === 1 && isElement(roots[0])) {
+      return roots[0];
+    } else {
+      throw new XmlError("Expected exactly one root element");
+    }
+  };
 
 /**
  * Parse XML fragments out of `s`.
  *
  * @returns An array with all fragments.
  */
-export const parseFragments = (
-  s: string,
-  options?: ParseOptions,
-): readonly Node[] =>
-  runParser(new SaxesParser({ fragment: true }), s, options);
+export const parseFragments =
+  (Parser: Parser<SaxesOptions>) =>
+  (s: string, options?: ParseOptions): readonly Node[] =>
+    runParser(new Parser({ fragment: true }), s, options);
 
 /** Get immediate child elements with the given name. */
 export const childrenByName = (e: Element, name: string): readonly Element[] =>

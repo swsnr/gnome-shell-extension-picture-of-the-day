@@ -45,13 +45,14 @@ const getLatestImage = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
 ): Promise<DownloadableImage> => {
+  const SaxesParser = (await import("../vendor/saxes/saxes.js")).SaxesParser;
   const url = "https://earthobservatory.nasa.gov/feeds/image-of-the-day.rss";
   console.log(`Requesting EOPOD feed from ${url}`);
   const rss = await getString(session, url, cancellable);
 
   try {
     const channel = dom.childByName(
-      dom.parse(rss, { removeWhitespaceTextNodes: true }),
+      dom.parse(SaxesParser)(rss, { removeWhitespaceTextNodes: true }),
       "channel",
     );
     if (!channel) {
@@ -73,7 +74,9 @@ const getLatestImage = async (
     if (!pubDate) {
       throw new dom.XmlError("Item had no 'pubDate'");
     }
-    const img = findImgs(dom.parseFragments(dom.innerText(content).trim()))[0];
+    const img = findImgs(
+      dom.parseFragments(SaxesParser)(dom.innerText(content).trim()),
+    )[0];
     if (!img?.attributes["src"]) {
       throw new dom.XmlError("No 'img' found in content");
     }
