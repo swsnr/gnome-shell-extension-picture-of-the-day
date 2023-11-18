@@ -26,15 +26,18 @@ import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
   PopupMenuItem,
   PopupMenuSection,
+  PopupMenuSectionSignals,
   PopupSeparatorMenuItem,
+  PopupSubMenuMenuItem,
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
 import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { ImageFile, ImageMetadata } from "../source.js";
+import { ImageFile, ImageMetadata, SourceMetadata } from "../source.js";
 import { IconLoader } from "./icons.js";
 import { RefreshState } from "../services/refresh.js";
 import i18n from "../util/i18n.js";
 import { Destructible } from "../util/lifecycle.js";
+import SOURCES from "../sources/metadata/sources.js";
 
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;
@@ -55,7 +58,6 @@ class ImageInfoSection extends PopupMenuSection {
     this.title.style = "font-weight: 700; font-size: 12pt;";
     this.title.connect("activate", () => {
       if (this.urlToOpen !== null) {
-        // TODO: Perhaps we should externalize this into a signal?
         Gio.app_info_launch_default_for_uri(
           this.urlToOpen,
           Shell.Global.get().create_app_launch_context(0, -1),
@@ -155,6 +157,62 @@ class ImageOpenSection extends PopupMenuSection {
   }
 }
 
+interface RefreshMenuSectionSignals extends PopupMenuSectionSignals {
+  readonly "activated::refresh": [];
+  readonly "activated::cancel-refresh": [];
+  readonly "activated::switch-source": [sourceKey: string];
+}
+
+class RefreshImageSection extends PopupMenuSection<RefreshMenuSectionSignals> {
+  private readonly refresh: PopupMenuItem;
+  private readonly sourcesSubMenu: PopupSubMenuMenuItem;
+
+  private refreshAction: "refresh" | "cancel-refresh" = "refresh";
+
+  constructor() {
+    super();
+    this.refresh = new PopupMenuItem("");
+    this.addMenuItem(this.refresh);
+    // Initially assume we're in completed state to allow the user to refresh
+    // manually
+    this.updateRefreshState("completed");
+    this.refresh.connect("activate", () => {
+      switch (this.refreshAction) {
+        case "refresh":
+          this.emit("activated::refresh");
+          break;
+        case "cancel-refresh":
+          this.emit("activated::cancel-refresh");
+          break;
+      }
+    });
+
+    this.sourcesSubMenu = new PopupSubMenuMenuItem("");
+    this.setSourceName("n/a");
+    for (const source of SOURCES) {
+      this.sourcesSubMenu.menu.addAction(source.name, () => {
+        this.emit("activated::switch-source", source.key);
+        this.sourcesSubMenu.setSubmenuShown(false);
+      });
+    }
+    this.addMenuItem(this.sourcesSubMenu);
+  }
+
+  setSourceName(name: string): void {
+    this.sourcesSubMenu.label.set_text(_("Source: %s").format(name));
+  }
+
+  updateRefreshState(state: RefreshState): void {
+    if (state === "ongoing") {
+      this.refresh.label.set_text(_("Cancel refresh…"));
+      this.refreshAction = "cancel-refresh";
+    } else {
+      this.refresh.label.set_text(_("Refresh"));
+      this.refreshAction = "refresh";
+    }
+  }
+}
+
 /**
  * The main indicator of this extension.
  */
@@ -164,6 +222,9 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       activated: {
         flags: [GObject.SignalFlags.DETAILED],
       },
+      "switch-source": {
+        param_types: [GObject.TYPE_STRING],
+      },
     },
   },
   class PictureOfTheDayIndicator
@@ -172,9 +233,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
   {
     private readonly imageInfoSection: ImageInfoSection;
     private readonly imageOpenSection: ImageOpenSection;
-    private readonly refresh: PopupMenuItem;
-
-    private refreshAction: "refresh" | "cancel-refresh" = "refresh";
+    private readonly refreshImageSection: RefreshImageSection;
 
     constructor(iconLoader: IconLoader) {
       super(0, "PictureOfTheDayIndicator", false);
@@ -187,23 +246,22 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
 
       this.imageInfoSection = new ImageInfoSection();
       this.imageOpenSection = new ImageOpenSection();
-
-      const refreshItems = new PopupMenuSection();
-      this.refresh = new PopupMenuItem("");
-      refreshItems.addMenuItem(this.refresh);
-      // Initially assume we're in completed state to allow the user to refresh
-      // manually
-      this.updateRefreshState("completed");
-      this.refresh.connect("activate", () => {
-        switch (this.refreshAction) {
-          case "refresh":
-            this.emit("activated::refresh");
-            break;
-          case "cancel-refresh":
-            this.emit("activated::cancel-refresh");
-            break;
-        }
+      this.refreshImageSection = new RefreshImageSection();
+      this.refreshImageSection.connect("activated::refresh", (): undefined => {
+        this.emit("activated::refresh");
       });
+      this.refreshImageSection.connect(
+        "activated::cancel-refresh",
+        (): undefined => {
+          this.emit("activated::cancel-refresh");
+        },
+      );
+      this.refreshImageSection.connect(
+        "activated::switch-source",
+        (_section, source): undefined => {
+          this.emit("switch-source", source);
+        },
+      );
 
       const generalItems = new PopupMenuSection();
       generalItems.addAction(_("Preferences"), () => {
@@ -213,7 +271,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       for (const section of [
         this.imageInfoSection,
         new PopupSeparatorMenuItem(),
-        refreshItems,
+        this.refreshImageSection,
         new PopupSeparatorMenuItem(),
         this.imageOpenSection,
         new PopupSeparatorMenuItem(),
@@ -224,13 +282,11 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
     }
 
     updateRefreshState(state: RefreshState): void {
-      if (state === "ongoing") {
-        this.refresh.label.set_text(_("Cancel refresh…"));
-        this.refreshAction = "cancel-refresh";
-      } else {
-        this.refresh.label.set_text(_("Refresh"));
-        this.refreshAction = "refresh";
-      }
+      this.refreshImageSection.updateRefreshState(state);
+    }
+
+    updateSelectedSource(source: SourceMetadata): void {
+      this.refreshImageSection.setSourceName(source.name);
     }
 
     showImageMetadata(image: ImageFile): void {
