@@ -26,15 +26,18 @@ import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
   PopupMenuItem,
   PopupMenuSection,
+  PopupMenuSectionSignals,
   PopupSeparatorMenuItem,
+  PopupSubMenuMenuItem,
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
 import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { ImageFile, ImageMetadata } from "../source.js";
+import { ImageFile, ImageMetadata, SourceMetadata } from "../source.js";
 import { IconLoader } from "./icons.js";
 import { RefreshState } from "../services/refresh.js";
 import i18n from "../util/i18n.js";
 import { Destructible } from "../util/lifecycle.js";
+import SOURCES from "../sources/metadata/sources.js";
 
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;
@@ -154,13 +157,15 @@ class ImageOpenSection extends PopupMenuSection {
   }
 }
 
-interface RefreshMenuSectionSignals extends PopupMenuSection {
+interface RefreshMenuSectionSignals extends PopupMenuSectionSignals {
   readonly "activated::refresh": [];
   readonly "activated::cancel-refresh": [];
+  readonly "activated::switch-source": [sourceKey: string];
 }
 
 class RefreshImageSection extends PopupMenuSection<RefreshMenuSectionSignals> {
   private readonly refresh: PopupMenuItem;
+  private readonly sourcesSubMenu: PopupSubMenuMenuItem;
 
   private refreshAction: "refresh" | "cancel-refresh" = "refresh";
 
@@ -181,6 +186,20 @@ class RefreshImageSection extends PopupMenuSection<RefreshMenuSectionSignals> {
           break;
       }
     });
+
+    this.sourcesSubMenu = new PopupSubMenuMenuItem("");
+    this.setSourceName("n/a");
+    for (const source of SOURCES) {
+      this.sourcesSubMenu.menu.addAction(source.name, () => {
+        this.emit("activated::switch-source", source.key);
+        this.sourcesSubMenu.setSubmenuShown(false);
+      });
+    }
+    this.addMenuItem(this.sourcesSubMenu);
+  }
+
+  setSourceName(name: string): void {
+    this.sourcesSubMenu.label.set_text(_("Source: %s").format(name));
   }
 
   updateRefreshState(state: RefreshState): void {
@@ -202,6 +221,9 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
     Signals: {
       activated: {
         flags: [GObject.SignalFlags.DETAILED],
+      },
+      "switch-source": {
+        param_types: [GObject.TYPE_STRING],
       },
     },
   },
@@ -234,6 +256,12 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
           this.emit("activated::cancel-refresh");
         },
       );
+      this.refreshImageSection.connect(
+        "activated::switch-source",
+        (_section, source): undefined => {
+          this.emit("switch-source", source);
+        },
+      );
 
       const generalItems = new PopupMenuSection();
       generalItems.addAction(_("Preferences"), () => {
@@ -255,6 +283,10 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
 
     updateRefreshState(state: RefreshState): void {
       this.refreshImageSection.updateRefreshState(state);
+    }
+
+    updateSelectedSource(source: SourceMetadata): void {
+      this.refreshImageSection.setSourceName(source.name);
     }
 
     showImageMetadata(image: ImageFile): void {

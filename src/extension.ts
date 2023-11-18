@@ -114,9 +114,16 @@ class EnabledExtension implements Destructible {
     }
     this.sourceSelector = SourceSelector.forKey(currentSource);
     this.updateDownloader();
-    this.sourceSelector.connect("source-changed", (): undefined => {
-      this.updateDownloader();
-    });
+    this.indicator.updateSelectedSource(
+      this.sourceSelector.selectedSource.metadata,
+    );
+    this.sourceSelector.connect(
+      "source-changed",
+      (_selector, source): undefined => {
+        this.updateDownloader();
+        this.indicator.updateSelectedSource(source.metadata);
+      },
+    );
 
     // Setup automatic refreshing
     this.refreshScheduler = new RefreshScheduler(
@@ -169,6 +176,9 @@ class EnabledExtension implements Destructible {
     });
     this.indicator.connect("activated::cancel-refresh", () => {
       void this.refreshService.cancelRefresh();
+    });
+    this.indicator.connect("switch-source", (_, sourceKey: string) => {
+      this.settings.set_string("selected-source", sourceKey);
     });
 
     // Make everyone react on a new picture of the day

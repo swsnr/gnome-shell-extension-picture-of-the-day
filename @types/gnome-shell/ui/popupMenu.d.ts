@@ -21,7 +21,10 @@ import St from "gi://St";
 import Clutter from "gi://Clutter";
 import Gio from "gi://Gio";
 
-import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
+import {
+  EventEmitter,
+  SignalMap,
+} from "resource:///org/gnome/shell/misc/signals.js";
 
 // PopupMenuBase.addMenuItem checks these types quite explicitly
 export type PopupMenuItemType =
@@ -41,7 +44,7 @@ export interface PopupMenuBaseSignals {
 }
 
 export declare class PopupMenuBase<
-  Signals = PopupMenuBaseSignals,
+  Signals extends SignalMap<Signals> = PopupMenuBaseSignals,
 > extends EventEmitter<Signals> {
   removeAll(): void;
 
@@ -59,7 +62,7 @@ export interface PopupMenuSignals extends PopupMenuBaseSignals {
 }
 
 export declare class PopupMenu<
-  Signals = PopupMenuSignals,
+  Signals extends SignalMap<Signals> = PopupMenuSignals,
 > extends PopupMenuBase<Signals> {}
 
 export interface PopupSubMenuSignals extends PopupMenuBaseSignals {
@@ -67,7 +70,7 @@ export interface PopupSubMenuSignals extends PopupMenuBaseSignals {
 }
 
 export declare class PopupSubMenu<
-  Signals = PopupSubMenuSignals,
+  Signals extends SignalMap<Signals> = PopupSubMenuSignals,
 > extends PopupMenuBase<Signals> {}
 
 export interface PopupMenuSectionSignals extends PopupMenuBaseSignals {
@@ -75,7 +78,7 @@ export interface PopupMenuSectionSignals extends PopupMenuBaseSignals {
 }
 
 export declare class PopupMenuSection<
-  Signals = PopupMenuSectionSignals,
+  Signals extends SignalMap<Signals> = PopupMenuSectionSignals,
 > extends PopupMenuBase<Signals> {
   constructor();
 }
@@ -99,7 +102,11 @@ export declare class PopupSeparatorMenuItem extends PopupBaseMenuItem {
 }
 
 export declare class PopupSubMenuMenuItem extends PopupBaseMenuItem {
-  constructor(text?: string, wantIcon?: boolean);
+  constructor(text: string, wantIcon?: boolean);
 
   readonly menu: PopupSubMenu;
+  readonly label: St.Label;
+  readonly icon?: St.Icon;
+
+  setSubmenuShown(open: boolean): void;
 }
