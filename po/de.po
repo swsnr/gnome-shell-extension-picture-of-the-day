@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-16 22:36+0100\n"
-"PO-Revision-Date: 2023-11-16 22:39+0100\n"
+"POT-Creation-Date: 2023-11-18 19:51+0100\n"
+"PO-Revision-Date: 2023-11-18 19:52+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -20,31 +20,6 @@ msgstr ""
 #: src/lib/ui/notifications.ts:40
 msgid "Picture of the Day"
 msgstr "Bild des Tages"
-
-#: src/lib/ui/indicator.ts:116
-#, javascript-format
-msgid "Copyright %s"
-msgstr "Urheberrecht: %s"
-
-#: src/lib/ui/indicator.ts:133
-msgid "Open image"
-msgstr "Bild öffnen"
-
-#: src/lib/ui/indicator.ts:142
-msgid "Open image folder"
-msgstr "Bildverzeichnis öffnen"
-
-#: src/lib/ui/indicator.ts:209
-msgid "Preferences"
-msgstr "Einstellungen"
-
-#: src/lib/ui/indicator.ts:228
-msgid "Cancel refresh…"
-msgstr "Aktualisierung abbrechen…"
-
-#: src/lib/ui/indicator.ts:231
-msgid "Refresh"
-msgstr "Aktualisieren"
 
 #: src/lib/ui/error-detail-dialog.ts:122
 msgctxt "ErrorDetailDialog"
@@ -72,6 +47,36 @@ msgstr "In die Zwischenablage kopieren"
 msgctxt "Error Dialog"
 msgid "Close"
 msgstr "Schließen"
+
+#: src/lib/ui/indicator.ts:118
+#, javascript-format
+msgid "Copyright %s"
+msgstr "Urheberrecht: %s"
+
+#: src/lib/ui/indicator.ts:135
+msgid "Open image"
+msgstr "Bild öffnen"
+
+#: src/lib/ui/indicator.ts:144
+msgid "Open image folder"
+msgstr "Bildverzeichnis öffnen"
+
+#: src/lib/ui/indicator.ts:202
+#, javascript-format
+msgid "Source: %s"
+msgstr "Quelle: %s"
+
+#: src/lib/ui/indicator.ts:207
+msgid "Cancel refresh…"
+msgstr "Aktualisierung abbrechen…"
+
+#: src/lib/ui/indicator.ts:210
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: src/lib/ui/indicator.ts:267
+msgid "Preferences"
+msgstr "Einstellungen"
 
 #: src/lib/services/refresh-error-handler.ts:69
 msgctxt "Error notification"
