@@ -55,7 +55,6 @@ class ImageInfoSection extends PopupMenuSection {
     this.title.style = "font-weight: 700; font-size: 12pt;";
     this.title.connect("activate", () => {
       if (this.urlToOpen !== null) {
-        // TODO: Perhaps we should externalize this into a signal?
         Gio.app_info_launch_default_for_uri(
           this.urlToOpen,
           Shell.Global.get().create_app_launch_context(0, -1),
@@ -155,6 +154,46 @@ class ImageOpenSection extends PopupMenuSection {
   }
 }
 
+interface RefreshMenuSectionSignals extends PopupMenuSection {
+  readonly "activated::refresh": [];
+  readonly "activated::cancel-refresh": [];
+}
+
+class RefreshImageSection extends PopupMenuSection<RefreshMenuSectionSignals> {
+  private readonly refresh: PopupMenuItem;
+
+  private refreshAction: "refresh" | "cancel-refresh" = "refresh";
+
+  constructor() {
+    super();
+    this.refresh = new PopupMenuItem("");
+    this.addMenuItem(this.refresh);
+    // Initially assume we're in completed state to allow the user to refresh
+    // manually
+    this.updateRefreshState("completed");
+    this.refresh.connect("activate", () => {
+      switch (this.refreshAction) {
+        case "refresh":
+          this.emit("activated::refresh");
+          break;
+        case "cancel-refresh":
+          this.emit("activated::cancel-refresh");
+          break;
+      }
+    });
+  }
+
+  updateRefreshState(state: RefreshState): void {
+    if (state === "ongoing") {
+      this.refresh.label.set_text(_("Cancel refresh…"));
+      this.refreshAction = "cancel-refresh";
+    } else {
+      this.refresh.label.set_text(_("Refresh"));
+      this.refreshAction = "refresh";
+    }
+  }
+}
+
 /**
  * The main indicator of this extension.
  */
@@ -172,9 +211,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
   {
     private readonly imageInfoSection: ImageInfoSection;
     private readonly imageOpenSection: ImageOpenSection;
-    private readonly refresh: PopupMenuItem;
-
-    private refreshAction: "refresh" | "cancel-refresh" = "refresh";
+    private readonly refreshImageSection: RefreshImageSection;
 
     constructor(iconLoader: IconLoader) {
       super(0, "PictureOfTheDayIndicator", false);
@@ -187,23 +224,16 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
 
       this.imageInfoSection = new ImageInfoSection();
       this.imageOpenSection = new ImageOpenSection();
-
-      const refreshItems = new PopupMenuSection();
-      this.refresh = new PopupMenuItem("");
-      refreshItems.addMenuItem(this.refresh);
-      // Initially assume we're in completed state to allow the user to refresh
-      // manually
-      this.updateRefreshState("completed");
-      this.refresh.connect("activate", () => {
-        switch (this.refreshAction) {
-          case "refresh":
-            this.emit("activated::refresh");
-            break;
-          case "cancel-refresh":
-            this.emit("activated::cancel-refresh");
-            break;
-        }
+      this.refreshImageSection = new RefreshImageSection();
+      this.refreshImageSection.connect("activated::refresh", (): undefined => {
+        this.emit("activated::refresh");
       });
+      this.refreshImageSection.connect(
+        "activated::cancel-refresh",
+        (): undefined => {
+          this.emit("activated::cancel-refresh");
+        },
+      );
 
       const generalItems = new PopupMenuSection();
       generalItems.addAction(_("Preferences"), () => {
@@ -213,7 +243,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
       for (const section of [
         this.imageInfoSection,
         new PopupSeparatorMenuItem(),
-        refreshItems,
+        this.refreshImageSection,
         new PopupSeparatorMenuItem(),
         this.imageOpenSection,
         new PopupSeparatorMenuItem(),
@@ -224,13 +254,7 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
     }
 
     updateRefreshState(state: RefreshState): void {
-      if (state === "ongoing") {
-        this.refresh.label.set_text(_("Cancel refresh…"));
-        this.refreshAction = "cancel-refresh";
-      } else {
-        this.refresh.label.set_text(_("Refresh"));
-        this.refreshAction = "refresh";
-      }
+      this.refreshImageSection.updateRefreshState(state);
     }
 
     showImageMetadata(image: ImageFile): void {

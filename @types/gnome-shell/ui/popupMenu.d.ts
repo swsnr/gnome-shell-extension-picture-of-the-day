@@ -21,23 +21,28 @@ import St from "gi://St";
 import Clutter from "gi://Clutter";
 import Gio from "gi://Gio";
 
-export declare class PopupBaseMenuItem extends St.BoxLayout {}
-
-export declare class PopupMenuItem extends PopupBaseMenuItem {
-  constructor(text: string, params?: unknown);
-
-  label: St.Label;
-}
+import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 // PopupMenuBase.addMenuItem checks these types quite explicitly
 export type PopupMenuItemType =
   // eslint-disable-next-line no-use-before-define
   | PopupMenuSection
   // eslint-disable-next-line no-use-before-define
+  | PopupSubMenuMenuItem
+  // eslint-disable-next-line no-use-before-define
   | PopupSeparatorMenuItem
+  // eslint-disable-next-line no-use-before-define
   | PopupBaseMenuItem;
 
-export declare class PopupMenuBase {
+export interface PopupMenuBaseSignals {
+  readonly "notify::sensitive": [];
+  readonly "active-changed": [item: PopupMenuItemType];
+  readonly destroy: [];
+}
+
+export declare class PopupMenuBase<
+  Signals = PopupMenuBaseSignals,
+> extends EventEmitter<Signals> {
   removeAll(): void;
 
   addMenuItem(item: PopupMenuItemType, position?: number): void;
@@ -47,6 +52,40 @@ export declare class PopupMenuBase {
     callback: (event: Clutter.Event) => void,
     icon?: string | Gio.Icon,
   ): void;
+}
+
+export interface PopupMenuSignals extends PopupMenuBaseSignals {
+  readonly "open-state-changed": [isOpen: boolean];
+}
+
+export declare class PopupMenu<
+  Signals = PopupMenuSignals,
+> extends PopupMenuBase<Signals> {}
+
+export interface PopupSubMenuSignals extends PopupMenuBaseSignals {
+  readonly "open-state-changed": [isOpen: boolean];
+}
+
+export declare class PopupSubMenu<
+  Signals = PopupSubMenuSignals,
+> extends PopupMenuBase<Signals> {}
+
+export interface PopupMenuSectionSignals extends PopupMenuBaseSignals {
+  readonly "open-state-changed": [isOpen: boolean];
+}
+
+export declare class PopupMenuSection<
+  Signals = PopupMenuSectionSignals,
+> extends PopupMenuBase<Signals> {
+  constructor();
+}
+
+export declare class PopupBaseMenuItem extends St.BoxLayout {}
+
+export declare class PopupMenuItem extends PopupBaseMenuItem {
+  constructor(text: string, params?: unknown);
+
+  label: St.Label;
 }
 
 export declare class PopupImageMenuItem extends PopupBaseMenuItem {
@@ -59,8 +98,8 @@ export declare class PopupSeparatorMenuItem extends PopupBaseMenuItem {
   constructor(text?: string);
 }
 
-export declare class PopupMenu extends PopupMenuBase {}
+export declare class PopupSubMenuMenuItem extends PopupBaseMenuItem {
+  constructor(text?: string, wantIcon?: boolean);
 
-export declare class PopupMenuSection extends PopupMenuBase {
-  constructor();
+  readonly menu: PopupSubMenu;
 }
