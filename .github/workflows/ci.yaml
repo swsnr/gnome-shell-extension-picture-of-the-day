@@ -65,7 +65,8 @@ jobs:
         with:
           path: dist
           name: dist
-      - run: |
+      - name: "ego-upload picture-of-the-day@swsnr.de.shell-extension.zip"
+        run: |
           deno run \
             --allow-read \
             --allow-env=EGO_USERNAME,EGO_PASSWORD \
