@@ -17,14 +17,12 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import APOD from "./apod.js";
-import EOPOD from "./eopod.js";
-import Bing from "./bing.js";
-import Wikimedia from "./wikimedia.js";
+import { SourceMetadata } from "../../source/metadata.js";
 
-/**
- * All registered sources.
- */
-export const sources = [APOD, EOPOD, Bing, Wikimedia];
+const metadata: SourceMetadata = {
+  key: "wikimedia",
+  name: "Wikimedia Picture of the day",
+  website: "https://commons.wikimedia.org/wiki/Main_Page",
+};
 
-export default sources;
+export default metadata;
