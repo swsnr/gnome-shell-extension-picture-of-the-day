@@ -122,6 +122,9 @@ class EnabledExtension implements Destructible {
       (_selector, source): undefined => {
         this.updateDownloader();
         this.indicator.updateSelectedSource(source.metadata);
+        // Refresh immediately; the source only ever changes when the user
+        // explicitly asked for it to change.
+        this.refreshAfterUserAction();
       },
     );
 
@@ -168,11 +171,7 @@ class EnabledExtension implements Destructible {
     });
     this.indicator.connect("activated::refresh", () => {
       console.log("Refresh emitted");
-      this.refreshService.refresh().catch((error) => {
-        // For any refresh triggered manually we always show any error, including
-        // network errors.
-        this.errorHandler.showError(error);
-      });
+      this.refreshAfterUserAction();
     });
     this.indicator.connect("activated::cancel-refresh", () => {
       void this.refreshService.cancelRefresh();
@@ -201,6 +200,18 @@ class EnabledExtension implements Destructible {
         launchSettingsPanel("network");
       },
     );
+  }
+
+  /**
+   * Trigger an immediate refresh after a user action.
+   *
+   * Unlike scheduled refreshes we immediately show all errors, and do not handle
+   * intermittent network errors in any special way.
+   */
+  private refreshAfterUserAction(): void {
+    this.refreshService.refresh().catch((error) => {
+      this.errorHandler.showError(error);
+    });
   }
 
   /**
