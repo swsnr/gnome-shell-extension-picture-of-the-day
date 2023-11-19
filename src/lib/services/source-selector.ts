@@ -61,8 +61,10 @@ export class SourceSelector
   }
 
   selectSource(key: string): void {
-    this._selectedSource = findSourceByKey(key);
-    this.emit("source-changed", this._selectedSource);
+    if (this._selectedSource.metadata.key !== key) {
+      this._selectedSource = findSourceByKey(key);
+      this.emit("source-changed", this._selectedSource);
+    }
   }
 
   get selectedSource(): Source {
