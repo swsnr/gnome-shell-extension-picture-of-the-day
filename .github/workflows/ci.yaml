@@ -65,13 +65,13 @@ jobs:
         with:
           path: dist
           name: dist
-      - run: >-
-          deno run
-            --allow-read
-            --allow-env=EGO_USERNAME,EGO_PASSWORD
-            --allow-net=extensions.gnome.org
-            https://raw.githubusercontent.com/swsnr/ego-upload/v1.1.0/ego-upload.ts
-            -c ./.ego-confirmation.json
+      - run: |
+          deno run \
+            --allow-read \
+            --allow-env=EGO_USERNAME,EGO_PASSWORD \
+            --allow-net=extensions.gnome.org \
+            https://raw.githubusercontent.com/swsnr/ego-upload/v1.1.0/ego-upload.ts \
+            -c ./.ego-confirmation.json \
             ./dist/picture-of-the-day@swsnr.de.shell-extension.zip
         env:
           EGO_USERNAME: ${{ secrets.EGO_USERNAME }}
