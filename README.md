@@ -16,7 +16,6 @@ Use a picture of the day from various sources as GNOME desktop background.
 - [NASA Earth Observatory Image of the Day](https://earthobservatory.nasa.gov/topic/image-of-the-day)
 - [Bing](https://www.bing.com)
 - [Wikimedia](https://commons.wikimedia.org/wiki/Main_Page)
-- [More to come](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/issues/2)
 
 ## Install
 
