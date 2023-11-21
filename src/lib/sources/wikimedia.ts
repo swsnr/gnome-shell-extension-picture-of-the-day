@@ -73,10 +73,12 @@ const getFeaturedContent = async (
   date: GLib.DateTime,
   cancellable: Gio.Cancellable,
 ): Promise<FeaturedContentResponse> => {
-  // TODO: Extract from locale
-  const languageCode = "en";
+  // Extract the language code from the locale, and fall back to English.
+  const locales = GLib.get_language_names_with_category("LC_MESSAGES");
+  const languageCode = locales[0]?.split("_")[0] ?? "en";
   const urlDate = date.format("%Y/%m/%d");
   const url = `https://api.wikimedia.org/feed/v1/wikipedia/${languageCode}/featured/${urlDate}`;
+  console.log(`Fetching featured content from ${url}`);
   const response = await getJSON(session, url, cancellable);
   return response as FeaturedContentResponse;
 };
