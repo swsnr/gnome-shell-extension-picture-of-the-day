@@ -174,3 +174,36 @@ export const innerText = (e: Element): string =>
       }
     })
     .join("");
+
+/**
+ * Get all classes of an element.
+ *
+ * @param e The element
+ * @returns All classes on the element
+ */
+export const classes = (e: Element): string[] =>
+  (e.attributes["class"] ?? "").split(/\s+/).filter((s) => 0 < s.length);
+
+/**
+ * Recursively find the first element within `e`, including `e`, itself which has the given `className`.
+ *
+ * @param e The element
+ * @param className The class name to look for
+ * @returns The first element with the given class if any.
+ */
+export const findFirstByClassName = (
+  e: Element,
+  className: string,
+): Element | undefined => {
+  if (classes(e).includes(className)) {
+    return e;
+  } else {
+    for (const child of e.children.filter(isElement)) {
+      const target = findFirstByClassName(child, className);
+      if (typeof target !== "undefined") {
+        return target;
+      }
+    }
+  }
+  return undefined;
+};
