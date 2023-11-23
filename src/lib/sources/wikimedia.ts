@@ -124,7 +124,7 @@ export const downloadFactory: SimpleDownloadImageFactory = {
 };
 
 /**
- * A source for images from EOPOD.
+ * A source for images from Wikimedia.
  */
 export const source: Source = {
   metadata,
