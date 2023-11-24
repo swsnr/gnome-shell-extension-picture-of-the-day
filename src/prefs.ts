@@ -121,13 +121,12 @@ const SourcesPage = GObject.registerClass(
         }),
       );
 
-      // TODO: We should find a way to make this more elegant
-      const values = Array.from(buttons.values());
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const firstButton = values[0]!.button;
-      values.slice(1).forEach(({ button }) => {
-        button.group = firstButton;
-      });
+      Array.from(buttons.values())
+        .map(({ button }) => button)
+        .reduce((group, button) => {
+          button.group = group;
+          return group;
+        });
 
       const selectedKey = this.settings.extension.get_string("selected-source");
       if (selectedKey === null) {
