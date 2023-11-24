@@ -72,6 +72,8 @@ class ImageInfoSection extends PopupMenuSection {
     this.description.label.clutter_text.line_wrap = true;
 
     this.copyright = new PopupMenuItem("");
+    this.copyright.style = "max-width: 400px";
+    this.copyright.label.clutter_text.line_wrap = true;
 
     for (const item of this.allItems) {
       item.set_reactive(false);
