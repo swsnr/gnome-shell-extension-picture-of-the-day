@@ -6,7 +6,7 @@ template $SourcesPage: Adw.PreferencesPage {
   description: _("Configure sources for the Picture of the Day.");
   icon-name: "picture-of-the-day-symbolic";
 
-  Adw.PreferencesGroup general {
+  Adw.PreferencesGroup {
     Adw.ExpanderRow sourcesRow {
       title: _("Selected source");
       styles ["property"]
@@ -14,6 +14,25 @@ template $SourcesPage: Adw.PreferencesPage {
 
     Adw.SwitchRow refreshAutomatically {
       title: _("Refresh automatically");
+    }
+  }
+
+  Adw.PreferencesGroup {
+    Adw.ActionRow downloadFolder {
+      title: _("Custom download folder");
+      styles ["property"]
+
+      [suffix]
+      Gtk.Button selectDownloadFolder {
+        icon-name: "folder-open-symbolic";
+        styles ["flat"]
+      }
+
+      [suffix]
+      Gtk.Button resetDownloadFolder {
+        icon-name: "edit-clear-symbolic";
+        styles ["flat"]
+      }
     }
   }
 
