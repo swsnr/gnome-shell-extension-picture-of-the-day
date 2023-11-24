@@ -25,7 +25,6 @@ import type { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/e
 
 import metadata from "./metadata/bing.js";
 import {
-  DownloadDirectories,
   DownloadImage,
   ImageFile,
   SimpleDownloadImageFactory,
@@ -117,14 +116,14 @@ export const downloadFactory: SimpleDownloadImageFactory = {
   type: "simple",
   create(
     extensionMetadata: ExtensionMetadata,
-    directories: DownloadDirectories,
+    downloadDirectory: Gio.File,
   ): DownloadImage {
     const session = createSession(extensionMetadata);
 
     return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
       const image = await getTodaysImage(session, cancellable);
       const id = decodeQuery(image.imageUrl)["id"];
-      return downloadImage(session, directories, cancellable, image, id);
+      return downloadImage(session, downloadDirectory, cancellable, image, id);
     };
   },
 };

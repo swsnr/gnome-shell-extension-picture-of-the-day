@@ -20,7 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { DownloadDirectories, ImageFile, ImageMetadata } from "../source.js";
+import { ImageFile, ImageMetadata } from "../source.js";
 import { downloadToFile } from "../network/http.js";
 
 /**
@@ -62,14 +62,14 @@ const guessFilename = (image: DownloadableImage): string => {
  */
 export const downloadImage = async (
   session: Soup.Session,
-  directories: DownloadDirectories,
+  downloadDirectory: Gio.File,
   cancellable: Gio.Cancellable,
   image: DownloadableImage,
   title?: string,
 ): Promise<ImageFile> => {
   // Replace directory separators and new lines in the file name.
   const filename = title ?? guessFilename(image);
-  const targetFile = directories.imageDirectory.get_child(
+  const targetFile = downloadDirectory.get_child(
     `${image.pubdate}-${filename}`,
   );
   console.log(

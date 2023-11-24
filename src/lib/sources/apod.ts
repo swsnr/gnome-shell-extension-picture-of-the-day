@@ -23,7 +23,6 @@ import Soup from "gi://Soup";
 import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import {
-  DownloadDirectories,
   DownloadImage,
   DownloadImageFactoryWithSettings,
   ImageFile,
@@ -172,7 +171,7 @@ export const downloadFactory: DownloadImageFactoryWithSettings = {
   create(
     extensionMetadata: ExtensionMetadata,
     settings: Gio.Settings,
-    directories: DownloadDirectories,
+    downloadDirectory: Gio.File,
   ): DownloadImage {
     const session = createSession(extensionMetadata);
 
@@ -209,7 +208,7 @@ export const downloadFactory: DownloadImageFactoryWithSettings = {
 
       return downloadImage(
         session,
-        directories,
+        downloadDirectory,
         cancellable,
         downloadableImage,
       );

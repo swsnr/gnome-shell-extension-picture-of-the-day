@@ -79,31 +79,6 @@ export type DownloadImage = (
 ) => Promise<ImageFile>;
 
 /**
- * Directories where sources can store data.
- */
-export interface DownloadDirectories {
-  /**
-   * The directory to cache ephemeral data in.
-   */
-  readonly cacheDirectory: Gio.File;
-
-  /**
-   * The directory for the actual images.
-   *
-   * This is a user-visible directory, e.g. under the user's image directory,
-   * so it should only contain human readable data.
-   */
-  readonly imageDirectory: Gio.File;
-
-  /**
-   * The directory to store download state in.
-   *
-   * This directory
-   */
-  readonly stateDirectory: Gio.File;
-}
-
-/**
  * A simple download factory which requires no settings.
  */
 export interface SimpleDownloadImageFactory {
@@ -112,12 +87,12 @@ export interface SimpleDownloadImageFactory {
    * Create the download function.
    *
    * @param metadata The extension metadata
-   * @param directories The directories to use for downloading
+   * @param downloadDirectory The directory to download the image to
    * @returns The download function
    */
   readonly create: (
     metadata: ExtensionMetadata,
-    directories: DownloadDirectories,
+    downloadDirectory: Gio.File,
   ) => DownloadImage;
 }
 
@@ -131,12 +106,12 @@ export interface DownloadImageFactoryWithSettings {
    *
    * @param metadata Metadata about this extension, to use e.g. in User-Agent strings.
    * @param settings Settings to create the download function with
-   * @param targetDirectory The target directory to download the image to.
+   * @param downloadDirectory The directory to download the image to
    */
   readonly create: (
     extensionMetadata: ExtensionMetadata,
     settings: Gio.Settings,
-    directories: DownloadDirectories,
+    downloadDirectory: Gio.File,
   ) => DownloadImage;
 }
 

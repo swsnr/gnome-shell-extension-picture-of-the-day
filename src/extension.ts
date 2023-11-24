@@ -24,7 +24,7 @@ import Soup from "gi://Soup";
 import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-import { DownloadDirectories, DownloadImage, Source } from "./lib/source.js";
+import { DownloadImage, Source } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
 import { RefreshService } from "./lib/services/refresh.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
@@ -54,7 +54,7 @@ class EnabledExtension implements Destructible {
   private readonly indicator: PictureOfTheDayIndicator;
 
   private readonly settings: Gio.Settings;
-  private readonly baseDirectories: DownloadDirectories;
+  private readonly downloadBaseDirectory: Gio.File;
 
   private readonly refreshService: RefreshService = new RefreshService();
   private readonly desktopBackgroundService: DesktopBackgroundService =
@@ -70,7 +70,10 @@ class EnabledExtension implements Destructible {
   constructor(private readonly extension: Extension) {
     // Our settings
     this.settings = extension.getSettings();
-    this.baseDirectories = this.getBaseDirectories();
+    const stateDirectory = Gio.File.new_for_path(GLib.get_user_state_dir());
+    this.downloadBaseDirectory = stateDirectory
+      .get_child(this.extension.metadata.uuid)
+      .get_child("images");
 
     // Some additional infrastructure.
     const iconLoader = new ExtensionIcons(
@@ -215,29 +218,11 @@ class EnabledExtension implements Destructible {
   }
 
   /**
-   * Get the base directories this extension should use for storage.
-   *
-   * @returns The base directories for this extension.
-   */
-  private getBaseDirectories(): DownloadDirectories {
-    const stateDirectory = Gio.File.new_for_path(
-      GLib.get_user_state_dir(),
-    ).get_child(this.extension.metadata.uuid);
-    return {
-      stateDirectory: stateDirectory.get_child("sources"),
-      cacheDirectory: Gio.File.new_for_path(
-        GLib.get_user_cache_dir(),
-      ).get_child(this.extension.metadata.uuid),
-      imageDirectory: stateDirectory.get_child("images"),
-    };
-  }
-
-  /**
    * Create the download function to use and update the refresh service.
    */
   private updateDownloader(): void {
     const downloader = this.createDownloader(
-      this.baseDirectories,
+      this.downloadBaseDirectory,
       this.sourceSelector.selectedSource,
     );
     this.refreshService.setDownloader(downloader);
@@ -246,33 +231,24 @@ class EnabledExtension implements Destructible {
   /**
    * Create the download function to use.
    *
-   * @param baseDirectories The base directories from which to derive the directories the source can use to store data
+   * @param downloadBaseDirectory The base download directory
    * @param source The selected source
    * @returns A function to download images from the source
    */
   // eslint-disable-next-line consistent-return
   private createDownloader(
-    baseDirectories: DownloadDirectories,
+    downloadBaseDirectory: Gio.File,
     source: Source,
   ): DownloadImage {
-    const directories: DownloadDirectories = {
-      stateDirectory: baseDirectories.stateDirectory.get_child(
-        source.metadata.key,
-      ),
-      cacheDirectory: baseDirectories.cacheDirectory.get_child(
-        source.metadata.key,
-      ),
-      // For the user visible image directory we use a human-readable name.
-      imageDirectory: baseDirectories.imageDirectory.get_child(
-        source.metadata.name,
-      ),
-    };
+    const downloadDirectory = downloadBaseDirectory.get_child(
+      source.metadata.name,
+    );
 
     switch (source.downloadFactory.type) {
       case "simple":
         return source.downloadFactory.create(
           this.extension.metadata,
-          directories,
+          downloadDirectory,
         );
       case "needs_settings": {
         const settings = this.extension.getSettings(
@@ -283,7 +259,7 @@ class EnabledExtension implements Destructible {
         return source.downloadFactory.create(
           this.extension.metadata,
           settings,
-          directories,
+          downloadDirectory,
         );
       }
     }

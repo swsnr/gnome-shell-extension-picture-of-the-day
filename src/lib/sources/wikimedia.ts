@@ -24,7 +24,6 @@ import Soup from "gi://Soup";
 import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import {
-  DownloadDirectories,
   DownloadImage,
   ImageFile,
   SimpleDownloadImageFactory,
@@ -112,13 +111,13 @@ export const downloadFactory: SimpleDownloadImageFactory = {
   type: "simple",
   create(
     extensionMetadata: ExtensionMetadata,
-    directories: DownloadDirectories,
+    downloadDirectory: Gio.File,
   ): DownloadImage {
     const session = createSession(extensionMetadata);
 
     return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
       const image = await getLatestImage(session, cancellable);
-      return downloadImage(session, directories, cancellable, image);
+      return downloadImage(session, downloadDirectory, cancellable, image);
     };
   },
 };
