@@ -54,7 +54,6 @@ class EnabledExtension implements Destructible {
   private readonly indicator: PictureOfTheDayIndicator;
 
   private readonly settings: Gio.Settings;
-  private readonly downloadBaseDirectory: Gio.File;
 
   private readonly refreshService: RefreshService = new RefreshService();
   private readonly desktopBackgroundService: DesktopBackgroundService =
@@ -70,10 +69,6 @@ class EnabledExtension implements Destructible {
   constructor(private readonly extension: Extension) {
     // Our settings
     this.settings = extension.getSettings();
-    const stateDirectory = Gio.File.new_for_path(GLib.get_user_state_dir());
-    this.downloadBaseDirectory = stateDirectory
-      .get_child(this.extension.metadata.uuid)
-      .get_child("images");
 
     // Some additional infrastructure.
     const iconLoader = new ExtensionIcons(
@@ -116,7 +111,6 @@ class EnabledExtension implements Destructible {
       throw new Error("Current source 'null'?");
     }
     this.sourceSelector = SourceSelector.forKey(currentSource);
-    this.updateDownloader();
     this.indicator.updateSelectedSource(
       this.sourceSelector.selectedSource.metadata,
     );
@@ -130,6 +124,17 @@ class EnabledExtension implements Destructible {
         this.refreshAfterUserAction();
       },
     );
+
+    // Listen to changes in the download directory
+    this.trackedSignalConnections.track(
+      this.settings,
+      this.settings.connect("changed::image-download-folder", () => {
+        this.updateDownloader();
+      }),
+    );
+
+    // Initialize the downloader for the current source
+    this.updateDownloader();
 
     // Setup automatic refreshing
     this.refreshScheduler = new RefreshScheduler(
@@ -221,8 +226,17 @@ class EnabledExtension implements Destructible {
    * Create the download function to use and update the refresh service.
    */
   private updateDownloader(): void {
+    const customImageUri = this.settings
+      .get_value("image-download-folder")
+      .deepUnpack<string | null>();
+    const downloadDirectory =
+      customImageUri === null
+        ? Gio.File.new_for_path(GLib.get_user_state_dir())
+            .get_child(this.extension.metadata.uuid)
+            .get_child("images")
+        : Gio.File.new_for_uri(customImageUri);
     const downloader = this.createDownloader(
-      this.downloadBaseDirectory,
+      downloadDirectory,
       this.sourceSelector.selectedSource,
     );
     this.refreshService.setDownloader(downloader);

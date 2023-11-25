@@ -26,11 +26,14 @@ import Adw from "gi://Adw";
 import {
   ExtensionPreferences,
   ExtensionMetadata,
+  gettext as _,
 } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 import apod from "./lib/sources/metadata/apod.js";
 import SOURCES from "./lib/sources/metadata/sources.js";
 import { SourceMetadata } from "./lib/source.js";
+
+Gio._promisify(Gtk.FileDialog.prototype, "select_folder");
 
 const LICENSE = `Copyright Sebastian Wiesner <sebastian@swsnr.de>
 
@@ -73,6 +76,9 @@ interface SourcesPageProperties {
   readonly _apodGroup: Adw.PreferencesGroup;
   readonly _apodApiKey: Adw.EntryRow;
   readonly _refreshAutomatically: Adw.SwitchRow;
+  readonly _downloadFolder: Adw.ActionRow;
+  readonly _selectDownloadFolder: Gtk.Button;
+  readonly _resetDownloadFolder: Gtk.Button;
 }
 
 const SourcesPage = GObject.registerClass(
@@ -84,6 +90,9 @@ const SourcesPage = GObject.registerClass(
       "apodApiKey",
       "sourcesRow",
       "refreshAutomatically",
+      "downloadFolder",
+      "selectDownloadFolder",
+      "resetDownloadFolder",
     ],
   },
   class SourcesPage extends Adw.PreferencesPage {
@@ -99,6 +108,37 @@ const SourcesPage = GObject.registerClass(
       this._sourcesRow.set_subtitle(
         `<a href="${source.website}">${source.name}</a>`,
       );
+    }
+
+    private showDownloadFolder(this: SourcesPage & SourcesPageProperties) {
+      const downloadDirectory = this.settings.extension
+        .get_value("image-download-folder")
+        .deepUnpack<string | null>();
+      this._downloadFolder.set_subtitle(
+        downloadDirectory ?? _("XDG State directory"),
+      );
+    }
+
+    private async selectDownloadDirectory(
+      this: SourcesPage & SourcesPageProperties,
+    ): Promise<void> {
+      // ts-for-gir doesn't recognize "select_folder" as async function, so we
+      // have to convince typescript explicitly that we have a promise here.
+      const dialog = Gtk.FileDialog.new();
+      dialog.accept_label = _("Select download folder");
+      const picturesDirectory = GLib.get_user_special_dir(
+        GLib.UserDirectory.DIRECTORY_PICTURES,
+      );
+      if (picturesDirectory) {
+        dialog.initial_folder = Gio.file_new_for_path(picturesDirectory);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
+      const file = await (dialog.select_folder(
+        this.root as Gtk.Window,
+        null,
+      ) as unknown as Promise<Gio.File>);
+      const value = new GLib.Variant("ms", file.get_uri());
+      this.settings.extension.set_value("image-download-folder", value);
     }
 
     private initialize(this: SourcesPage & SourcesPageProperties): void {
@@ -149,6 +189,29 @@ const SourcesPage = GObject.registerClass(
         }
         this.showSelectedSource(item.source);
         item.button.set_active(true);
+      });
+
+      this.showDownloadFolder();
+      this.settings.extension.connect("changed::image-download-folder", () => {
+        this.showDownloadFolder();
+      });
+      this._resetDownloadFolder.connect("clicked", () => {
+        this.settings.extension.reset("image-download-folder");
+      });
+      this._selectDownloadFolder.connect("clicked", () => {
+        this.selectDownloadDirectory().catch((error) => {
+          if (
+            error instanceof GLib.Error &&
+            error.matches(
+              Gtk.DialogError as unknown as number,
+              Gtk.DialogError.DISMISSED,
+            )
+          ) {
+            // The user dismissed the dialog; we'll do nothing in this case.
+          } else {
+            throw error;
+          }
+        });
       });
 
       this.settings.extension.bind(

@@ -11,6 +11,14 @@
       <default>true</default>
       <description>Whether to refresh the picture of the day automatically</description>
     </key>
+    <key name="image-download-folder" type="ms">
+      <default>nothing</default>
+      <description>
+      Custom download folder for images, as URI.
+
+      If empty, use the XDG state directory for image files.
+      </description>
+    </key>
     <key name="current-metadata" type="s">
       <default>""</default>
       <description>

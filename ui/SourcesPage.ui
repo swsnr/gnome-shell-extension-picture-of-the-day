@@ -6,7 +6,7 @@
     <property name="description" translatable="true">Configure sources for the Picture of the Day.</property>
     <property name="icon-name">picture-of-the-day-symbolic</property>
     <child>
-      <object class="AdwPreferencesGroup" id="general">
+      <object class="AdwPreferencesGroup">
         <child>
           <object class="AdwExpanderRow" id="sourcesRow">
             <property name="title" translatable="true">Selected source</property>
@@ -18,6 +18,34 @@
         <child>
           <object class="AdwSwitchRow" id="refreshAutomatically">
             <property name="title" translatable="true">Refresh automatically</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <child>
+          <object class="AdwActionRow" id="downloadFolder">
+            <property name="title" translatable="true">Custom download folder</property>
+            <style>
+              <class name="property"/>
+            </style>
+            <child type="suffix">
+              <object class="GtkButton" id="selectDownloadFolder">
+                <property name="icon-name">folder-open-symbolic</property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+            <child type="suffix">
+              <object class="GtkButton" id="resetDownloadFolder">
+                <property name="icon-name">edit-clear-symbolic</property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>
