@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-18 19:51+0100\n"
+"POT-Creation-Date: 2023-11-25 08:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,33 +44,33 @@ msgctxt "Error Dialog"
 msgid "Close"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:118
+#: src/lib/ui/indicator.ts:120
 #, javascript-format
 msgid "Copyright %s"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:135
+#: src/lib/ui/indicator.ts:137
 msgid "Open image"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:144
+#: src/lib/ui/indicator.ts:146
 msgid "Open image folder"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:202
+#: src/lib/ui/indicator.ts:204
 #, javascript-format
 msgid "Source: %s"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:207
+#: src/lib/ui/indicator.ts:209
 msgid "Cancel refresh…"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:210
+#: src/lib/ui/indicator.ts:212
 msgid "Refresh"
 msgstr ""
 
-#: src/lib/ui/indicator.ts:267
+#: src/lib/ui/indicator.ts:269
 msgid "Preferences"
 msgstr ""
 
@@ -183,6 +183,14 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
+#: src/prefs.ts:118
+msgid "XDG State directory"
+msgstr ""
+
+#: src/prefs.ts:128
+msgid "Select download folder"
+msgstr ""
+
 #: ui/AboutPage.blp:5
 msgid "About"
 msgstr ""
@@ -218,9 +226,13 @@ msgid "Refresh automatically"
 msgstr ""
 
 #: ui/SourcesPage.blp:22
+msgid "Custom download folder"
+msgstr ""
+
+#: ui/SourcesPage.blp:41
 msgid "API key"
 msgstr ""
 
-#: ui/SourcesPage.blp:26
+#: ui/SourcesPage.blp:45
 msgid "Get API key"
 msgstr ""

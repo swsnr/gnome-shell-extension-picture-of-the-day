@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-18 19:51+0100\n"
+"POT-Creation-Date: 2023-11-25 08:57+0100\n"
 "PO-Revision-Date: 2023-11-18 19:52+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -48,33 +48,33 @@ msgctxt "Error Dialog"
 msgid "Close"
 msgstr "Schließen"
 
-#: src/lib/ui/indicator.ts:118
+#: src/lib/ui/indicator.ts:120
 #, javascript-format
 msgid "Copyright %s"
 msgstr "Urheberrecht: %s"
 
-#: src/lib/ui/indicator.ts:135
+#: src/lib/ui/indicator.ts:137
 msgid "Open image"
 msgstr "Bild öffnen"
 
-#: src/lib/ui/indicator.ts:144
+#: src/lib/ui/indicator.ts:146
 msgid "Open image folder"
 msgstr "Bildverzeichnis öffnen"
 
-#: src/lib/ui/indicator.ts:202
+#: src/lib/ui/indicator.ts:204
 #, javascript-format
 msgid "Source: %s"
 msgstr "Quelle: %s"
 
-#: src/lib/ui/indicator.ts:207
+#: src/lib/ui/indicator.ts:209
 msgid "Cancel refresh…"
 msgstr "Aktualisierung abbrechen…"
 
-#: src/lib/ui/indicator.ts:210
+#: src/lib/ui/indicator.ts:212
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: src/lib/ui/indicator.ts:267
+#: src/lib/ui/indicator.ts:269
 msgid "Preferences"
 msgstr "Einstellungen"
 
@@ -205,6 +205,14 @@ msgstr "Leider scheint ein Fehler aufgetreten zu sein."
 msgid "Details"
 msgstr "Details"
 
+#: src/prefs.ts:118
+msgid "XDG State directory"
+msgstr ""
+
+#: src/prefs.ts:128
+msgid "Select download folder"
+msgstr ""
+
 #: ui/AboutPage.blp:5
 msgid "About"
 msgstr "Über"
@@ -240,9 +248,13 @@ msgid "Refresh automatically"
 msgstr "Automatisch aktualisieren"
 
 #: ui/SourcesPage.blp:22
+msgid "Custom download folder"
+msgstr ""
+
+#: ui/SourcesPage.blp:41
 msgid "API key"
 msgstr "API Schlüssel"
 
-#: ui/SourcesPage.blp:26
+#: ui/SourcesPage.blp:45
 msgid "Get API key"
 msgstr "API Schlüssel erhalten"
