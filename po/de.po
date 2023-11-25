@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-25 08:57+0100\n"
-"PO-Revision-Date: 2023-11-18 19:52+0100\n"
+"PO-Revision-Date: 2023-11-25 08:58+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -207,11 +207,11 @@ msgstr "Details"
 
 #: src/prefs.ts:118
 msgid "XDG State directory"
-msgstr ""
+msgstr "XDG Zustandsverzeichnis"
 
 #: src/prefs.ts:128
 msgid "Select download folder"
-msgstr ""
+msgstr "Download-Ordner auswählen"
 
 #: ui/AboutPage.blp:5
 msgid "About"
@@ -249,7 +249,7 @@ msgstr "Automatisch aktualisieren"
 
 #: ui/SourcesPage.blp:22
 msgid "Custom download folder"
-msgstr ""
+msgstr "Benutzerdefinierter Download-Ordner"
 
 #: ui/SourcesPage.blp:41
 msgid "API key"
