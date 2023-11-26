@@ -39,6 +39,7 @@ import {
   SignalConnectionTracker,
   SignalDisconnectable,
 } from "./lib/util/lifecycle.js";
+import { TimerRegistry } from "./lib/services/timer-registry.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -62,6 +63,7 @@ class EnabledExtension implements Destructible {
   private readonly errorHandler: RefreshErrorHandler;
   private readonly sourceSelector: SourceSelector;
   private readonly refreshScheduler: RefreshScheduler;
+  private readonly timerRegistry: TimerRegistry = new TimerRegistry();
 
   private readonly trackedSignalConnections: SignalConnectionTracker =
     new SignalConnectionTracker();
@@ -140,6 +142,7 @@ class EnabledExtension implements Destructible {
     this.refreshScheduler = new RefreshScheduler(
       this.refreshService,
       this.errorHandler,
+      this.timerRegistry,
     );
     // Restore and persist the last schedule refresh.
     const lastRefresh = this.settings.get_string("last-scheduled-refresh");
@@ -293,6 +296,7 @@ class EnabledExtension implements Destructible {
       this.indicator,
       this.refreshService,
       this.refreshScheduler,
+      this.timerRegistry,
     ];
 
     // Disconnect all signals on our services, to free all references to the

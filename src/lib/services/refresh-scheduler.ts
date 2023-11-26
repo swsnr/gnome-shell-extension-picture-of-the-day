@@ -27,6 +27,7 @@ import { HttpRequestError } from "../network/http.js";
 import { RateLimitedError } from "../source/errors.js";
 import { RefreshErrorHandler } from "./refresh-error-handler.js";
 import { Destructible, SignalDisconnectable } from "../util/lifecycle.js";
+import { Timer, TimerRegistry } from "./timer-registry.js";
 
 interface RefreshSchedulerSignals {
   "refresh-completed": [timestamp: GLib.DateTime];
@@ -51,19 +52,20 @@ export class RefreshScheduler
   implements SignalDisconnectable, Destructible
 {
   lastRefresh: GLib.DateTime | null = null;
-  private timerSourceTag: number | null = null;
+  private timer: Timer | null = null;
   private errorRefreshCount = 0;
 
   constructor(
     private readonly refresh: RefreshService,
     private readonly errorHandler: RefreshErrorHandler,
+    private readonly timerRegistry: TimerRegistry,
   ) {
     super();
   }
 
   /** Start refreshing on schedule. */
   start(): void {
-    if (this.timerSourceTag !== null) {
+    if (this.timer !== null) {
       /// We're already running
       return;
     }
@@ -99,10 +101,8 @@ export class RefreshScheduler
 
   /** Stop schedule refreshes. */
   stop(): void {
-    if (this.timerSourceTag !== null) {
-      GLib.source_remove(this.timerSourceTag);
-      this.timerSourceTag = null;
-    }
+    this.timer?.stop();
+    this.timer = null;
   }
 
   /**
@@ -114,7 +114,9 @@ export class RefreshScheduler
     this.stop();
   }
 
-  private doRefresh(): boolean {
+  private doRefresh(): void {
+    // After this function returns our timer is done, so we can already clear it
+    this.timer = null;
     this.refresh
       .refresh()
       .then(() => {
@@ -158,16 +160,9 @@ export class RefreshScheduler
         }
         return;
       });
-    // Stop the ongoing timer, because we always schedule the next refresh
-    // explicitly in response to the refresh result.
-    this.timerSourceTag = null;
-    return false;
   }
 
   private tryScheduleFasterRefreshesAfterError(error: unknown): void {
-    if (this.timerSourceTag !== null) {
-      throw new Error("Refresh already scheduled?");
-    }
     this.errorRefreshCount += 1;
     if (ERROR_REFRESH_LIMIT < this.errorRefreshCount) {
       console.warn(
@@ -181,24 +176,20 @@ export class RefreshScheduler
       console.log(
         `Scheduling fast refresh after error in ${ERROR_REFRESH_INTERVAL_S}s`,
       );
-      this.timerSourceTag = GLib.timeout_add_seconds(
-        GLib.PRIORITY_DEFAULT,
+      this.timer = this.timerRegistry.oneshotSeconds(
         ERROR_REFRESH_INTERVAL_S,
-        () => this.doRefresh(),
+        () => {
+          this.doRefresh();
+        },
       );
     }
   }
 
   private scheduleRegularRefresh(interval_s?: number): void {
-    if (this.timerSourceTag !== null) {
-      throw new Error("Refresh already scheduled?");
-    }
     const timeout_s = interval_s ?? DEFAULT_REFRESH_INTERVAL_S;
     console.log(`Scheduling refresh of Picture of the Day in ${timeout_s}s`);
-    this.timerSourceTag = GLib.timeout_add_seconds(
-      GLib.PRIORITY_DEFAULT,
-      timeout_s,
-      () => this.doRefresh(),
-    );
+    this.timer = this.timerRegistry.oneshotSeconds(timeout_s, () => {
+      this.doRefresh();
+    });
   }
 }
