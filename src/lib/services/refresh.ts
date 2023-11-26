@@ -23,7 +23,7 @@ import { DownloadScheduler } from "./download-scheduler.js";
 import { DownloadImage, ImageFile } from "../source.js";
 import { unfoldCauses } from "../util/error.js";
 import { CancellableResult } from "../util/gio.js";
-import { Destructible, SignalDisconnectable } from "../util/lifecycle.js";
+import { Destructible } from "../util/lifecycle.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
@@ -46,7 +46,7 @@ interface RefreshServiceSignals {
  */
 export class RefreshService
   extends EventEmitter<RefreshServiceSignals>
-  implements SignalDisconnectable, Destructible
+  implements Destructible
 {
   private download: DownloadImage | null;
   private downloadScheduler: DownloadScheduler = new DownloadScheduler();
@@ -106,5 +106,6 @@ export class RefreshService
 
   destroy(): void {
     this.downloadScheduler.destroy();
+    this.disconnectAll();
   }
 }

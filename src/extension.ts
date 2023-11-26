@@ -34,11 +34,7 @@ import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
 import { launchSettingsPanel } from "./lib/ui/settings.js";
 import { SourceSelector } from "./lib/services/source-selector.js";
 import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
-import {
-  Destructible,
-  SignalConnectionTracker,
-  SignalDisconnectable,
-} from "./lib/util/lifecycle.js";
+import { Destructible, SignalConnectionTracker } from "./lib/util/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
 
 // Promisify all the async APIs we use
@@ -283,28 +279,15 @@ class EnabledExtension implements Destructible {
   }
 
   destroy() {
-    // Things that we should disconnect signals from.
-    const disconnectables: readonly SignalDisconnectable[] = [
-      this.refreshService,
+    const destructibles: readonly Destructible[] = [
       this.errorHandler,
-      this.sourceSelector,
+      this.indicator,
       this.refreshScheduler,
+      this.refreshService,
+      this.sourceSelector,
+      this.timerRegistry,
       this.trackedSignalConnections,
     ];
-    // Things that we should explicitly destroy.
-    const destructibles: readonly Destructible[] = [
-      this.indicator,
-      this.refreshService,
-      this.refreshScheduler,
-      this.timerRegistry,
-    ];
-
-    // Disconnect all signals on our services, to free all references to the
-    // signal handlers and prevent reference cycles keeping objects alive beyond
-    // destruction of this extension.
-    for (const obj of disconnectables) {
-      obj.disconnectAll();
-    }
     for (const obj of destructibles) {
       obj.destroy();
     }

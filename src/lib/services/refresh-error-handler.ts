@@ -41,7 +41,7 @@ import {
 import { HttpRequestError } from "../network/http.js";
 import { IOError } from "../util/gio.js";
 import i18n from "../util/i18n.js";
-import { SignalDisconnectable } from "../util/lifecycle.js";
+import { Destructible } from "../util/lifecycle.js";
 
 export interface RefreshErrorHandlerSignals {
   readonly "action::open-preferences": [];
@@ -53,7 +53,7 @@ export interface RefreshErrorHandlerSignals {
  */
 export class RefreshErrorHandler
   extends EventEmitter<RefreshErrorHandlerSignals>
-  implements SignalDisconnectable
+  implements Destructible
 {
   constructor(private readonly iconLoader: IconLoader) {
     super();
@@ -219,5 +219,9 @@ export class RefreshErrorHandler
     });
     dialog.showError(error);
     dialog.open(undefined, true);
+  }
+
+  destroy(): void {
+    this.disconnectAll();
   }
 }

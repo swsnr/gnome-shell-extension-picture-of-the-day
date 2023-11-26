@@ -20,10 +20,10 @@
 import GObject from "gi://GObject";
 
 /**
- * Something we can disconnect all signals from.
+ * Something we can destroy.
  */
-export interface SignalDisconnectable {
-  disconnectAll(): void;
+export interface Destructible {
+  destroy(): void;
 }
 
 // TODO: We could probably replace this with SignalTracker from GNOME Shell, but
@@ -32,23 +32,16 @@ export interface SignalDisconnectable {
 /**
  * Track signal connections of other objects to disconnect them at once.
  */
-export class SignalConnectionTracker implements SignalDisconnectable {
+export class SignalConnectionTracker implements Destructible {
   private signals: [GObject.Object, number][] = [];
 
   track(obj: GObject.Object, id: number): void {
     this.signals.push([obj, id]);
   }
 
-  disconnectAll(): void {
+  destroy(): void {
     for (const [obj, handlerId] of this.signals) {
       obj.disconnect(handlerId);
     }
   }
-}
-
-/**
- * Something we can destroy.
- */
-export interface Destructible {
-  destroy(): void;
 }

@@ -21,7 +21,7 @@ import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { Source } from "../source.js";
 import sources from "../sources.js";
-import { SignalDisconnectable } from "../util/lifecycle.js";
+import { Destructible } from "../util/lifecycle.js";
 
 export class NoSuchSource extends Error {
   constructor(
@@ -47,7 +47,7 @@ interface SourceSelectorSignals {
 
 export class SourceSelector
   extends EventEmitter<SourceSelectorSignals>
-  implements SignalDisconnectable
+  implements Destructible
 {
   private _selectedSource: Source;
 
@@ -69,5 +69,9 @@ export class SourceSelector
 
   get selectedSource(): Source {
     return this._selectedSource;
+  }
+
+  destroy(): void {
+    this.disconnectAll();
   }
 }
