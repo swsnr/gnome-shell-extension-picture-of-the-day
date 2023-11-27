@@ -35,6 +35,7 @@ import { ErrorDetailDialog } from "../ui/error-detail-dialog.js";
 import {
   ConfigurationError,
   InvalidAPIKeyError,
+  NoPictureTodayError,
   NotAnImageError,
   RateLimitedError,
 } from "../source/errors.js";
@@ -134,7 +135,7 @@ export class RefreshErrorHandler
       notification.update(title, description);
     } else if (error instanceof NotAnImageError) {
       notification.update(
-        pgettext("Error notification", "No image today"),
+        pgettext("Error notification", "No picture today"),
         i18n.format(
           pgettext(
             "Error notification",
@@ -154,6 +155,17 @@ export class RefreshErrorHandler
           },
         );
       }
+    } else if (error instanceof NoPictureTodayError) {
+      notification.update(
+        pgettext("Error notification", "No picture today"),
+        i18n.format(
+          pgettext(
+            "Error notification",
+            "%s does not provide a picture today.  Try again tomorrow, or try a different source",
+          ),
+          error.source.name,
+        ),
+      );
     } else if (error instanceof IOError) {
       const description = pgettext(
         "Error notification",

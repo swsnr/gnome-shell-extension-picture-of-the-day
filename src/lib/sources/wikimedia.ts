@@ -32,6 +32,7 @@ import {
 import { createSession, getJSON } from "../network/http.js";
 import { DownloadableImage, downloadImage } from "../util/download.js";
 import metadata from "./metadata/wikimedia.js";
+import { NoPictureTodayError } from "../source/errors.js";
 
 interface FeaturedImageImage {
   readonly source: string;
@@ -64,7 +65,7 @@ interface FeaturedImage {
 }
 
 interface FeaturedContentResponse {
-  readonly image: FeaturedImage;
+  readonly image?: FeaturedImage | null;
 }
 
 const getFeaturedContent = async (
@@ -88,6 +89,9 @@ const getLatestImage = async (
 ): Promise<DownloadableImage> => {
   const date = GLib.DateTime.new_now_local();
   const featuredContent = await getFeaturedContent(session, date, cancellable);
+  if (!featuredContent.image) {
+    throw new NoPictureTodayError(metadata);
+  }
   const { artist, license, description, file_page, image, title } =
     featuredContent.image;
   const pubdate = date.format("%Y-%m-%d");

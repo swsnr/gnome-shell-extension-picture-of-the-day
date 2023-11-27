@@ -61,6 +61,18 @@ export class NotAnImageError extends Error {
 }
 
 /**
+ * The given source did not provide a picture today
+ */
+export class NoPictureTodayError extends Error {
+  constructor(
+    readonly source: SourceMetadata,
+    options?: ErrorOptions,
+  ) {
+    super(`${source.name} does not provide a picture today`, options);
+  }
+}
+
+/**
  * The provider of today's image has rate limited the current client.
  */
 export class RateLimitedError extends Error {}
