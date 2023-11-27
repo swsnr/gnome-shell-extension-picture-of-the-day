@@ -161,7 +161,7 @@ export class RefreshErrorHandler
         i18n.format(
           pgettext(
             "Error notification",
-            "%s does not provide a picture today.  Try again tomorrow, or try a different source",
+            "%s does not provide a picture today.  Try again tomorrow, or try a different source.",
           ),
           error.source.name,
         ),
