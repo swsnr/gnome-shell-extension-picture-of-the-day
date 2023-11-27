@@ -52,12 +52,11 @@ jobs:
         with:
           path: dist
           name: dist
-      - run: echo "RELEASE_NAME=$(git tag -ln1 --format='%(contents:subject)' "${GITHUB_REF_NAME}")" >> "$GITHUB_ENV"
       - run: echo "RELEASE_BODY=$(git tag -ln1 --format='%(contents:body)' "${GITHUB_REF_NAME}")" >> "$GITHUB_ENV"
       - uses: ncipollo/release-action@v1
         with:
           allowUpdates: false
-          name: "${{ env.RELEASE_NAME }}"
+          name: "${{ github.ref_name }}"
           body: "${{ env.RELEASE_BODY }}"
           artifacts: "dist/*"
 
