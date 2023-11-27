@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-11-27 20:33+0100\n"
-"PO-Revision-Date: 2023-11-25 08:58+0100\n"
+"PO-Revision-Date: 2023-11-27 20:35+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -157,7 +157,6 @@ msgstr ""
 
 #: src/lib/services/refresh-error-handler.ts:138
 #: src/lib/services/refresh-error-handler.ts:160
-#, fuzzy
 msgctxt "Error notification"
 msgid "No picture today"
 msgstr "Heute kein Bild"
@@ -184,6 +183,8 @@ msgid ""
 "%s does not provide a picture today.  Try again tomorrow, or try a different "
 "source."
 msgstr ""
+"%s stellt heute kein Bild zur Verfügung. Versuchen Sie es morgen erneut, "
+"oder wechseln Sie zu einer anderen Quelle."
 
 #: src/lib/services/refresh-error-handler.ts:172
 #, javascript-format
