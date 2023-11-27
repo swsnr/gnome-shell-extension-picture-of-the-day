@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-25 08:57+0100\n"
+"POT-Creation-Date: 2023-11-27 20:33+0100\n"
 "PO-Revision-Date: 2023-11-25 08:58+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -78,12 +78,12 @@ msgstr "Aktualisieren"
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: src/lib/services/refresh-error-handler.ts:69
+#: src/lib/services/refresh-error-handler.ts:70
 msgctxt "Error notification"
 msgid "Picture of the Day needs an API key"
 msgstr "Das Bild des Tages benötigt einen API-Schlüssel"
 
-#: src/lib/services/refresh-error-handler.ts:72
+#: src/lib/services/refresh-error-handler.ts:73
 msgctxt "Error notification"
 msgid ""
 "Please configure a valid API key for the configured source in the extensions "
@@ -92,18 +92,18 @@ msgstr ""
 "Bitte richten Sie in den Einstellungen dieser Erweiterung einen API-"
 "Schlüssel für die gewählte Bildquelle ein."
 
-#: src/lib/services/refresh-error-handler.ts:76
-#: src/lib/services/refresh-error-handler.ts:102
+#: src/lib/services/refresh-error-handler.ts:77
+#: src/lib/services/refresh-error-handler.ts:103
 msgctxt "Error notification"
 msgid "Open preferences"
 msgstr "Einstellungen öffnen"
 
-#: src/lib/services/refresh-error-handler.ts:83
+#: src/lib/services/refresh-error-handler.ts:84
 msgctxt "Error notification"
 msgid "Picture of the Day was rate-limited"
 msgstr "Abruf des Bild des Tages wurde begrenzt"
 
-#: src/lib/services/refresh-error-handler.ts:86
+#: src/lib/services/refresh-error-handler.ts:87
 msgctxt "Error notification"
 msgid ""
 "The server for the configured source is rate-limited and does not permit to "
@@ -113,24 +113,24 @@ msgstr ""
 "erlaubt aktuell nicht, das Bild abzurufen. Versuchen Sie es später erneut, "
 "oder nutzen Sie eine andere Quelle."
 
-#: src/lib/services/refresh-error-handler.ts:94
+#: src/lib/services/refresh-error-handler.ts:95
 msgctxt "Error notification"
 msgid "Picture of the Day has some invalid configuration"
 msgstr "Die Konfiguration für das Bild des Tages ist nicht gültig"
 
-#: src/lib/services/refresh-error-handler.ts:98
+#: src/lib/services/refresh-error-handler.ts:99
 msgctxt "Error notification"
 msgid "Please correct the invalid configuration in the extension settings."
 msgstr ""
 "Bitte korrigieren Sie die ungültige Konfiguration in den Einstellungen "
 "dieser Erweiterung."
 
-#: src/lib/services/refresh-error-handler.ts:110
+#: src/lib/services/refresh-error-handler.ts:111
 msgctxt "Error notification"
 msgid "Picture of the Day failed to fetch today's picture."
 msgstr "Das heutige Bild konnte nicht abgerufen werden."
 
-#: src/lib/services/refresh-error-handler.ts:119
+#: src/lib/services/refresh-error-handler.ts:120
 msgctxt "Error notification"
 msgid ""
 "The system seems to have limited network connectivity. Try to connect to the "
@@ -140,12 +140,12 @@ msgstr ""
 "eine Internetverbindung her, oder versuchen Sie es später noch einmal, wenn "
 "der Fehler weiterhin auftritt."
 
-#: src/lib/services/refresh-error-handler.ts:123
+#: src/lib/services/refresh-error-handler.ts:124
 msgctxt "Error notification"
 msgid "Open network settings"
 msgstr "Netzwerkeinstellungen öffnen"
 
-#: src/lib/services/refresh-error-handler.ts:131
+#: src/lib/services/refresh-error-handler.ts:132
 msgctxt "Error notification"
 msgid ""
 "The server for the configured source seems to have issues. Try to configure "
@@ -155,12 +155,14 @@ msgstr ""
 "SIe eine andere Bildquelle zu nutzen, oder versuchen Sie es später noch "
 "einmal."
 
-#: src/lib/services/refresh-error-handler.ts:137
+#: src/lib/services/refresh-error-handler.ts:138
+#: src/lib/services/refresh-error-handler.ts:160
+#, fuzzy
 msgctxt "Error notification"
-msgid "No image today"
+msgid "No picture today"
 msgstr "Heute kein Bild"
 
-#: src/lib/services/refresh-error-handler.ts:141
+#: src/lib/services/refresh-error-handler.ts:142
 #, javascript-format
 msgctxt "Error notification"
 msgid ""
@@ -170,12 +172,20 @@ msgstr ""
 "%s ist kein Bild, und kann nicht als Hintergrund verwendet werden. Es kann "
 "unter Umständen direkt auf der Website angesehen werden."
 
-#: src/lib/services/refresh-error-handler.ts:148
+#: src/lib/services/refresh-error-handler.ts:149
 msgctxt "Error notification"
 msgid "Open website"
 msgstr "Website öffnen"
 
-#: src/lib/services/refresh-error-handler.ts:160
+#: src/lib/services/refresh-error-handler.ts:164
+#, javascript-format
+msgctxt "Error notification"
+msgid ""
+"%s does not provide a picture today.  Try again tomorrow, or try a different "
+"source."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:172
 #, javascript-format
 msgctxt "Error notification"
 msgid ""
@@ -186,22 +196,22 @@ msgstr ""
 "aufgetreten, mit folgender Fehlermeldung: %s. Prüfen Sie Ihre "
 "Internetverbindung, und die Berechtigungen im Download-Verzeichnis."
 
-#: src/lib/services/refresh-error-handler.ts:169
+#: src/lib/services/refresh-error-handler.ts:181
 msgctxt "Error notification"
 msgid "Image could not be downloaded"
 msgstr "Das Bild konnte nicht heruntergeladen werden"
 
-#: src/lib/services/refresh-error-handler.ts:192
+#: src/lib/services/refresh-error-handler.ts:204
 msgctxt "Error notification"
 msgid "Picture of the Day failed"
 msgstr "Bild des Tages fehlgeschlagen"
 
-#: src/lib/services/refresh-error-handler.ts:195
+#: src/lib/services/refresh-error-handler.ts:207
 msgctxt "Error notification"
 msgid "We are sorry but there seems to be an error."
 msgstr "Leider scheint ein Fehler aufgetreten zu sein."
 
-#: src/lib/services/refresh-error-handler.ts:199
+#: src/lib/services/refresh-error-handler.ts:211
 msgid "Details"
 msgstr "Details"
 
