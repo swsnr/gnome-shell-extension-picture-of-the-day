@@ -44,6 +44,10 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # This makes sure we actually get the tag message body down below,
+          # see https://github.com/actions/runner/issues/712
+          ref: "${{ github.ref }}"
       - uses: actions/download-artifact@v3
         with:
           path: dist
