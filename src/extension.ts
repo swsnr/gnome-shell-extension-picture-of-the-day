@@ -36,6 +36,7 @@ import { SourceSelector } from "./lib/services/source-selector.js";
 import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
 import { Destructible, SignalConnectionTracker } from "./lib/util/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
+import { createSession } from "./lib/network/http.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -52,7 +53,7 @@ class EnabledExtension implements Destructible {
 
   private readonly settings: Gio.Settings;
 
-  private readonly refreshService: RefreshService = new RefreshService();
+  private readonly refreshService: RefreshService;
   private readonly desktopBackgroundService: DesktopBackgroundService =
     DesktopBackgroundService.default();
   private readonly imageMetadataStore: ImageMetadataStore;
@@ -135,6 +136,9 @@ class EnabledExtension implements Destructible {
     this.updateDownloader();
 
     // Setup automatic refreshing
+    this.refreshService = new RefreshService(
+      createSession(this.extension.metadata),
+    );
     this.refreshScheduler = new RefreshScheduler(
       this.refreshService,
       this.errorHandler,
@@ -258,21 +262,14 @@ class EnabledExtension implements Destructible {
 
     switch (source.downloadFactory.type) {
       case "simple":
-        return source.downloadFactory.create(
-          this.extension.metadata,
-          downloadDirectory,
-        );
+        return source.downloadFactory.create(downloadDirectory);
       case "needs_settings": {
         const settings = this.extension.getSettings(
           `${this.extension.getSettings().schema_id}.source.${
             source.metadata.key
           }`,
         );
-        return source.downloadFactory.create(
-          this.extension.metadata,
-          settings,
-          downloadDirectory,
-        );
+        return source.downloadFactory.create(settings, downloadDirectory);
       }
     }
   }

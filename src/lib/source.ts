@@ -18,8 +18,7 @@
 // GNU General Public License for more details.
 
 import Gio from "gi://Gio";
-
-import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
+import Soup from "gi://Soup";
 
 import { SourceMetadata } from "./source/metadata.js";
 
@@ -72,9 +71,11 @@ export interface ImageFile {
 /**
  * A function to download an image.
  *
+ * @param session The Soup session to use for downloading
  * @param cancellable Used to cancel any ongoing IO operations.
  */
 export type DownloadImage = (
+  session: Soup.Session,
   cancellable: Gio.Cancellable,
 ) => Promise<ImageFile>;
 
@@ -86,14 +87,10 @@ export interface SimpleDownloadImageFactory {
   /**
    * Create the download function.
    *
-   * @param metadata The extension metadata
    * @param downloadDirectory The directory to download the image to
    * @returns The download function
    */
-  readonly create: (
-    metadata: ExtensionMetadata,
-    downloadDirectory: Gio.File,
-  ) => DownloadImage;
+  readonly create: (downloadDirectory: Gio.File) => DownloadImage;
 }
 
 /**
@@ -104,12 +101,10 @@ export interface DownloadImageFactoryWithSettings {
   /**
    * A factory for a download function.
    *
-   * @param metadata Metadata about this extension, to use e.g. in User-Agent strings.
    * @param settings Settings to create the download function with
    * @param downloadDirectory The directory to download the image to
    */
   readonly create: (
-    extensionMetadata: ExtensionMetadata,
     settings: Gio.Settings,
     downloadDirectory: Gio.File,
   ) => DownloadImage;

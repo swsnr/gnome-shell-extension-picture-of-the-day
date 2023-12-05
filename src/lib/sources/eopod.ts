@@ -20,9 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
-
-import { HttpRequestError, createSession, getString } from "../network/http.js";
+import { HttpRequestError, getString } from "../network/http.js";
 import * as dom from "../util/simpledom.js";
 import {
   DownloadImage,
@@ -108,13 +106,11 @@ const getLatestImage = async (
 
 export const downloadFactory: SimpleDownloadImageFactory = {
   type: "simple",
-  create(
-    extensionMetadata: ExtensionMetadata,
-    downloadDirectory: Gio.File,
-  ): DownloadImage {
-    const session = createSession(extensionMetadata);
-
-    return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
+  create(downloadDirectory: Gio.File): DownloadImage {
+    return async (
+      session: Soup.Session,
+      cancellable: Gio.Cancellable,
+    ): Promise<ImageFile> => {
       const image = await getLatestImage(session, cancellable);
       return downloadImage(session, downloadDirectory, cancellable, image);
     };

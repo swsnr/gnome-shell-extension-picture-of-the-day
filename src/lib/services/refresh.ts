@@ -17,6 +17,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+import Soup from "gi://Soup";
+
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { DownloadScheduler } from "./download-scheduler.js";
@@ -51,7 +53,7 @@ export class RefreshService
   private download: DownloadImage | null;
   private downloadScheduler: DownloadScheduler = new DownloadScheduler();
 
-  constructor() {
+  constructor(private readonly session: Soup.Session) {
     super();
     this.download = null;
   }
@@ -72,11 +74,12 @@ export class RefreshService
    */
   async refresh(): Promise<CancellableResult<ImageFile>> {
     if (this.download) {
+      const download = this.download;
       await this.downloadScheduler.cancelCurrentDownload();
       this.emit("state-changed", "ongoing");
       try {
         const image = await this.downloadScheduler.maybeStartDownload(
-          this.download,
+          (cancellable) => download(this.session, cancellable),
         );
         console.log("image finished", image);
         this.emit("state-changed", image.result);

@@ -21,8 +21,6 @@ import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import type { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
-
 import metadata from "./metadata/bing.js";
 import {
   DownloadImage,
@@ -30,12 +28,7 @@ import {
   SimpleDownloadImageFactory,
   Source,
 } from "../source.js";
-import {
-  HttpRequestError,
-  NoDataError,
-  createSession,
-  getJSON,
-} from "../network/http.js";
+import { HttpRequestError, NoDataError, getJSON } from "../network/http.js";
 import { DownloadableImage, downloadImage } from "../util/download.js";
 import { decodeQuery, encodeQuery } from "../network/uri.js";
 
@@ -114,13 +107,11 @@ export const getTodaysImage = async (
 
 export const downloadFactory: SimpleDownloadImageFactory = {
   type: "simple",
-  create(
-    extensionMetadata: ExtensionMetadata,
-    downloadDirectory: Gio.File,
-  ): DownloadImage {
-    const session = createSession(extensionMetadata);
-
-    return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
+  create(downloadDirectory: Gio.File): DownloadImage {
+    return async (
+      session: Soup.Session,
+      cancellable: Gio.Cancellable,
+    ): Promise<ImageFile> => {
       const image = await getTodaysImage(session, cancellable);
       const id = decodeQuery(image.imageUrl)["id"];
       return downloadImage(session, downloadDirectory, cancellable, image, id);
