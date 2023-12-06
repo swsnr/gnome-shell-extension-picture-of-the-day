@@ -70,20 +70,33 @@ class EnabledExtension implements Destructible {
     // Our settings
     this.settings = extension.getSettings();
 
-    // Some additional infrastructure.
+    // Some infrastructure
     const iconLoader = new ExtensionIcons(
       extension.metadata.dir.get_child("icons"),
     );
 
-    // Set up the UI
+    // Create all service and UI objects
     this.indicator = new PictureOfTheDayIndicator(iconLoader);
+    this.errorHandler = new RefreshErrorHandler(iconLoader);
+    this.imageMetadataStore = new ImageMetadataStore(this.settings);
+    const currentSource = this.settings.get_string("selected-source");
+    if (currentSource === null) {
+      throw new Error("Current source 'null'?");
+    }
+    this.sourceSelector = SourceSelector.forKey(currentSource);
+    this.refreshService = new RefreshService(
+      createSession(this.extension.metadata),
+    );
+    this.refreshScheduler = new RefreshScheduler(
+      this.refreshService,
+      this.errorHandler,
+      this.timerRegistry,
+    );
+
+    // Set up the UI
     Main.panel.addToStatusArea(extension.metadata.uuid, this.indicator);
 
-    // Set up notifications by this extension.
-    this.errorHandler = new RefreshErrorHandler(iconLoader);
-
     // Restore metadata for the current image
-    this.imageMetadataStore = new ImageMetadataStore(this.settings);
     const storedImage = this.imageMetadataStore.loadFromMetadata();
     if (storedImage !== null) {
       const currentWallpaperUri = this.desktopBackgroundService.backgroundImage;
@@ -106,11 +119,6 @@ class EnabledExtension implements Destructible {
         }
       }),
     );
-    const currentSource = this.settings.get_string("selected-source");
-    if (currentSource === null) {
-      throw new Error("Current source 'null'?");
-    }
-    this.sourceSelector = SourceSelector.forKey(currentSource);
     this.indicator.updateSelectedSource(
       this.sourceSelector.selectedSource.metadata,
     );
@@ -137,15 +145,6 @@ class EnabledExtension implements Destructible {
     this.updateDownloader();
 
     // Setup automatic refreshing
-    this.refreshService = new RefreshService(
-      createSession(this.extension.metadata),
-    );
-    this.refreshScheduler = new RefreshScheduler(
-      this.refreshService,
-      this.errorHandler,
-      this.timerRegistry,
-    );
-    // Restore and persist the last schedule refresh.
     const lastRefresh = this.settings.get_string("last-scheduled-refresh");
     if (lastRefresh && 0 < lastRefresh.length) {
       this.refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
@@ -268,6 +267,7 @@ class EnabledExtension implements Destructible {
    * @param source The selected source
    * @returns A function to download images from the source
    */
+  // eslint-disable-next-line consistent-return
   private createDownloader(
     downloadBaseDirectory: Gio.File,
     source: Source,
