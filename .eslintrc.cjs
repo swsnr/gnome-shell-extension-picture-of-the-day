@@ -17,6 +17,9 @@ module.exports = {
   root: true,
   rules: {
     "@typescript-eslint/no-shadow": "warn",
+    // .eslintrc.gjs-guide.yml enables this, but it has no use in typescript
+    // which ensures a consistent return value through its type checks.
+    "consistent-return": "off",
   },
   ignorePatterns: [
     // Build outputs

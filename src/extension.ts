@@ -248,7 +248,6 @@ class EnabledExtension implements Destructible {
    * @param source The selected source
    * @returns A function to download images from the source
    */
-  // eslint-disable-next-line consistent-return
   private createDownloader(
     downloadBaseDirectory: Gio.File,
     source: Source,
