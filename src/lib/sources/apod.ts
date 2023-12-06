@@ -20,12 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import {
-  DownloadImage,
-  DownloadImageFactoryWithSettings,
-  ImageFile,
-  Source,
-} from "../source.js";
+import { GetImage, GetImageWithSettings, Source } from "../source.js";
 import {
   NotAnImageError,
   InvalidAPIKeyError,
@@ -34,7 +29,7 @@ import {
 import { QueryList, encodeQuery } from "../network/uri.js";
 import { HttpRequestError, HttpStatusError, getJSON } from "../network/http.js";
 import metadata from "./metadata/apod.js";
-import { DownloadableImage, downloadImage } from "../util/download.js";
+import { DownloadableImage } from "../util/download.js";
 
 /**
  * The APOD API did not return any body data.
@@ -159,13 +154,13 @@ const queryMetadata = async (
   }
 };
 
-export const downloadFactory: DownloadImageFactoryWithSettings = {
+export const getImage: GetImageWithSettings = {
   type: "needs_settings",
-  create(settings: Gio.Settings, downloadDirectory: Gio.File): DownloadImage {
+  create(settings: Gio.Settings): GetImage {
     return async (
       session: Soup.Session,
       cancellable: Gio.Cancellable,
-    ): Promise<ImageFile> => {
+    ): Promise<DownloadableImage> => {
       const apiKey = settings.get_string("api-key");
       if (apiKey === null || apiKey.length === 0) {
         throw new InvalidAPIKeyError(metadata);
@@ -196,12 +191,7 @@ export const downloadFactory: DownloadImageFactoryWithSettings = {
         );
       }
 
-      return downloadImage(
-        session,
-        downloadDirectory,
-        cancellable,
-        downloadableImage,
-      );
+      return downloadableImage;
     };
   },
 };
@@ -211,7 +201,7 @@ export const downloadFactory: DownloadImageFactoryWithSettings = {
  */
 export const source: Source = {
   metadata,
-  downloadFactory,
+  getImage,
 };
 
 export default source;

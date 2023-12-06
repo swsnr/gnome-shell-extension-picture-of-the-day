@@ -24,9 +24,9 @@ import Soup from "gi://Soup";
 import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-import { DownloadImage, Source } from "./lib/source.js";
+import { GetImage, Source } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
-import { RefreshService } from "./lib/services/refresh.js";
+import { DownloadImage, RefreshService } from "./lib/services/refresh.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
 import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
 import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
@@ -37,6 +37,7 @@ import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
 import { Destructible, SignalConnectionTracker } from "./lib/util/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
 import { createSession } from "./lib/network/http.js";
+import { downloadImage } from "./lib/util/download.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -245,6 +246,21 @@ class EnabledExtension implements Destructible {
     this.refreshService.setDownloader(downloader);
   }
 
+  private createGetImage(source: Source): GetImage {
+    switch (source.getImage.type) {
+      case "simple":
+        return source.getImage.getImage;
+      case "needs_settings": {
+        const settings = this.extension.getSettings(
+          `${this.extension.getSettings().schema_id}.source.${
+            source.metadata.key
+          }`,
+        );
+        return source.getImage.create(settings);
+      }
+    }
+  }
+
   /**
    * Create the download function to use.
    *
@@ -259,19 +275,12 @@ class EnabledExtension implements Destructible {
     const downloadDirectory = downloadBaseDirectory.get_child(
       source.metadata.name,
     );
+    const getImage = this.createGetImage(source);
 
-    switch (source.downloadFactory.type) {
-      case "simple":
-        return source.downloadFactory.create(downloadDirectory);
-      case "needs_settings": {
-        const settings = this.extension.getSettings(
-          `${this.extension.getSettings().schema_id}.source.${
-            source.metadata.key
-          }`,
-        );
-        return source.downloadFactory.create(settings, downloadDirectory);
-      }
-    }
+    return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
+      const image = await getImage(session, cancellable);
+      return downloadImage(session, downloadDirectory, cancellable, image);
+    };
   }
 
   destroy() {

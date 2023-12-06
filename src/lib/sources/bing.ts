@@ -22,14 +22,9 @@ import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
 import metadata from "./metadata/bing.js";
-import {
-  DownloadImage,
-  ImageFile,
-  SimpleDownloadImageFactory,
-  Source,
-} from "../source.js";
+import { Source } from "../source.js";
 import { HttpRequestError, NoDataError, getJSON } from "../network/http.js";
-import { DownloadableImage, downloadImage } from "../util/download.js";
+import { DownloadableImage } from "../util/download.js";
 import { decodeQuery, encodeQuery } from "../network/uri.js";
 
 interface BingImage {
@@ -89,12 +84,14 @@ export const getTodaysImage = async (
     );
   }
   const startdate = image.startdate;
+  const suggestedFilename = decodeQuery(imageUrl)["id"];
   return {
     imageUrl: imageUrl,
     pubdate: `${startdate.slice(0, 4)}-${startdate.slice(
       4,
       6,
     )}-${startdate.slice(6)}`,
+    suggestedFilename,
     metadata: {
       title: image.title,
       // The copyright fields really seem to be more of a description really
@@ -105,23 +102,15 @@ export const getTodaysImage = async (
   };
 };
 
-export const downloadFactory: SimpleDownloadImageFactory = {
-  type: "simple",
-  create(downloadDirectory: Gio.File): DownloadImage {
-    return async (
-      session: Soup.Session,
-      cancellable: Gio.Cancellable,
-    ): Promise<ImageFile> => {
-      const image = await getTodaysImage(session, cancellable);
-      const id = decodeQuery(image.imageUrl)["id"];
-      return downloadImage(session, downloadDirectory, cancellable, image, id);
-    };
-  },
-};
-
 export const source: Source = {
   metadata,
-  downloadFactory,
+  getImage: {
+    type: "simple",
+    getImage: (
+      session: Soup.Session,
+      cancellable: Gio.Cancellable,
+    ): Promise<DownloadableImage> => getTodaysImage(session, cancellable),
+  },
 };
 
 export default source;

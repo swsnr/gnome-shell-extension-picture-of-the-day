@@ -32,12 +32,13 @@ import {
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
 import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { ImageFile, ImageMetadata, SourceMetadata } from "../source.js";
+import { ImageMetadata, SourceMetadata } from "../source.js";
 import { IconLoader } from "./icons.js";
 import { RefreshState } from "../services/refresh.js";
 import i18n from "../util/i18n.js";
 import { Destructible } from "../util/lifecycle.js";
 import SOURCES from "../sources/metadata/sources.js";
+import { ImageFile } from "../util/download.js";
 
 class ImageInfoSection extends PopupMenuSection {
   private readonly title: PopupMenuItem;

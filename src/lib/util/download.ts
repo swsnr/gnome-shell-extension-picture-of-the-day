@@ -20,7 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { ImageFile, ImageMetadata } from "../source.js";
+import { ImageMetadata } from "../source.js";
 import { downloadToFile } from "../network/http.js";
 
 /**
@@ -39,6 +39,27 @@ export interface DownloadableImage {
    * The date this image was published at, as YYYY-MM-DD
    */
   readonly pubdate: string;
+  /**
+   * The suggested file name for this image.
+   *
+   * If not a string, use the last component of the `imageUrl` as filename.
+   */
+  readonly suggestedFilename?: string | null | undefined;
+}
+
+/**
+ * A downloaded image.
+ */
+export interface ImageFile {
+  /**
+   * The metadata of this image.
+   */
+  readonly metadata: ImageMetadata;
+
+  /**
+   * The downloaded file.
+   */
+  readonly file: Gio.File;
 }
 
 const guessFilename = (image: DownloadableImage): string => {
@@ -58,17 +79,15 @@ const guessFilename = (image: DownloadableImage): string => {
  * @param directories The download directories
  * @param cancellable Cancel the download
  * @param image The image to download
- * @param title If given the title to use, instead of the URL basename or the
  */
 export const downloadImage = async (
   session: Soup.Session,
   downloadDirectory: Gio.File,
   cancellable: Gio.Cancellable,
   image: DownloadableImage,
-  title?: string,
 ): Promise<ImageFile> => {
   // Replace directory separators and new lines in the file name.
-  const filename = title ?? guessFilename(image);
+  const filename = image.suggestedFilename ?? guessFilename(image);
   const targetFile = downloadDirectory.get_child(
     `${image.pubdate}-${filename}`,
   );
