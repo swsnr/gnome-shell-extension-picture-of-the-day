@@ -24,7 +24,7 @@ import Soup from "gi://Soup";
 import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-import { GetImage, Source } from "./lib/source.js";
+import { GetImages, Source } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
 import { DownloadImage, RefreshService } from "./lib/services/refresh.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
@@ -42,6 +42,8 @@ import {
 import { TimerRegistry } from "./lib/services/timer-registry.js";
 import { createSession } from "./lib/network/http.js";
 import { downloadImage } from "./lib/util/download.js";
+import random from "./lib/util/random.js";
+import { NoPictureTodayError } from "./lib/source/errors.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -229,17 +231,17 @@ class EnabledExtension implements Destructible {
     });
   }
 
-  private createGetImage(source: Source): GetImage {
-    switch (source.getImage.type) {
+  private createGetImage(source: Source): GetImages {
+    switch (source.getImages.type) {
       case "simple":
-        return source.getImage.getImage;
+        return source.getImages.getImages;
       case "needs_settings": {
         const settings = this.extension.getSettings(
           `${this.extension.getSettings().schema_id}.source.${
             source.metadata.key
           }`,
         );
-        return source.getImage.create(settings);
+        return source.getImages.create(settings);
       }
     }
   }
@@ -261,7 +263,11 @@ class EnabledExtension implements Destructible {
     const getImage = this.createGetImage(source);
 
     return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
-      const image = await getImage(session, cancellable);
+      const images = await getImage(session, cancellable);
+      const image = images.length === 1 ? images[0] : random.sample(images);
+      if (typeof image === "undefined") {
+        throw new NoPictureTodayError(source.metadata);
+      }
       return downloadImage(session, downloadDirectory, cancellable, image);
     };
   }
