@@ -23,7 +23,7 @@ import Soup from "gi://Soup";
 
 import metadata from "./metadata/bing.js";
 import { Source } from "../source.js";
-import { HttpRequestError, NoDataError, getJSON } from "../network/http.js";
+import { HttpRequestError, getJSON } from "../network/http.js";
 import { DownloadableImage } from "../util/download.js";
 import { decodeQuery, encodeQuery } from "../network/uri.js";
 
@@ -39,14 +39,17 @@ interface BingResponse {
   readonly images?: readonly BingImage[];
 }
 
-export const getTodaysImage = async (
+// See https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/issues/27
+const NUMBER_OF_IMAGES = 8;
+
+export const getTodaysImages = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
-): Promise<DownloadableImage> => {
+): Promise<readonly DownloadableImage[]> => {
   const queryList: [string, string][] = [
     ["format", "js"],
     ["idx", "0"],
-    ["n", "1"],
+    ["n", NUMBER_OF_IMAGES.toString()],
   ];
   // Bing has locale-dependent images; we take the current locale for this GNOME
   // shell process, and turn it into a format Bing understands (no encoding, and
@@ -65,41 +68,38 @@ export const getTodaysImage = async (
   )}`;
   console.log(`Querying latest bing image from ${url}`);
   const response = (await getJSON(session, url, cancellable)) as BingResponse;
-  if (!response.images?.[0]) {
-    throw new HttpRequestError(url, "No image received", {
-      cause: new NoDataError(),
-    });
-  }
-  const image = response.images[0];
-  const urlbaseUHD = `${image.urlbase}_UHD.jpg`;
-  const imageUrl = GLib.uri_resolve_relative(
-    "https://www.bing.com",
-    urlbaseUHD,
-    GLib.UriFlags.NONE,
-  );
-  if (imageUrl === null) {
-    throw new HttpRequestError(
-      url,
-      `Failed to join ${urlbaseUHD} to https://www.bing.com`,
+  const images = response.images ?? [];
+  return images.map((image) => {
+    const urlbaseUHD = `${image.urlbase}_UHD.jpg`;
+    const imageUrl = GLib.uri_resolve_relative(
+      "https://www.bing.com",
+      urlbaseUHD,
+      GLib.UriFlags.NONE,
     );
-  }
-  const startdate = image.startdate;
-  const suggestedFilename = decodeQuery(imageUrl)["id"];
-  return {
-    imageUrl: imageUrl,
-    pubdate: `${startdate.slice(0, 4)}-${startdate.slice(
-      4,
-      6,
-    )}-${startdate.slice(6)}`,
-    suggestedFilename,
-    metadata: {
-      title: image.title,
-      // The copyright fields really seem to be more of a description really
-      url: image.copyrightlink,
-      description: image.copyright,
-      copyright: null,
-    },
-  };
+    if (imageUrl === null) {
+      throw new HttpRequestError(
+        url,
+        `Failed to join ${urlbaseUHD} to https://www.bing.com`,
+      );
+    }
+    const startdate = image.startdate;
+    const suggestedFilename = decodeQuery(imageUrl)["id"];
+    return {
+      imageUrl: imageUrl,
+      pubdate: `${startdate.slice(0, 4)}-${startdate.slice(
+        4,
+        6,
+      )}-${startdate.slice(6)}`,
+      suggestedFilename,
+      metadata: {
+        title: image.title,
+        // The copyright fields really seem to be more of a description really
+        url: image.copyrightlink,
+        description: image.copyright,
+        copyright: null,
+      },
+    };
+  });
 };
 
 export const source: Source = {
@@ -109,9 +109,8 @@ export const source: Source = {
     getImages: async (
       session: Soup.Session,
       cancellable: Gio.Cancellable,
-    ): Promise<readonly DownloadableImage[]> => [
-      await getTodaysImage(session, cancellable),
-    ],
+    ): Promise<readonly DownloadableImage[]> =>
+      getTodaysImages(session, cancellable),
   },
 };
 
