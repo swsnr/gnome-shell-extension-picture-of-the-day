@@ -24,9 +24,9 @@ import Soup from "gi://Soup";
 import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-import { DownloadImage, Source } from "./lib/source.js";
+import { GetImage, Source } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
-import { RefreshService } from "./lib/services/refresh.js";
+import { DownloadImage, RefreshService } from "./lib/services/refresh.js";
 import { ExtensionIcons } from "./lib/ui/icons.js";
 import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
 import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
@@ -36,6 +36,8 @@ import { SourceSelector } from "./lib/services/source-selector.js";
 import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
 import { Destructible, SignalConnectionTracker } from "./lib/util/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
+import { createSession } from "./lib/network/http.js";
+import { downloadImage } from "./lib/util/download.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -52,7 +54,7 @@ class EnabledExtension implements Destructible {
 
   private readonly settings: Gio.Settings;
 
-  private readonly refreshService: RefreshService = new RefreshService();
+  private readonly refreshService: RefreshService;
   private readonly desktopBackgroundService: DesktopBackgroundService =
     DesktopBackgroundService.default();
   private readonly imageMetadataStore: ImageMetadataStore;
@@ -68,20 +70,33 @@ class EnabledExtension implements Destructible {
     // Our settings
     this.settings = extension.getSettings();
 
-    // Some additional infrastructure.
+    // Some infrastructure
     const iconLoader = new ExtensionIcons(
       extension.metadata.dir.get_child("icons"),
     );
 
-    // Set up the UI
+    // Create all service and UI objects
     this.indicator = new PictureOfTheDayIndicator(iconLoader);
+    this.errorHandler = new RefreshErrorHandler(iconLoader);
+    this.imageMetadataStore = new ImageMetadataStore(this.settings);
+    const currentSource = this.settings.get_string("selected-source");
+    if (currentSource === null) {
+      throw new Error("Current source 'null'?");
+    }
+    this.sourceSelector = SourceSelector.forKey(currentSource);
+    this.refreshService = new RefreshService(
+      createSession(this.extension.metadata),
+    );
+    this.refreshScheduler = new RefreshScheduler(
+      this.refreshService,
+      this.errorHandler,
+      this.timerRegistry,
+    );
+
+    // Set up the UI
     Main.panel.addToStatusArea(extension.metadata.uuid, this.indicator);
 
-    // Set up notifications by this extension.
-    this.errorHandler = new RefreshErrorHandler(iconLoader);
-
     // Restore metadata for the current image
-    this.imageMetadataStore = new ImageMetadataStore(this.settings);
     const storedImage = this.imageMetadataStore.loadFromMetadata();
     if (storedImage !== null) {
       const currentWallpaperUri = this.desktopBackgroundService.backgroundImage;
@@ -104,11 +119,6 @@ class EnabledExtension implements Destructible {
         }
       }),
     );
-    const currentSource = this.settings.get_string("selected-source");
-    if (currentSource === null) {
-      throw new Error("Current source 'null'?");
-    }
-    this.sourceSelector = SourceSelector.forKey(currentSource);
     this.indicator.updateSelectedSource(
       this.sourceSelector.selectedSource.metadata,
     );
@@ -135,12 +145,6 @@ class EnabledExtension implements Destructible {
     this.updateDownloader();
 
     // Setup automatic refreshing
-    this.refreshScheduler = new RefreshScheduler(
-      this.refreshService,
-      this.errorHandler,
-      this.timerRegistry,
-    );
-    // Restore and persist the last schedule refresh.
     const lastRefresh = this.settings.get_string("last-scheduled-refresh");
     if (lastRefresh && 0 < lastRefresh.length) {
       this.refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
@@ -241,6 +245,21 @@ class EnabledExtension implements Destructible {
     this.refreshService.setDownloader(downloader);
   }
 
+  private createGetImage(source: Source): GetImage {
+    switch (source.getImage.type) {
+      case "simple":
+        return source.getImage.getImage;
+      case "needs_settings": {
+        const settings = this.extension.getSettings(
+          `${this.extension.getSettings().schema_id}.source.${
+            source.metadata.key
+          }`,
+        );
+        return source.getImage.create(settings);
+      }
+    }
+  }
+
   /**
    * Create the download function to use.
    *
@@ -248,6 +267,7 @@ class EnabledExtension implements Destructible {
    * @param source The selected source
    * @returns A function to download images from the source
    */
+  // eslint-disable-next-line consistent-return
   private createDownloader(
     downloadBaseDirectory: Gio.File,
     source: Source,
@@ -255,26 +275,12 @@ class EnabledExtension implements Destructible {
     const downloadDirectory = downloadBaseDirectory.get_child(
       source.metadata.name,
     );
+    const getImage = this.createGetImage(source);
 
-    switch (source.downloadFactory.type) {
-      case "simple":
-        return source.downloadFactory.create(
-          this.extension.metadata,
-          downloadDirectory,
-        );
-      case "needs_settings": {
-        const settings = this.extension.getSettings(
-          `${this.extension.getSettings().schema_id}.source.${
-            source.metadata.key
-          }`,
-        );
-        return source.downloadFactory.create(
-          this.extension.metadata,
-          settings,
-          downloadDirectory,
-        );
-      }
-    }
+    return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
+      const image = await getImage(session, cancellable);
+      return downloadImage(session, downloadDirectory, cancellable, image);
+    };
   }
 
   destroy() {

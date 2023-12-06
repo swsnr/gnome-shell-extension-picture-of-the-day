@@ -18,10 +18,10 @@
 // GNU General Public License for more details.
 
 import Gio from "gi://Gio";
-
-import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
+import Soup from "gi://Soup";
 
 import { SourceMetadata } from "./source/metadata.js";
+import { DownloadableImage } from "./util/download.js";
 
 export type { SourceMetadata } from "./source/metadata.js";
 
@@ -55,69 +55,35 @@ export interface ImageMetadata {
 }
 
 /**
- * A downloaded image.
- */
-export interface ImageFile {
-  /**
-   * The metadata of this image.
-   */
-  readonly metadata: ImageMetadata;
-
-  /**
-   * The downloaded file.
-   */
-  readonly file: Gio.File;
-}
-
-/**
- * A function to download an image.
+ * A function to get information about an image of the day.
  *
+ * @param session The Soup session to use for making HTTP requests
  * @param cancellable Used to cancel any ongoing IO operations.
+ * @returns A promise with metadata about an image being available for download.
  */
-export type DownloadImage = (
+export type GetImage = (
+  session: Soup.Session,
   cancellable: Gio.Cancellable,
-) => Promise<ImageFile>;
+) => Promise<DownloadableImage>;
 
 /**
- * A simple download factory which requires no settings.
+ * A simple function which requires no settings.
  */
-export interface SimpleDownloadImageFactory {
+export interface SimpleGetImage {
   readonly type: "simple";
-  /**
-   * Create the download function.
-   *
-   * @param metadata The extension metadata
-   * @param downloadDirectory The directory to download the image to
-   * @returns The download function
-   */
-  readonly create: (
-    metadata: ExtensionMetadata,
-    downloadDirectory: Gio.File,
-  ) => DownloadImage;
+
+  readonly getImage: GetImage;
 }
 
 /**
- * A download factory which requires settings.
+ * A factory to create a function to get images.
  */
-export interface DownloadImageFactoryWithSettings {
+export interface GetImageWithSettings {
   readonly type: "needs_settings";
-  /**
-   * A factory for a download function.
-   *
-   * @param metadata Metadata about this extension, to use e.g. in User-Agent strings.
-   * @param settings Settings to create the download function with
-   * @param downloadDirectory The directory to download the image to
-   */
-  readonly create: (
-    extensionMetadata: ExtensionMetadata,
-    settings: Gio.Settings,
-    downloadDirectory: Gio.File,
-  ) => DownloadImage;
+  readonly create: (settings: Gio.Settings) => GetImage;
 }
 
-export type DownloadImageFactory =
-  | SimpleDownloadImageFactory
-  | DownloadImageFactoryWithSettings;
+export type GetImageFactory = SimpleGetImage | GetImageWithSettings;
 
 /**
  * An image source.
@@ -131,5 +97,5 @@ export interface Source {
   /**
    * Create a downloader for images of this source.
    */
-  readonly downloadFactory: DownloadImageFactory;
+  readonly getImage: GetImageFactory;
 }

@@ -17,13 +17,16 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+import Gio from "gi://Gio";
+import Soup from "gi://Soup";
+
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { DownloadScheduler } from "./download-scheduler.js";
-import { DownloadImage, ImageFile } from "../source.js";
 import { unfoldCauses } from "../util/error.js";
 import { CancellableResult } from "../util/gio.js";
 import { Destructible } from "../util/lifecycle.js";
+import { ImageFile } from "../util/download.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
@@ -39,6 +42,11 @@ interface RefreshServiceSignals {
   readonly "refresh-completed": [image: ImageFile];
 }
 
+export type DownloadImage = (
+  session: Soup.Session,
+  cancellable: Gio.Cancellable,
+) => Promise<ImageFile>;
+
 /**
  * Refreshes the current image.
  *
@@ -51,7 +59,7 @@ export class RefreshService
   private download: DownloadImage | null;
   private downloadScheduler: DownloadScheduler = new DownloadScheduler();
 
-  constructor() {
+  constructor(private readonly session: Soup.Session) {
     super();
     this.download = null;
   }
@@ -72,11 +80,12 @@ export class RefreshService
    */
   async refresh(): Promise<CancellableResult<ImageFile>> {
     if (this.download) {
+      const download = this.download;
       await this.downloadScheduler.cancelCurrentDownload();
       this.emit("state-changed", "ongoing");
       try {
         const image = await this.downloadScheduler.maybeStartDownload(
-          this.download,
+          (cancellable) => download(this.session, cancellable),
         );
         console.log("image finished", image);
         this.emit("state-changed", image.result);

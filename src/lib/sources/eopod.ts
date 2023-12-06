@@ -20,18 +20,11 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
-
-import { HttpRequestError, createSession, getString } from "../network/http.js";
+import { HttpRequestError, getString } from "../network/http.js";
 import * as dom from "../util/simpledom.js";
-import {
-  DownloadImage,
-  ImageFile,
-  SimpleDownloadImageFactory,
-  Source,
-} from "../source.js";
+import { Source } from "../source.js";
 import metadata from "./metadata/eopod.js";
-import { DownloadableImage, downloadImage } from "../util/download.js";
+import { DownloadableImage } from "../util/download.js";
 
 const findImgs = (nodes: readonly dom.Node[]): readonly dom.Element[] => {
   const elements = nodes.filter(dom.isElement);
@@ -40,7 +33,7 @@ const findImgs = (nodes: readonly dom.Node[]): readonly dom.Element[] => {
     .concat(elements.flatMap((e) => findImgs(e.children)));
 };
 
-const getLatestImage = async (
+const getImage = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
 ): Promise<DownloadableImage> => {
@@ -106,27 +99,15 @@ const getLatestImage = async (
   }
 };
 
-export const downloadFactory: SimpleDownloadImageFactory = {
-  type: "simple",
-  create(
-    extensionMetadata: ExtensionMetadata,
-    downloadDirectory: Gio.File,
-  ): DownloadImage {
-    const session = createSession(extensionMetadata);
-
-    return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
-      const image = await getLatestImage(session, cancellable);
-      return downloadImage(session, downloadDirectory, cancellable, image);
-    };
-  },
-};
-
 /**
  * A source for images from EOPOD.
  */
 export const source: Source = {
   metadata,
-  downloadFactory,
+  getImage: {
+    type: "simple",
+    getImage,
+  },
 };
 
 export default source;

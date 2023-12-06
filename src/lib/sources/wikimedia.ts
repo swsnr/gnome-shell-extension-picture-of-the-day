@@ -21,16 +21,9 @@ import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
-
-import {
-  DownloadImage,
-  ImageFile,
-  SimpleDownloadImageFactory,
-  Source,
-} from "../source.js";
-import { createSession, getJSON } from "../network/http.js";
-import { DownloadableImage, downloadImage } from "../util/download.js";
+import { Source } from "../source.js";
+import { getJSON } from "../network/http.js";
+import { DownloadableImage } from "../util/download.js";
 import metadata from "./metadata/wikimedia.js";
 import { NoPictureTodayError } from "../source/errors.js";
 
@@ -83,7 +76,7 @@ const getFeaturedContent = async (
   return response as FeaturedContentResponse;
 };
 
-const getLatestImage = async (
+const getImage = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
 ): Promise<DownloadableImage> => {
@@ -111,27 +104,15 @@ const getLatestImage = async (
   };
 };
 
-export const downloadFactory: SimpleDownloadImageFactory = {
-  type: "simple",
-  create(
-    extensionMetadata: ExtensionMetadata,
-    downloadDirectory: Gio.File,
-  ): DownloadImage {
-    const session = createSession(extensionMetadata);
-
-    return async (cancellable: Gio.Cancellable): Promise<ImageFile> => {
-      const image = await getLatestImage(session, cancellable);
-      return downloadImage(session, downloadDirectory, cancellable, image);
-    };
-  },
-};
-
 /**
  * A source for images from Wikimedia.
  */
 export const source: Source = {
   metadata,
-  downloadFactory,
+  getImage: {
+    type: "simple",
+    getImage,
+  },
 };
 
 export default source;
