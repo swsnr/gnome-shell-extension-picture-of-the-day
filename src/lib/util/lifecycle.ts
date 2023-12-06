@@ -45,3 +45,28 @@ export class SignalConnectionTracker implements Destructible {
     }
   }
 }
+
+/**
+ * A destroyer of things.
+ *
+ * Tracks destructible objects and destroys them all when it itself is destroyed.
+ */
+export class Destroyer implements Destructible {
+  private readonly destructibles: Destructible[] = [];
+
+  add<T extends Destructible>(destructible: T): T {
+    this.destructibles.push(destructible);
+    return destructible;
+  }
+
+  destroy(): void {
+    let destructible: Destructible | undefined;
+    while ((destructible = this.destructibles.pop())) {
+      try {
+        destructible.destroy();
+      } catch (error) {
+        console.error("Failed to destroy object", destructible, error);
+      }
+    }
+  }
+}
