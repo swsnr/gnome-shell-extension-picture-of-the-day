@@ -44,6 +44,7 @@ import { createSession } from "./lib/network/http.js";
 import { downloadImage } from "./lib/util/download.js";
 import random from "./lib/util/random.js";
 import { NoPictureTodayError } from "./lib/source/errors.js";
+import { SourceSettings } from "./lib/source/settings.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -52,230 +53,214 @@ Gio._promisify(Gio.File.prototype, "delete_async");
 Gio._promisify(Soup.Session.prototype, "send_and_read_async");
 Gio._promisify(Soup.Session.prototype, "send_async");
 
+const createGetImage = (
+  settings: SourceSettings,
+  source: Source,
+): GetImages => {
+  switch (source.getImages.type) {
+    case "simple":
+      return source.getImages.getImages;
+    case "needs_settings": {
+      return source.getImages.create(settings.forSource(source.metadata));
+    }
+  }
+};
+
 /**
- * Track the state of this extension.
+ * Create the download function to use.
+ *
+ * @param settings Settings for sources
+ * @param downloadBaseDirectory The base download directory
+ * @param source The selected source
+ * @returns A function to download images from the source
  */
-class EnabledExtension implements Destructible {
-  private readonly settings: Gio.Settings;
+const createDownloader = (
+  settings: SourceSettings,
+  downloadBaseDirectory: Gio.File,
+  source: Source,
+): DownloadImage => {
+  const downloadDirectory = downloadBaseDirectory.get_child(
+    source.metadata.name,
+  );
+  const getImage = createGetImage(settings, source);
 
-  private readonly destroyer: Destroyer = new Destroyer();
+  return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
+    const images = await getImage(session, cancellable);
+    const image = images.length === 1 ? images[0] : random.sample(images);
+    if (typeof image === "undefined") {
+      throw new NoPictureTodayError(source.metadata);
+    }
+    return downloadImage(session, downloadDirectory, cancellable, image);
+  };
+};
 
-  constructor(private readonly extension: Extension) {
-    // Our settings
-    this.settings = extension.getSettings();
+const enableExtension = (extension: Extension): Destructible => {
+  const destroyer = new Destroyer();
 
-    // Infrastructure for the user interface.
-    const iconLoader = new ExtensionIcons(
-      extension.metadata.dir.get_child("icons"),
+  // Our settings
+  const settings = extension.getSettings();
+
+  // Infrastructure for the user interface.
+  const iconLoader = new ExtensionIcons(
+    extension.metadata.dir.get_child("icons"),
+  );
+  // Infrastructure for keeping track of things to dispose
+  const signalTracker = destroyer.add(new SignalConnectionTracker());
+  const timers = destroyer.add(new TimerRegistry());
+
+  // Set up the UI
+  const indicator = destroyer.add(new PictureOfTheDayIndicator(iconLoader));
+  Main.panel.addToStatusArea(extension.metadata.uuid, indicator);
+
+  // Set up notifications by this extension.
+  const errorHandler = destroyer.add(new RefreshErrorHandler(iconLoader));
+
+  // Restore metadata for the current image
+  const desktopBackground = DesktopBackgroundService.default();
+  const imageMetadataStore = new ImageMetadataStore(settings);
+  const storedImage = imageMetadataStore.loadFromMetadata();
+  if (storedImage !== null) {
+    const currentWallpaperUri = desktopBackground.backgroundImage;
+    if (storedImage.file.get_uri() === currentWallpaperUri) {
+      indicator.showImageMetadata(storedImage);
+    }
+  }
+
+  // Setup automatic refreshing
+  const refreshService = destroyer.add(
+    new RefreshService(createSession(extension.metadata)),
+  );
+  const refreshScheduler = destroyer.add(
+    new RefreshScheduler(refreshService, errorHandler, timers),
+  );
+  // Restore and persist the last schedule refresh.
+  const lastRefresh = settings.get_string("last-scheduled-refresh");
+  if (lastRefresh && 0 < lastRefresh.length) {
+    refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
+      lastRefresh,
+      null,
     );
-    // Infrastructure for keeping track of things to dispose
-    const signalTracker = this.destroyer.add(new SignalConnectionTracker());
-    const timers = this.destroyer.add(new TimerRegistry());
-
-    // Set up the UI
-    const indicator = this.destroyer.add(
-      new PictureOfTheDayIndicator(iconLoader),
-    );
-    Main.panel.addToStatusArea(extension.metadata.uuid, indicator);
-
-    // Set up notifications by this extension.
-    const errorHandler = this.destroyer.add(
-      new RefreshErrorHandler(iconLoader),
-    );
-
-    // Restore metadata for the current image
-    const desktopBackground = DesktopBackgroundService.default();
-    const imageMetadataStore = new ImageMetadataStore(this.settings);
-    const storedImage = imageMetadataStore.loadFromMetadata();
-    if (storedImage !== null) {
-      const currentWallpaperUri = desktopBackground.backgroundImage;
-      if (storedImage.file.get_uri() === currentWallpaperUri) {
-        indicator.showImageMetadata(storedImage);
+  }
+  refreshScheduler.connect("refresh-completed", (_, timestamp): undefined => {
+    settings.set_string("last-scheduled-refresh", timestamp.format_iso8601());
+  });
+  if (settings.get_boolean("refresh-automatically")) {
+    refreshScheduler.start();
+  }
+  signalTracker.track(
+    settings,
+    settings.connect("changed::refresh-automatically", () => {
+      if (settings.get_boolean("refresh-automatically")) {
+        refreshScheduler.start();
+      } else {
+        refreshScheduler.stop();
       }
-    }
+    }),
+  );
 
-    // Setup automatic refreshing
-    const refreshService = this.destroyer.add(
-      new RefreshService(createSession(this.extension.metadata)),
-    );
-    const refreshScheduler = this.destroyer.add(
-      new RefreshScheduler(refreshService, errorHandler, timers),
-    );
-    // Restore and persist the last schedule refresh.
-    const lastRefresh = this.settings.get_string("last-scheduled-refresh");
-    if (lastRefresh && 0 < lastRefresh.length) {
-      refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
-        lastRefresh,
-        null,
-      );
-    }
-    refreshScheduler.connect("refresh-completed", (_, timestamp): undefined => {
-      this.settings.set_string(
-        "last-scheduled-refresh",
-        timestamp.format_iso8601(),
-      );
+  // Trigger an immediate refresh after a user action.
+
+  // Unlike scheduled refreshes we immediately show all errors, and do not handle
+  // intermittent network errors in any special way.
+  const refreshAfterUserAction = () => {
+    refreshService.refresh().catch((error) => {
+      errorHandler.showError(error);
     });
-    if (this.settings.get_boolean("refresh-automatically")) {
-      refreshScheduler.start();
-    }
-    signalTracker.track(
-      this.settings,
-      this.settings.connect("changed::refresh-automatically", () => {
-        if (this.settings.get_boolean("refresh-automatically")) {
-          refreshScheduler.start();
-        } else {
-          refreshScheduler.stop();
+  };
+
+  // Wire up the current source
+  const currentSource = settings.get_string("selected-source");
+  if (currentSource === null) {
+    throw new Error("Current source 'null'?");
+  }
+  const sourceSelector = destroyer.add(SourceSelector.forKey(currentSource));
+  signalTracker.track(
+    settings,
+    settings.connect("changed::selected-source", () => {
+      const key = settings.get_string("selected-source");
+      if (key) {
+        try {
+          sourceSelector.selectSource(key);
+        } catch (error) {
+          console.error("Source could not be loaded", key);
         }
-      }),
+      }
+    }),
+  );
+  indicator.updateSelectedSource(sourceSelector.selectedSource.metadata);
+  const sourceSettings = SourceSettings.fromBaseSettings(extension, settings);
+  const updateDownloader = () => {
+    const customImageUri = settings
+      .get_value("image-download-folder")
+      .deepUnpack<string | null>();
+    const downloadDirectory =
+      customImageUri === null
+        ? Gio.File.new_for_path(GLib.get_user_state_dir())
+            .get_child(extension.metadata.uuid)
+            .get_child("images")
+        : Gio.File.new_for_uri(customImageUri);
+    const downloader = createDownloader(
+      sourceSettings,
+      downloadDirectory,
+      sourceSelector.selectedSource,
     );
-
-    // Trigger an immediate refresh after a user action.
-
-    // Unlike scheduled refreshes we immediately show all errors, and do not handle
-    // intermittent network errors in any special way.
-    const refreshAfterUserAction = () => {
-      refreshService.refresh().catch((error) => {
-        errorHandler.showError(error);
-      });
-    };
-
-    // Wire up the current source
-    const currentSource = this.settings.get_string("selected-source");
-    if (currentSource === null) {
-      throw new Error("Current source 'null'?");
-    }
-    const sourceSelector = this.destroyer.add(
-      SourceSelector.forKey(currentSource),
-    );
-    signalTracker.track(
-      this.settings,
-      this.settings.connect("changed::selected-source", () => {
-        const key = this.settings.get_string("selected-source");
-        if (key) {
-          try {
-            sourceSelector.selectSource(key);
-          } catch (error) {
-            console.error("Source could not be loaded", key);
-          }
-        }
-      }),
-    );
-    indicator.updateSelectedSource(sourceSelector.selectedSource.metadata);
-    const updateDownloader = () => {
-      const customImageUri = this.settings
-        .get_value("image-download-folder")
-        .deepUnpack<string | null>();
-      const downloadDirectory =
-        customImageUri === null
-          ? Gio.File.new_for_path(GLib.get_user_state_dir())
-              .get_child(this.extension.metadata.uuid)
-              .get_child("images")
-          : Gio.File.new_for_uri(customImageUri);
-      const downloader = this.createDownloader(
-        downloadDirectory,
-        sourceSelector.selectedSource,
-      );
-      refreshService.setDownloader(downloader);
-    };
-    sourceSelector.connect("source-changed", (_selector, source): undefined => {
-      updateDownloader();
-      indicator.updateSelectedSource(source.metadata);
-      // Refresh immediately; the source only ever changes when the user
-      // explicitly asked for it to change.
-      refreshAfterUserAction();
-    });
-
-    // Listen to changes in the download directory
-    signalTracker.track(
-      this.settings,
-      this.settings.connect("changed::image-download-folder", () => {
-        updateDownloader();
-      }),
-    );
-
-    // Initialize the downloader for the current source
+    refreshService.setDownloader(downloader);
+  };
+  sourceSelector.connect("source-changed", (_selector, source): undefined => {
     updateDownloader();
+    indicator.updateSelectedSource(source.metadata);
+    // Refresh immediately; the source only ever changes when the user
+    // explicitly asked for it to change.
+    refreshAfterUserAction();
+  });
 
-    // Now wire up all the signals between the services and the UI.
-    // React on user actions on the indicator
-    indicator.connect("activated::preferences", () => {
-      extension.openPreferences();
-    });
-    indicator.connect("activated::refresh", () => {
-      console.log("Refresh emitted");
-      refreshAfterUserAction();
-    });
-    indicator.connect("activated::cancel-refresh", () => {
-      void refreshService.cancelRefresh();
-    });
-    indicator.connect("switch-source", (_, sourceKey: string) => {
-      this.settings.set_string("selected-source", sourceKey);
-    });
+  // Listen to changes in the download directory
+  signalTracker.track(
+    settings,
+    settings.connect("changed::image-download-folder", () => {
+      updateDownloader();
+    }),
+  );
 
-    // Make everyone react on a new picture of the day
-    refreshService.connect("state-changed", (_, state): undefined => {
-      indicator.updateRefreshState(state);
-    });
-    refreshService.connect("refresh-completed", (_, image): undefined => {
-      indicator.showImageMetadata(image);
-      imageMetadataStore.storedMetadataForImage(image);
-      desktopBackground.setBackgroundImageFile(image.file);
-    });
+  // Initialize the downloader for the current source
+  updateDownloader();
 
-    // Handle user reactions on errors
-    errorHandler.connect("action::open-preferences", (): undefined => {
-      this.extension.openPreferences();
-    });
-    errorHandler.connect("action::open-network-settings", (): undefined => {
-      launchSettingsPanel("network");
-    });
-  }
+  // Now wire up all the signals between the services and the UI.
+  // React on user actions on the indicator
+  indicator.connect("activated::preferences", () => {
+    extension.openPreferences();
+  });
+  indicator.connect("activated::refresh", () => {
+    console.log("Refresh emitted");
+    refreshAfterUserAction();
+  });
+  indicator.connect("activated::cancel-refresh", () => {
+    void refreshService.cancelRefresh();
+  });
+  indicator.connect("switch-source", (_, sourceKey: string) => {
+    settings.set_string("selected-source", sourceKey);
+  });
 
-  private createGetImage(source: Source): GetImages {
-    switch (source.getImages.type) {
-      case "simple":
-        return source.getImages.getImages;
-      case "needs_settings": {
-        const settings = this.extension.getSettings(
-          `${this.extension.getSettings().schema_id}.source.${
-            source.metadata.key
-          }`,
-        );
-        return source.getImages.create(settings);
-      }
-    }
-  }
+  // Make everyone react on a new picture of the day
+  refreshService.connect("state-changed", (_, state): undefined => {
+    indicator.updateRefreshState(state);
+  });
+  refreshService.connect("refresh-completed", (_, image): undefined => {
+    indicator.showImageMetadata(image);
+    imageMetadataStore.storedMetadataForImage(image);
+    desktopBackground.setBackgroundImageFile(image.file);
+  });
 
-  /**
-   * Create the download function to use.
-   *
-   * @param downloadBaseDirectory The base download directory
-   * @param source The selected source
-   * @returns A function to download images from the source
-   */
-  private createDownloader(
-    downloadBaseDirectory: Gio.File,
-    source: Source,
-  ): DownloadImage {
-    const downloadDirectory = downloadBaseDirectory.get_child(
-      source.metadata.name,
-    );
-    const getImage = this.createGetImage(source);
+  // Handle user reactions on errors
+  errorHandler.connect("action::open-preferences", (): undefined => {
+    extension.openPreferences();
+  });
+  errorHandler.connect("action::open-network-settings", (): undefined => {
+    launchSettingsPanel("network");
+  });
 
-    return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
-      const images = await getImage(session, cancellable);
-      const image = images.length === 1 ? images[0] : random.sample(images);
-      if (typeof image === "undefined") {
-        throw new NoPictureTodayError(source.metadata);
-      }
-      return downloadImage(session, downloadDirectory, cancellable, image);
-    };
-  }
-
-  destroy() {
-    this.destroyer.destroy();
-  }
-}
+  return destroyer;
+};
 
 /**
  * An extension to use a picture of the day from various sources as wallpaper.
@@ -288,7 +273,7 @@ export default class PictureOfTheDayExtension extends Extension {
       console.log(
         `Enabled extension ${this.metadata.uuid} ${this.metadata["version-name"]}`,
       );
-      this.enabledExtension = new EnabledExtension(this);
+      this.enabledExtension = enableExtension(this);
     }
   }
 
