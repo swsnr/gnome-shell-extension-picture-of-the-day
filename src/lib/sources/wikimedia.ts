@@ -76,10 +76,10 @@ const getFeaturedContent = async (
   return response as FeaturedContentResponse;
 };
 
-const getImage = async (
+const getImages = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
-): Promise<DownloadableImage> => {
+): Promise<readonly DownloadableImage[]> => {
   const date = GLib.DateTime.new_now_local();
   const featuredContent = await getFeaturedContent(session, date, cancellable);
   if (!featuredContent.image) {
@@ -91,7 +91,7 @@ const getImage = async (
   if (pubdate === null) {
     throw new Error(`Formatting GLib.DateTime returned null?`);
   }
-  return {
+  const imageToDownload: DownloadableImage = {
     imageUrl: image.source,
     pubdate,
     metadata: {
@@ -102,6 +102,7 @@ const getImage = async (
       url: file_page,
     },
   };
+  return [imageToDownload];
 };
 
 /**
@@ -109,9 +110,9 @@ const getImage = async (
  */
 export const source: Source = {
   metadata,
-  getImage: {
+  getImages: {
     type: "simple",
-    getImage,
+    getImages,
   },
 };
 

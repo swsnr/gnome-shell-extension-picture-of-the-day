@@ -61,29 +61,29 @@ export interface ImageMetadata {
  * @param cancellable Used to cancel any ongoing IO operations.
  * @returns A promise with metadata about an image being available for download.
  */
-export type GetImage = (
+export type GetImages = (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
-) => Promise<DownloadableImage>;
+) => Promise<readonly DownloadableImage[]>;
 
 /**
  * A simple function which requires no settings.
  */
-export interface SimpleGetImage {
+export interface SimpleGetImages {
   readonly type: "simple";
 
-  readonly getImage: GetImage;
+  readonly getImages: GetImages;
 }
 
 /**
  * A factory to create a function to get images.
  */
-export interface GetImageWithSettings {
+export interface GetImagesWithSettings {
   readonly type: "needs_settings";
-  readonly create: (settings: Gio.Settings) => GetImage;
+  readonly create: (settings: Gio.Settings) => GetImages;
 }
 
-export type GetImageFactory = SimpleGetImage | GetImageWithSettings;
+export type GetImagesFactory = SimpleGetImages | GetImagesWithSettings;
 
 /**
  * An image source.
@@ -97,5 +97,5 @@ export interface Source {
   /**
    * Create a downloader for images of this source.
    */
-  readonly getImage: GetImageFactory;
+  readonly getImages: GetImagesFactory;
 }

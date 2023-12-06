@@ -104,12 +104,14 @@ export const getTodaysImage = async (
 
 export const source: Source = {
   metadata,
-  getImage: {
+  getImages: {
     type: "simple",
-    getImage: (
+    getImages: async (
       session: Soup.Session,
       cancellable: Gio.Cancellable,
-    ): Promise<DownloadableImage> => getTodaysImage(session, cancellable),
+    ): Promise<readonly DownloadableImage[]> => [
+      await getTodaysImage(session, cancellable),
+    ],
   },
 };
 

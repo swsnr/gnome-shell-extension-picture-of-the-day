@@ -33,10 +33,10 @@ const findImgs = (nodes: readonly dom.Node[]): readonly dom.Element[] => {
     .concat(elements.flatMap((e) => findImgs(e.children)));
 };
 
-const getImage = async (
+const getImages = async (
   session: Soup.Session,
   cancellable: Gio.Cancellable,
-): Promise<DownloadableImage> => {
+): Promise<readonly DownloadableImage[]> => {
   const SaxesParser = (await import("../vendor/saxes/saxes.js")).SaxesParser;
   const url = "https://earthobservatory.nasa.gov/feeds/image-of-the-day.rss";
   console.log(`Requesting EOPOD feed from ${url}`);
@@ -79,7 +79,7 @@ const getImage = async (
     const date = new Date(dom.innerText(pubDate).trim())
       .toISOString()
       .split("T")[0];
-    return {
+    const image: DownloadableImage = {
       metadata: {
         title: dom.innerText(title).trim(),
         description: description ? dom.innerText(description).trim() : null,
@@ -92,6 +92,7 @@ const getImage = async (
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       pubdate: date!,
     };
+    return [image];
   } catch (cause) {
     throw new HttpRequestError(url, `Failed to parse RSS from ${url}`, {
       cause,
@@ -104,9 +105,9 @@ const getImage = async (
  */
 export const source: Source = {
   metadata,
-  getImage: {
+  getImages: {
     type: "simple",
-    getImage,
+    getImages,
   },
 };
 

@@ -20,7 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { GetImage, GetImageWithSettings, Source } from "../source.js";
+import { Source } from "../source.js";
 import {
   NotAnImageError,
   InvalidAPIKeyError,
@@ -154,46 +154,46 @@ const queryMetadata = async (
   }
 };
 
-export const getImage: GetImageWithSettings = {
-  type: "needs_settings",
-  create(settings: Gio.Settings): GetImage {
-    return async (
-      session: Soup.Session,
-      cancellable: Gio.Cancellable,
-    ): Promise<DownloadableImage> => {
-      const apiKey = settings.get_string("api-key");
-      if (apiKey === null || apiKey.length === 0) {
-        throw new InvalidAPIKeyError(metadata);
-      }
+/**
+ * Get today's APOD image.
+ *
+ * @param settings Settings to get the API key from.
+ * @param session The HTTP client to use
+ * @param cancellable To cancel the ongoing download
+ * @returns Todays APOD
+ */
+const getImage = async (
+  settings: Gio.Settings,
+  session: Soup.Session,
+  cancellable: Gio.Cancellable,
+): Promise<DownloadableImage> => {
+  const apiKey = settings.get_string("api-key");
+  if (apiKey === null || apiKey.length === 0) {
+    throw new InvalidAPIKeyError(metadata);
+  }
 
-      const apodImageMetadata = await queryMetadata(
-        session,
-        apiKey,
-        cancellable,
-      );
-      const urlDate = apodImageMetadata.date.replaceAll("-", "").slice(2);
-      const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
-      const downloadableImage: DownloadableImage = {
-        imageUrl: apodImageMetadata.hdurl ?? apodImageMetadata.url,
-        pubdate: apodImageMetadata.date,
-        metadata: {
-          title: apodImageMetadata.title,
-          description: apodImageMetadata.explanation,
-          url,
-          copyright: apodImageMetadata.copyright ?? null,
-        },
-      };
+  const apodImageMetadata = await queryMetadata(session, apiKey, cancellable);
+  const urlDate = apodImageMetadata.date.replaceAll("-", "").slice(2);
+  const url = `https://apod.nasa.gov/apod/ap${urlDate}.html`;
+  const downloadableImage: DownloadableImage = {
+    imageUrl: apodImageMetadata.hdurl ?? apodImageMetadata.url,
+    pubdate: apodImageMetadata.date,
+    metadata: {
+      title: apodImageMetadata.title,
+      description: apodImageMetadata.explanation,
+      url,
+      copyright: apodImageMetadata.copyright ?? null,
+    },
+  };
 
-      if (apodImageMetadata.media_type !== "image") {
-        throw new NotAnImageError(
-          downloadableImage.metadata,
-          apodImageMetadata.media_type,
-        );
-      }
+  if (apodImageMetadata.media_type !== "image") {
+    throw new NotAnImageError(
+      downloadableImage.metadata,
+      apodImageMetadata.media_type,
+    );
+  }
 
-      return downloadableImage;
-    };
-  },
+  return downloadableImage;
 };
 
 /**
@@ -201,7 +201,17 @@ export const getImage: GetImageWithSettings = {
  */
 export const source: Source = {
   metadata,
-  getImage,
+  getImages: {
+    type: "needs_settings",
+    create:
+      (settings: Gio.Settings) =>
+      async (
+        session: Soup.Session,
+        cancellable: Gio.Cancellable,
+      ): Promise<readonly DownloadableImage[]> => {
+        return [await getImage(settings, session, cancellable)];
+      },
+  },
 };
 
 export default source;
