@@ -44,6 +44,7 @@ import { createSession } from "./lib/network/http.js";
 import { downloadImage } from "./lib/util/download.js";
 import random from "./lib/util/random.js";
 import { NoPictureTodayError } from "./lib/source/errors.js";
+import { SourceSettings } from "./lib/source/settings.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -52,15 +53,15 @@ Gio._promisify(Gio.File.prototype, "delete_async");
 Gio._promisify(Soup.Session.prototype, "send_and_read_async");
 Gio._promisify(Soup.Session.prototype, "send_async");
 
-const createGetImage = (extension: Extension, source: Source): GetImages => {
+const createGetImage = (
+  settings: SourceSettings,
+  source: Source,
+): GetImages => {
   switch (source.getImages.type) {
     case "simple":
       return source.getImages.getImages;
     case "needs_settings": {
-      const settings = extension.getSettings(
-        `${extension.getSettings().schema_id}.source.${source.metadata.key}`,
-      );
-      return source.getImages.create(settings);
+      return source.getImages.create(settings.forSource(source.metadata));
     }
   }
 };
@@ -68,19 +69,20 @@ const createGetImage = (extension: Extension, source: Source): GetImages => {
 /**
  * Create the download function to use.
  *
+ * @param settings Settings for sources
  * @param downloadBaseDirectory The base download directory
  * @param source The selected source
  * @returns A function to download images from the source
  */
 const createDownloader = (
-  extension: Extension,
+  settings: SourceSettings,
   downloadBaseDirectory: Gio.File,
   source: Source,
 ): DownloadImage => {
   const downloadDirectory = downloadBaseDirectory.get_child(
     source.metadata.name,
   );
-  const getImage = createGetImage(extension, source);
+  const getImage = createGetImage(settings, source);
 
   return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
     const images = await getImage(session, cancellable);
@@ -186,6 +188,7 @@ const enableExtension = (extension: Extension): Destructible => {
     }),
   );
   indicator.updateSelectedSource(sourceSelector.selectedSource.metadata);
+  const sourceSettings = SourceSettings.fromBaseSettings(extension, settings);
   const updateDownloader = () => {
     const customImageUri = settings
       .get_value("image-download-folder")
@@ -197,7 +200,7 @@ const enableExtension = (extension: Extension): Destructible => {
             .get_child("images")
         : Gio.File.new_for_uri(customImageUri);
     const downloader = createDownloader(
-      extension,
+      sourceSettings,
       downloadDirectory,
       sourceSelector.selectedSource,
     );
