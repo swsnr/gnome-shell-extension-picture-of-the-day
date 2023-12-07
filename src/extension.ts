@@ -34,17 +34,14 @@ import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
 import { launchSettingsPanel } from "./lib/ui/settings.js";
 import { SourceSelector } from "./lib/services/source-selector.js";
 import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
-import {
-  Destroyer,
-  Destructible,
-  SignalConnectionTracker,
-} from "./lib/common/lifecycle.js";
+import { Destroyer, SignalConnectionTracker } from "./lib/common/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
 import { createSession } from "./lib/network/http.js";
 import { downloadImage } from "./lib/download.js";
 import random from "./lib/common/random.js";
 import { NoPictureTodayError } from "./lib/source/errors.js";
 import { SourceSettings } from "./lib/source/settings.js";
+import { DestructibleExtension } from "./lib/common/extension.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
@@ -273,43 +270,10 @@ const initializeExtension = (
 };
 
 /**
- * Enable the extension.
- *
- * @param extension The extension object
- * @returns A destructible which tears down the entire extension when destroyed
- */
-const enableExtension = (extension: Extension): Destructible => {
-  const destroyer = new Destroyer();
-  try {
-    initializeExtension(extension, destroyer);
-  } catch (error) {
-    // If initialization fails destroy everything that's been initialized so far,
-    // to avoid dangling resources from partial initialization.
-    destroyer.destroy();
-    console.error("Failed to initialize extension", error);
-    throw error;
-  }
-
-  return destroyer;
-};
-
-/**
  * An extension to use a picture of the day from various sources as wallpaper.
  */
-export default class PictureOfTheDayExtension extends Extension {
-  private enabledExtension?: Destructible | null;
-
-  override enable(): void {
-    if (!this.enabledExtension) {
-      console.log(
-        `Enabled extension ${this.metadata.uuid} ${this.metadata["version-name"]}`,
-      );
-      this.enabledExtension = enableExtension(this);
-    }
-  }
-
-  override disable(): void {
-    this.enabledExtension?.destroy();
-    this.enabledExtension = null;
+export default class PictureOfTheDayExtension extends DestructibleExtension {
+  override initialize(destroyer: Destroyer): void {
+    initializeExtension(this, destroyer);
   }
 }

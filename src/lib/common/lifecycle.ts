@@ -70,3 +70,28 @@ export class Destroyer implements Destructible {
     }
   }
 }
+
+/**
+ * Initialize resources safely.
+ *
+ * Call the given `initialize` function with a fresh `Destroyer`.  If `initialize` throws an error, take care to invoke
+ * `destroy` of the destroyer object, to avoid leaking resources upon partial initialization.
+ *
+ * `initialize` just needs to register all destrucible objects on the passed `destroyer`.
+ *
+ * @param initialize A function to initialize some resources.
+ * @returns The destroyer which groups all initialized resources.
+ */
+export const initializeSafely = (
+  initialize: (destroyer: Destroyer) => void,
+): Destructible => {
+  const destroyer = new Destroyer();
+  try {
+    initialize(destroyer);
+  } catch (error) {
+    destroyer.destroy();
+    throw error;
+  }
+
+  return destroyer;
+};
