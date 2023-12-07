@@ -23,8 +23,9 @@ import Gio from "gi://Gio";
 /**
  * A result of a cancellable.
  *
- * `null` if the operation was cancelled, or `{ value: result }` where `result` is the return value of the completed
- * operation.
+ * `{ result: "cancelled" }` if the operation was cancelled, or
+ * `{ result: "completed", value: result }` where `result` is the return value
+ * of the completed operation.
  */
 export type CancellableResult<T> =
   | { readonly result: "cancelled" }
