@@ -29,7 +29,7 @@ import {
 import { Notification } from "resource:///org/gnome/shell/ui/messageTray.js";
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
-import { IconLoader } from "../ui/icons.js";
+import { IconLoader } from "../common/ui/icons.js";
 import { PictureOfTheDaySource } from "../ui/notifications.js";
 import { ErrorDetailDialog } from "../ui/error-detail-dialog.js";
 import {
@@ -40,9 +40,9 @@ import {
   RateLimitedError,
 } from "../source/errors.js";
 import { HttpRequestError } from "../network/http.js";
-import { IOError } from "../util/gio.js";
-import i18n from "../util/i18n.js";
-import { Destructible } from "../util/lifecycle.js";
+import { IOError } from "../common/gio.js";
+import i18n from "../common/i18n.js";
+import { Destructible } from "../common/lifecycle.js";
 
 export interface RefreshErrorHandlerSignals {
   readonly "action::open-preferences": [];

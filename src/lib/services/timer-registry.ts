@@ -19,7 +19,7 @@
 
 import GLib from "gi://GLib";
 
-import { Destructible } from "../util/lifecycle.js";
+import { Destructible } from "../common/lifecycle.js";
 
 /**
  * A running and active timer.

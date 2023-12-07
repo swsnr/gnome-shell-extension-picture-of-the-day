@@ -19,7 +19,7 @@
 
 import Gio from "gi://Gio";
 import { ImageMetadata } from "../source.js";
-import { ImageFile } from "../util/download.js";
+import { ImageFile } from "../download.js";
 
 interface StoredMetadata {
   readonly metadata: ImageMetadata;

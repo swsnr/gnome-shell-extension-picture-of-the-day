@@ -29,7 +29,7 @@ import {
   ModalDialog,
   ModalDialogParams,
 } from "resource:///org/gnome/shell/ui/modalDialog.js";
-import { unfoldCauses } from "../util/error.js";
+import { unfoldCauses } from "../common/error.js";
 
 /**
  * Shortcut for `GLib.markup_escape_text`.

@@ -22,11 +22,11 @@ import Gio from "gi://Gio";
 
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 import { RefreshService } from "./refresh.js";
-import { IOError } from "../util/gio.js";
+import { IOError } from "../common/gio.js";
 import { HttpRequestError } from "../network/http.js";
 import { RateLimitedError } from "../source/errors.js";
 import { RefreshErrorHandler } from "./refresh-error-handler.js";
-import { Destructible } from "../util/lifecycle.js";
+import { Destructible } from "../common/lifecycle.js";
 import { Timer, TimerRegistry } from "./timer-registry.js";
 
 interface RefreshSchedulerSignals {

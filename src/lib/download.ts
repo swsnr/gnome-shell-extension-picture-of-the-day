@@ -20,8 +20,8 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { ImageMetadata } from "../source.js";
-import { downloadToFile } from "../network/http.js";
+import { ImageMetadata } from "./source.js";
+import { downloadToFile } from "./network/http.js";
 
 /**
  * An image available for download.

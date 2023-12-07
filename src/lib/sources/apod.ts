@@ -29,7 +29,7 @@ import {
 import { QueryList, encodeQuery } from "../network/uri.js";
 import { HttpRequestError, HttpStatusError, getJSON } from "../network/http.js";
 import metadata from "./metadata/apod.js";
-import { DownloadableImage } from "../util/download.js";
+import { DownloadableImage } from "../download.js";
 
 /**
  * The APOD API did not return any body data.

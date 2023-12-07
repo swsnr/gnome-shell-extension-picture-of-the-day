@@ -24,7 +24,7 @@ import Soup from "gi://Soup";
 import metadata from "./metadata/bing.js";
 import { Source } from "../source.js";
 import { HttpRequestError, getJSON } from "../network/http.js";
-import { DownloadableImage } from "../util/download.js";
+import { DownloadableImage } from "../download.js";
 import { decodeQuery, encodeQuery } from "../network/uri.js";
 
 interface BingImage {

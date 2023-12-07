@@ -27,7 +27,7 @@ import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import { GetImages, Source } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
 import { DownloadImage, RefreshService } from "./lib/services/refresh.js";
-import { ExtensionIcons } from "./lib/ui/icons.js";
+import { IconThemeLoader } from "./lib/common/ui/icons.js";
 import { DesktopBackgroundService } from "./lib/services/desktop-background.js";
 import { ImageMetadataStore } from "./lib/services/image-metadata-store.js";
 import { RefreshErrorHandler } from "./lib/services/refresh-error-handler.js";
@@ -38,11 +38,11 @@ import {
   Destroyer,
   Destructible,
   SignalConnectionTracker,
-} from "./lib/util/lifecycle.js";
+} from "./lib/common/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
 import { createSession } from "./lib/network/http.js";
-import { downloadImage } from "./lib/util/download.js";
-import random from "./lib/util/random.js";
+import { downloadImage } from "./lib/download.js";
+import random from "./lib/common/random.js";
 import { NoPictureTodayError } from "./lib/source/errors.js";
 import { SourceSettings } from "./lib/source/settings.js";
 
@@ -113,7 +113,7 @@ const initializeExtension = (
   const settings = extension.getSettings();
 
   // Infrastructure for the user interface.
-  const iconLoader = new ExtensionIcons(
+  const iconLoader = new IconThemeLoader(
     extension.metadata.dir.get_child("icons"),
   );
   // Infrastructure for keeping track of things to dispose

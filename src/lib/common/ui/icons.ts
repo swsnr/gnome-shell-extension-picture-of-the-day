@@ -20,13 +20,29 @@
 import Gio from "gi://Gio";
 import St from "gi://St";
 
+/**
+ * An abstract icon loader.
+ */
 export interface IconLoader {
+  /**
+   * Load an icon with the given `name`.
+   *
+   * @param name The icon name
+   */
   loadIcon(name: string): Gio.Icon;
 }
 
-export class ExtensionIcons implements IconLoader {
+/**
+ * Load icons from a directory following the icon theme specificion.
+ */
+export class IconThemeLoader implements IconLoader {
   private theme: St.IconTheme = St.IconTheme.new();
 
+  /**
+   * Create a new icon loader.
+   *
+   * @param iconDirectory The directory icons are contained in.
+   */
   constructor(iconDirectory: Gio.File) {
     const iconPath = iconDirectory.get_path();
     if (iconPath === null) {

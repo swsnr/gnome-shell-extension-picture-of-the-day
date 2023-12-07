@@ -23,7 +23,7 @@ import Soup from "gi://Soup";
 
 import { Source } from "../source.js";
 import { getJSON } from "../network/http.js";
-import { DownloadableImage } from "../util/download.js";
+import { DownloadableImage } from "../download.js";
 import metadata from "./metadata/wikimedia.js";
 import { NoPictureTodayError } from "../source/errors.js";
 
