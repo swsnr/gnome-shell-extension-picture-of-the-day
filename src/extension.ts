@@ -94,9 +94,21 @@ const createDownloader = (
   };
 };
 
-const enableExtension = (extension: Extension): Destructible => {
-  const destroyer = new Destroyer();
-
+/**
+ * Initialize the extension.
+ *
+ * Setup UI and all background services and wire things up.
+ *
+ * Register all destructible objects on the given `destroyer`, for cleanup when
+ * the extension is disabled.
+ *
+ * @param extension The extension to initialize
+ * @param destroyer A destroyer to register destructible values on for cleanup
+ */
+const initializeExtension = (
+  extension: Extension,
+  destroyer: Destroyer,
+): void => {
   // Our settings
   const settings = extension.getSettings();
 
@@ -258,6 +270,25 @@ const enableExtension = (extension: Extension): Destructible => {
   errorHandler.connect("action::open-network-settings", (): undefined => {
     launchSettingsPanel("network");
   });
+};
+
+/**
+ * Enable the extension.
+ *
+ * @param extension The extension object
+ * @returns A destructible which tears down the entire extension when destroyed
+ */
+const enableExtension = (extension: Extension): Destructible => {
+  const destroyer = new Destroyer();
+  try {
+    initializeExtension(extension, destroyer);
+  } catch (error) {
+    // If initialization fails destroy everything that's been initialized so far,
+    // to avoid dangling resources from partial initialization.
+    destroyer.destroy();
+    console.error("Failed to initialize extension", error);
+    throw error;
+  }
 
   return destroyer;
 };
