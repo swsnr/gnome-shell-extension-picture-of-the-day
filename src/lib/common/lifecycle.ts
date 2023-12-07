@@ -33,15 +33,17 @@ export interface Destructible {
  * Track signal connections of other objects to disconnect them at once.
  */
 export class SignalConnectionTracker implements Destructible {
-  private signals: [GObject.Object, number][] = [];
+  private readonly signals: [GObject.Object, number][] = [];
 
   track(obj: GObject.Object, id: number): void {
     this.signals.push([obj, id]);
   }
 
   destroy(): void {
-    for (const [obj, handlerId] of this.signals) {
-      obj.disconnect(handlerId);
+    let signalConnection: [GObject.Object, number] | undefined;
+    while ((signalConnection = this.signals.pop())) {
+      const [obj, signal] = signalConnection;
+      obj.disconnect(signal);
     }
   }
 }
@@ -54,11 +56,22 @@ export class SignalConnectionTracker implements Destructible {
 export class Destroyer implements Destructible {
   private readonly destructibles: Destructible[] = [];
 
+  /**
+   * Track a destructible object.
+   *
+   * The object is destroyed when this destroyer gets destroyed.
+   *
+   * @param destructible The object to track
+   * @returns `destructible`
+   */
   add<T extends Destructible>(destructible: T): T {
     this.destructibles.push(destructible);
     return destructible;
   }
 
+  /**
+   * Destroy all tracked destructible objects.
+   */
   destroy(): void {
     let destructible: Destructible | undefined;
     while ((destructible = this.destructibles.pop())) {
