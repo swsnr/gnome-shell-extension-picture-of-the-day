@@ -82,7 +82,7 @@ export class RefreshScheduler
         );
         this.doRefresh();
       } else {
-        // Schedule the next refresh in such a way as to maintain our six hour minute,
+        // Schedule the next refresh in such a way as to maintain our six hour window,
         // but at least one minute from now.
         const next_s = Math.round(
           Math.max(
