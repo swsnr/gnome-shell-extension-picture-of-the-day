@@ -19,9 +19,9 @@
 
 import Gio from "gi://Gio";
 
-import { CancellableResult, runCancellable } from "../util/gio.js";
-import { Destructible } from "../util/lifecycle.js";
-import { ImageFile } from "../util/download.js";
+import { CancellableResult, runCancellable } from "../common/gio.js";
+import { Destructible } from "../common/lifecycle.js";
+import { ImageFile } from "../download.js";
 
 /**
  * An ongoing download.

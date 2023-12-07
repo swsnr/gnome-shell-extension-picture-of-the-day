@@ -21,10 +21,10 @@ import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
 import { HttpRequestError, getString } from "../network/http.js";
-import * as dom from "../util/simpledom.js";
+import * as dom from "../simpledom.js";
 import { Source } from "../source.js";
 import metadata from "./metadata/eopod.js";
-import { DownloadableImage } from "../util/download.js";
+import { DownloadableImage } from "../download.js";
 
 const findImgs = (nodes: readonly dom.Node[]): readonly dom.Element[] => {
   const elements = nodes.filter(dom.isElement);

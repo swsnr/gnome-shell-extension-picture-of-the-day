@@ -20,7 +20,7 @@
 // Note: We deliberatly only import types here, because we'll lazy-load saxes
 // when required, to avoid making everyone pay the burden of this library even
 // if they don't use corresponding sources.
-import type { SaxesOptions, SaxesParser } from "../vendor/saxes/saxes.js";
+import type { SaxesOptions, SaxesParser } from "./vendor/saxes/saxes.js";
 
 /**
  * A dead stupid DOM, just sufficient to parse some simple XML documents.

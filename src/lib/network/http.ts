@@ -20,7 +20,7 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
-import { IOError } from "../util/gio.js";
+import { IOError } from "../common/gio.js";
 
 import type { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
 

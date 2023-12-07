@@ -27,7 +27,7 @@ import {
   Source,
 } from "resource:///org/gnome/shell/ui/messageTray.js";
 
-import { IconLoader } from "./icons.js";
+import { IconLoader } from "../common/ui/icons.js";
 
 /**
  * A notification source for notifications of this extension.

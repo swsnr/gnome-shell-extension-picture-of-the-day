@@ -23,10 +23,10 @@ import Soup from "gi://Soup";
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { DownloadScheduler } from "./download-scheduler.js";
-import { unfoldCauses } from "../util/error.js";
-import { CancellableResult } from "../util/gio.js";
-import { Destructible } from "../util/lifecycle.js";
-import { ImageFile } from "../util/download.js";
+import { unfoldCauses } from "../common/error.js";
+import { CancellableResult } from "../common/gio.js";
+import { Destructible } from "../common/lifecycle.js";
+import { ImageFile } from "../download.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 
