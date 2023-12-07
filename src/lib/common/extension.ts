@@ -46,7 +46,7 @@ export abstract class DestructibleExtension extends Extension {
    * If not already enabled, call `initialize` and keep track its allocated resources.
    */
   override enable(): void {
-    if (this.enabledExtension) {
+    if (!this.enabledExtension) {
       console.log(
         `Enabling extension ${this.metadata.uuid} ${this.metadata["version-name"]}`,
       );
