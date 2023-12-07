@@ -121,7 +121,7 @@ const initializeExtension = (
   const indicator = destroyer.add(new PictureOfTheDayIndicator(iconLoader));
   Main.panel.addToStatusArea(extension.metadata.uuid, indicator);
 
-  // Set up notifications by this extension.
+  // Set up error notifications by this extension.
   const errorHandler = destroyer.add(new RefreshErrorHandler(iconLoader));
 
   // Restore metadata for the current image
@@ -135,47 +135,10 @@ const initializeExtension = (
     }
   }
 
-  // Setup automatic refreshing
+  // Create the refresh service
   const refreshService = destroyer.add(
     new RefreshService(createSession(extension.metadata)),
   );
-  const refreshScheduler = destroyer.add(
-    new RefreshScheduler(refreshService, errorHandler, timers),
-  );
-  // Restore and persist the last schedule refresh.
-  const lastRefresh = settings.get_string("last-scheduled-refresh");
-  if (lastRefresh && 0 < lastRefresh.length) {
-    refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
-      lastRefresh,
-      null,
-    );
-  }
-  refreshScheduler.connect("refresh-completed", (_, timestamp): undefined => {
-    settings.set_string("last-scheduled-refresh", timestamp.format_iso8601());
-  });
-  if (settings.get_boolean("refresh-automatically")) {
-    refreshScheduler.start();
-  }
-  signalTracker.track(
-    settings,
-    settings.connect("changed::refresh-automatically", () => {
-      if (settings.get_boolean("refresh-automatically")) {
-        refreshScheduler.start();
-      } else {
-        refreshScheduler.stop();
-      }
-    }),
-  );
-
-  // Trigger an immediate refresh after a user action.
-
-  // Unlike scheduled refreshes we immediately show all errors, and do not handle
-  // intermittent network errors in any special way.
-  const refreshAfterUserAction = () => {
-    refreshService.refresh().catch((error) => {
-      errorHandler.showError(error);
-    });
-  };
 
   // Wire up the current source
   const currentSource = settings.get_string("selected-source");
@@ -183,19 +146,6 @@ const initializeExtension = (
     throw new Error("Current source 'null'?");
   }
   const sourceSelector = destroyer.add(SourceSelector.forKey(currentSource));
-  signalTracker.track(
-    settings,
-    settings.connect("changed::selected-source", () => {
-      const key = settings.get_string("selected-source");
-      if (key) {
-        try {
-          sourceSelector.selectSource(key);
-        } catch (error) {
-          console.error("Source could not be loaded", key);
-        }
-      }
-    }),
-  );
   indicator.updateSelectedSource(sourceSelector.selectedSource.metadata);
   const sourceSettings = SourceSettings.fromBaseSettings(extension, settings);
   const updateDownloader = () => {
@@ -215,6 +165,32 @@ const initializeExtension = (
     );
     refreshService.setDownloader(downloader);
   };
+  // Immediately initialize the downloader for the current source
+  updateDownloader();
+
+  // Trigger an immediate refresh after a user action.
+  // Unlike scheduled refreshes we immediately show all errors, and do not handle
+  // intermittent network errors in any special way.
+  const refreshAfterUserAction = () => {
+    refreshService.refresh().catch((error) => {
+      errorHandler.showError(error);
+    });
+  };
+
+  // Listen for changes to the current source
+  signalTracker.track(
+    settings,
+    settings.connect("changed::selected-source", () => {
+      const key = settings.get_string("selected-source");
+      if (key) {
+        try {
+          sourceSelector.selectSource(key);
+        } catch (error) {
+          console.error("Source could not be loaded", key);
+        }
+      }
+    }),
+  );
   sourceSelector.connect("source-changed", (_selector, source): undefined => {
     updateDownloader();
     indicator.updateSelectedSource(source.metadata);
@@ -230,9 +206,6 @@ const initializeExtension = (
       updateDownloader();
     }),
   );
-
-  // Initialize the downloader for the current source
-  updateDownloader();
 
   // Now wire up all the signals between the services and the UI.
   // React on user actions on the indicator
@@ -267,6 +240,37 @@ const initializeExtension = (
   errorHandler.connect("action::open-network-settings", (): undefined => {
     launchSettingsPanel("network");
   });
+
+  // At last, setup automatic refreshing.  This needs to come last because the
+  // refresh scheduler might trigger an immediate refresh, so we need to be set
+  // at this point.
+  const refreshScheduler = destroyer.add(
+    new RefreshScheduler(refreshService, errorHandler, timers),
+  );
+  // Restore and persist the last schedule refresh.
+  const lastRefresh = settings.get_string("last-scheduled-refresh");
+  if (lastRefresh && 0 < lastRefresh.length) {
+    refreshScheduler.lastRefresh = GLib.DateTime.new_from_iso8601(
+      lastRefresh,
+      null,
+    );
+  }
+  refreshScheduler.connect("refresh-completed", (_, timestamp): undefined => {
+    settings.set_string("last-scheduled-refresh", timestamp.format_iso8601());
+  });
+  if (settings.get_boolean("refresh-automatically")) {
+    refreshScheduler.start();
+  }
+  signalTracker.track(
+    settings,
+    settings.connect("changed::refresh-automatically", () => {
+      if (settings.get_boolean("refresh-automatically")) {
+        refreshScheduler.start();
+      } else {
+        refreshScheduler.stop();
+      }
+    }),
+  );
 };
 
 /**
