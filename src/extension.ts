@@ -50,7 +50,7 @@ Gio._promisify(Gio.File.prototype, "delete_async");
 Gio._promisify(Soup.Session.prototype, "send_and_read_async");
 Gio._promisify(Soup.Session.prototype, "send_async");
 
-const createGetImage = (
+const createGetImages = (
   settings: SourceSettings,
   source: Source,
 ): GetImages => {
@@ -79,10 +79,10 @@ const createDownloader = (
   const downloadDirectory = downloadBaseDirectory.get_child(
     source.metadata.name,
   );
-  const getImage = createGetImage(settings, source);
+  const getImages = createGetImages(settings, source);
 
   return async (session: Soup.Session, cancellable: Gio.Cancellable) => {
-    const images = await getImage(session, cancellable);
+    const images = await getImages(session, cancellable);
     const image = images.length === 1 ? images[0] : random.sample(images);
     if (typeof image === "undefined") {
       throw new NoPictureTodayError(source.metadata);
