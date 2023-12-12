@@ -63,6 +63,7 @@ export class DownloadScheduler implements Destructible {
       return Promise.resolve();
     } else {
       console.log("Cancelling ongoing download");
+      this.currentDownload.cancellable.cancel();
       return this.currentDownload.promise
         .then(() => {
           return;
