@@ -12,6 +12,8 @@ BLUEPRINTS = $(wildcard ui/*.blp)
 UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 CATALOGS = $(wildcard po/*.po)
 
+BLUEPRINT-COMPILER = "blueprint-compiler"
+
 .PHONY: dist
 dist: compile
 	mkdir -p ./dist/
@@ -107,7 +109,7 @@ fix: format
 	npm run lint -- --fix
 
 $(UIDEFS): %.ui: %.blp
-	blueprint-compiler compile --output $@ $<
+	$(BLUEPRINT-COMPILER) compile --output $@ $<
 
 $(CATALOGS): %.po: pot
 	msgmerge --update --backup=none --lang=$(notdir $(basename $@)) $@ po/picture-of-the-day@swsnr.de.pot
