@@ -36,7 +36,7 @@ import { SourceSelector } from "./lib/services/source-selector.js";
 import { RefreshScheduler } from "./lib/services/refresh-scheduler.js";
 import { Destroyer, SignalConnectionTracker } from "./lib/common/lifecycle.js";
 import { TimerRegistry } from "./lib/services/timer-registry.js";
-import { createSession } from "./lib/network/http.js";
+import { HttpStatusError, createSession } from "./lib/network/http.js";
 import { downloadImage } from "./lib/download.js";
 import random from "./lib/common/random.js";
 import { NoPictureTodayError } from "./lib/source/errors.js";
@@ -87,7 +87,20 @@ const createDownloader = (
     if (typeof image === "undefined") {
       throw new NoPictureTodayError(source.metadata);
     }
-    return downloadImage(session, downloadDirectory, cancellable, image);
+    try {
+      return downloadImage(session, downloadDirectory, cancellable, image);
+    } catch (error) {
+      if (
+        error instanceof HttpStatusError &&
+        error.status === Soup.Status.NOT_FOUND
+      ) {
+        // We have metadata for the image but the image itself doesn't exist,
+        // so assume we do not have a picture for today.
+        throw new NoPictureTodayError(source.metadata, { cause: error });
+      } else {
+        throw error;
+      }
+    }
   };
 };
 
