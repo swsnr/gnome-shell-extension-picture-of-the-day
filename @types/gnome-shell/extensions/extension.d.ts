@@ -17,7 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import type Gio from "../../gir-generated/gio-2.0.js";
+import type Gio from "gi://Gio";
 
 // See https://gjs.guide/extensions/topics/extension.html#gettext
 export declare function gettext(str: string): string;
