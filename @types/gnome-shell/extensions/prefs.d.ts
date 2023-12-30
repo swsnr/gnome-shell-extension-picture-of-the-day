@@ -17,8 +17,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import type Gtk from "gi://Gtk";
-import type Adw from "gi://Adw";
+import type Gtk from "@girs/gtk-4.0";
+import type Adw from "@girs/adw-1";
 import { ExtensionBase } from "resource:///org/gnome/shell/extensions/extension.js";
 
 export declare class ExtensionPreferences extends ExtensionBase {

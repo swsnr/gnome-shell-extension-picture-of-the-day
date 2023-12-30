@@ -69,10 +69,6 @@ clean:
 compile: $(UIDEFS)
 	npm run compile
 
-.PHONY: generate
-generate:
-	npm run generate:gir-types
-
 # For blueprint, see https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/translations.html
 # The language doesn't really matter for blueprint, but xgettext warns if we don't set it
 .PHONY: pot
@@ -96,12 +92,8 @@ format:
 lint:
 	npm run lint
 
-.PHONY: check-types
-check-types:
-	npm run check:types
-
 .PHONY: check
-check: lint check-types
+check: lint
 	npm run format -- --check
 
 .PHONY: fix

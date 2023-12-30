@@ -1,6 +1,3 @@
-# Generated types
-/@types/gir-generated/*
-
 # Build and dist outputs
 /build/
 /dist/

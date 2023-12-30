@@ -17,9 +17,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import St from "gi://St";
-import Clutter from "gi://Clutter";
-import Gio from "gi://Gio";
+import type St from "@girs/st-13";
+import type Clutter from "@girs/clutter-13";
+import type Gio from "@girs/gio-2.0";
 
 import {
   EventEmitter,
