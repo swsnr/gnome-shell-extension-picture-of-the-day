@@ -12,7 +12,7 @@
       "resource:///org/gnome/shell/*": ["./@types/gnome-shell/*"],
       "resource:///org/gnome/Shell/Extensions/js/*": ["./@types/gnome-shell/*"]
     },
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "moduleResolution": "NodeNext"
   },
   "include": [
