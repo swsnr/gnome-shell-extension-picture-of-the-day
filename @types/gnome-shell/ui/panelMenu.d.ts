@@ -17,8 +17,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import St from "gi://St";
-import { PopupMenu } from "./popupMenu";
+import type St from "@girs/st-13";
+import type { PopupMenu } from "resource:///org/gnome/shell/ui/popupMenu.js";
 
 export declare class ButtonBox extends St.Widget {}
 

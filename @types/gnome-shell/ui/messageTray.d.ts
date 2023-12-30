@@ -17,10 +17,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import GObject from "gi://GObject";
-import GLib from "gi://GLib";
-import Gio from "gi://Gio";
-import St from "gi://St";
+import type GObject from "@girs/gobject-2.0";
+import type GLib from "@girs/glib-2.0";
+import type Gio from "@girs/gio-2.0";
+import type St from "@girs/st-13";
 
 export declare enum Urgency {
   LOW = 0,

@@ -27,8 +27,6 @@ module.exports = {
     "/dist/**/*",
     // NPM modules
     "/node_modules/**/*",
-    // Generated code
-    "/@types/gir-generated/**/*",
     // Vendored dependencies
     "/src/lib/vendor/**",
   ],

@@ -17,9 +17,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import Clutter from "gi://Clutter";
-import St from "gi://St";
-import Shell from "gi://Shell";
+import type Clutter from "@girs/clutter-13";
+import type St from "@girs/st-13";
+import type Shell from "@girs/shell-13";
 
 import {
   Dialog,
