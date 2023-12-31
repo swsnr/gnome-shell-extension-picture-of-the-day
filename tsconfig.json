@@ -6,22 +6,10 @@
     "module": "NodeNext",
     "lib": ["ES2022"],
     "removeComments": false,
-    "paths": {
-      // Our own types.  First as they are seen in GNOME shell extensions,
-      // and then how they're seen by prefs.js.
-      "resource:///org/gnome/shell/*": ["./@types/gnome-shell/*"],
-      "resource:///org/gnome/Shell/Extensions/js/*": ["./@types/gnome-shell/*"]
-    },
     "skipLibCheck": false,
     "moduleResolution": "NodeNext"
   },
   "include": [
-    // Include global gjs API
-    "node_modules/@girs/gjs/gjs.d.ts",
-    "node_modules/@girs/gjs/dom.d.ts",
-    // Include ambient declarations for all gi:// modules
-    "node_modules/@girs/*/*-ambient.d.ts",
-    // Include GNOME Shell globals
     "@types/gnome-shell/global.d.ts",
     // Our sources
     "src/**/*.ts"

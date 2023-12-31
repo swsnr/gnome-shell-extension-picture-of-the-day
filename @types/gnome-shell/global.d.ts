@@ -17,6 +17,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+/// <reference path="../../node_modules/@girs/gjs/dom.d.ts" />
+/// <reference path="../../node_modules/@girs/gnome-shell/dist/index-ambient.d.ts" />
+
 interface String {
   // GNOME Shell pollutes the String prototype with its own format function
   format(...args: unknown[]): string;
