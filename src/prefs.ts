@@ -25,13 +25,14 @@ import Adw from "gi://Adw";
 
 import {
   ExtensionPreferences,
-  ExtensionMetadata,
   gettext as _,
 } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 import apod from "./lib/sources/metadata/apod.js";
 import SOURCES from "./lib/sources/metadata/sources.js";
 import { SourceMetadata } from "./lib/source.js";
+
+import type { ExtensionMetadata } from "@girs/gnome-shell/extensions/extension";
 
 Gio._promisify(Gtk.FileDialog.prototype, "select_folder");
 
@@ -264,8 +265,13 @@ const AboutPage = GObject.registerClass(
       } else {
         children._extensionVersion.visible = false;
       }
-      children._linkGithub.set_uri(metadata.url);
-      children._linkIssues.set_uri(`${metadata.url}/issues`);
+      if (metadata.url) {
+        children._linkGithub.set_uri(metadata.url);
+        children._linkIssues.set_uri(`${metadata.url}/issues`);
+      } else {
+        children._linkGithub.visible = false;
+        children._linkIssues.visible = false;
+      }
       children._extensionLicense.buffer.set_text(LICENSE, -1);
     }
   },

@@ -17,20 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import { MessageTray } from "./messageTray.js";
-import * as PanelMenu from "./panelMenu.js";
-
-export type PanelBox = "left" | "center" | "right";
-
-export declare class Panel {
-  addToStatusArea(
-    role: string,
-    indicator: PanelMenu.Button,
-    position?: number,
-    box?: PanelBox,
-  ): void;
-}
-
-export declare const panel: Panel;
-
-export declare const messageTray: MessageTray;
+import "@girs/gjs";
+import "@girs/gjs/dom";
+import "@girs/gnome-shell/ambient";
+import "@girs/soup-3.0/ambient";

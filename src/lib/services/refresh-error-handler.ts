@@ -230,7 +230,7 @@ export class RefreshErrorHandler
       destroyOnClose: true,
     });
     dialog.showError(error);
-    dialog.open(undefined, true);
+    dialog.openOnPrimary();
   }
 
   destroy(): void {

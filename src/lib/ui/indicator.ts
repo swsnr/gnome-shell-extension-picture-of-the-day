@@ -26,7 +26,6 @@ import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
   PopupMenuItem,
   PopupMenuSection,
-  PopupMenuSectionSignals,
   PopupSeparatorMenuItem,
   PopupSubMenuMenuItem,
 } from "resource:///org/gnome/shell/ui/popupMenu.js";
@@ -160,7 +159,7 @@ class ImageOpenSection extends PopupMenuSection {
   }
 }
 
-interface RefreshMenuSectionSignals extends PopupMenuSectionSignals {
+interface RefreshMenuSectionSignals extends PopupMenuSection.SignalMap {
   readonly "activated::refresh": [];
   readonly "activated::cancel-refresh": [];
   readonly "activated::switch-source": [sourceKey: string];

@@ -17,12 +17,6 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-/* eslint-disable @typescript-eslint/triple-slash-reference */
-
-/// <reference path="../../node_modules/@girs/gjs/gjs.d.ts" />
-/// <reference path="../../node_modules/@girs/gjs/dom.d.ts" />
-/// <reference path="../../node_modules/@girs/soup-3.0/soup-3.0-ambient.d.ts" />
-
 interface String {
   // GNOME Shell pollutes the String prototype with its own format function
   format(...args: unknown[]): string;
