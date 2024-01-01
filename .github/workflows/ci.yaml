@@ -50,7 +50,7 @@ jobs:
           # This makes sure we actually get the tag message body down below,
           # see https://github.com/actions/runner/issues/712
           ref: "${{ github.ref }}"
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: dist
           name: dist
@@ -73,7 +73,7 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: dist
           name: dist
