@@ -32,7 +32,7 @@ jobs:
       - run: make dist-repro
       - run: b2sum *.zip > B2SUMS.txt
         working-directory: dist
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: "dist/*"
