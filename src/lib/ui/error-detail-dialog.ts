@@ -22,13 +22,11 @@ import GLib from "gi://GLib";
 import Pango from "gi://Pango";
 import Clutter from "gi://Clutter";
 import St from "gi://St";
+import Shell from "gi://Shell";
 
 import { pgettext } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import {
-  ModalDialog,
-  ModalDialogParams,
-} from "resource:///org/gnome/shell/ui/modalDialog.js";
+import { ModalDialog } from "resource:///org/gnome/shell/ui/modalDialog.js";
 import { unfoldCauses } from "../common/error.js";
 
 /**
@@ -90,7 +88,7 @@ export const ErrorDetailDialog = GObject.registerClass(
   class ErrorDetailDialog extends ModalDialog {
     private readonly messageLabel: St.Label;
 
-    constructor(params?: ModalDialogParams) {
+    constructor(params?: ModalDialog.ConstructorProperties) {
       super(params);
 
       const contentBox = new St.BoxLayout({
@@ -161,9 +159,13 @@ export const ErrorDetailDialog = GObject.registerClass(
         label: pgettext("Error Dialog", "Close"),
         key: Clutter.KEY_Escape,
         action: () => {
-          this.close();
+          this.close(Shell.Global.get().get_current_time());
         },
       });
+    }
+
+    openOnPrimary(): void {
+      this.open(Shell.Global.get().get_current_time(), true);
     }
 
     /**

@@ -3,7 +3,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "generate:gir-types": "ts-for-gir generate",
     "compile": "tsc --build tsconfig.json",
     "dist:format": "eslint --no-eslintrc --config .eslintrc.dist.cjs --quiet --fix build/",
     "check:types": "tsc --build tsconfig.types.json --force",
@@ -11,7 +10,12 @@
     "format": "prettier ."
   },
   "devDependencies": {
-    "@ts-for-gir/cli": "^3.2.2",
+    "@girs/adw-1": "^1.4.0-3.2.6",
+    "@girs/gnome-shell": "^45.0.0-beta6",
+    "@girs/gtk-4.0": "^4.12.3-3.2.6",
+    "@girs/shell-13": "^13.0.0-3.2.6",
+    "@girs/soup-3.0": "^3.4.4-3.2.6",
+    "@girs/st-13": "^13.0.0-3.2.6",
     "@tsconfig/strictest": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
