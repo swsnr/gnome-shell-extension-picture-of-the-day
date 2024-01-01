@@ -8,7 +8,8 @@
 
 # npm configuration and packages
 /package.json
-/node_modules/
+/.pnp.*
+/.yarn/
 
 # Vendored code
 /src/lib/vendor/

@@ -25,8 +25,9 @@ module.exports = {
     // Build outputs
     "/build/**/*",
     "/dist/**/*",
-    // NPM modules
-    "/node_modules/**/*",
+    // Yarn artefacts
+    "/.pnp.*",
+    "/.yarn/",
     // Vendored dependencies
     "/src/lib/vendor/**",
   ],

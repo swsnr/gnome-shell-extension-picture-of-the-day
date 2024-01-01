@@ -21,7 +21,7 @@ dist: compile
 	cp -t ./build/ui $(UIDEFS)
 	cp -t ./build/lib/vendor/saxes ./src/lib/vendor/saxes/README.md
 	cp -t ./build/lib/vendor/xmlchars ./src/lib/vendor/xmlchars/README.md
-	npm run dist:format
+	yarn dist:format
 	gnome-extensions pack --force --out-dir dist build \
 		--podir=../po --extra-source=../metadata.json \
 		--extra-source=ui --extra-source=lib \
@@ -67,7 +67,7 @@ clean:
 
 .PHONY: compile
 compile: $(UIDEFS)
-	npm run compile
+	yarn compile
 
 # For blueprint, see https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/translations.html
 # The language doesn't really matter for blueprint, but xgettext warns if we don't set it
@@ -86,23 +86,23 @@ messages: $(CATALOGS)
 
 .PHONY: format
 format:
-	npm run format -- --write
+	yarn format --write
 
 .PHONY: lint
 lint:
-	npm run lint
+	yarn lint
 
 .PHONY: check-types
 check-types:
-	npm run check:types
+	yarn check:types
 
 .PHONY: check
 check: lint check-types
-	npm run format -- --check
+	yarn format --check
 
 .PHONY: fix
 fix: format
-	npm run lint -- --fix
+	yarn lint --fix
 
 $(UIDEFS): %.ui: %.blp
 	$(BLUEPRINT-COMPILER) compile --output $@ $<

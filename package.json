@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@girs/adw-1": "^1.4.0-3.2.6",
+    "@girs/gjs": "^3.2.6",
     "@girs/gnome-shell": "^45.0.0-beta6",
     "@girs/gtk-4.0": "^4.12.3-3.2.6",
     "@girs/shell-13": "^13.0.0-3.2.6",
@@ -24,5 +25,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }

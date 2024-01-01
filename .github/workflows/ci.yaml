@@ -10,7 +10,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: latest
-      - run: npm ci
+      - run: corepack enable
+      - run: yarn install
       - run: "jq -r .description < metadata.json"
       - run: make check
       - run: make compile
@@ -26,7 +27,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install --no-install-recommends -qq -y gettext gnome-shell strip-nondeterminism
-      - run: npm ci
+      - run: corepack enable
+      - run: yarn install
       - run: make dist-repro
       - run: b2sum *.zip > B2SUMS.txt
         working-directory: dist
