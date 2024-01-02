@@ -269,7 +269,13 @@ const initializeExtension = (
     );
   }
   refreshScheduler.connect("refresh-completed", (_, timestamp): undefined => {
-    settings.set_string("last-scheduled-refresh", timestamp.format_iso8601());
+    const formatted = timestamp.format_iso8601();
+    if (formatted === null) {
+      // I don't think this can ever fail; presumably the derived types are just
+      // inaccurate here, but let's guard against this nonetheless.
+      throw new Error("Failed to convert timestamp to ISO 8601");
+    }
+    settings.set_string("last-scheduled-refresh", formatted);
   });
   if (settings.get_boolean("refresh-automatically")) {
     refreshScheduler.start();

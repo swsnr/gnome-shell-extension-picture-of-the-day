@@ -50,7 +50,7 @@ export class DesktopBackgroundService {
   /**
    * Set the current background image, for both default and dark themes.
    */
-  set backgroundImage(uri: string | null) {
+  set backgroundImage(uri: string) {
     console.log("Changing desktop background", uri);
     for (const key of ["picture-uri", "picture-uri-dark"]) {
       this.settings.set_string(key, uri);
@@ -63,6 +63,10 @@ export class DesktopBackgroundService {
    * @param image The image file to use as new background
    */
   setBackgroundImageFile(image: Gio.File): void {
-    this.backgroundImage = image.get_uri();
+    const uri = image.get_uri();
+    if (uri === null) {
+      throw new Error("Failed obtain URI from file");
+    }
+    this.backgroundImage = uri;
   }
 }

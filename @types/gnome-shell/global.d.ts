@@ -21,8 +21,3 @@ interface String {
   // GNOME Shell pollutes the String prototype with its own format function
   format(...args: unknown[]): string;
 }
-
-interface ImportMeta {
-  /** GNOME Shell/GJS add the imported URL here */
-  readonly url: string;
-}

@@ -145,11 +145,12 @@ export class RefreshErrorHandler
         ),
       );
       if (error.metadata.url) {
+        const url = error.metadata.url;
         notification.addAction(
           pgettext("Error notification", "Open website"),
           () => {
             Gio.app_info_launch_default_for_uri(
-              error.metadata.url,
+              url,
               Shell.Global.get().create_app_launch_context(0, -1),
             );
           },

@@ -32,11 +32,14 @@ import { unfoldCauses } from "../common/error.js";
 /**
  * Shortcut for `GLib.markup_escape_text`.
  */
-function e(s: string): string;
-function e(s: null): null;
-function e(s: string | null): string | null;
-function e(s: string | null): string | null {
-  return GLib.markup_escape_text(s, -1);
+function e(s: string): string {
+  const escaped = GLib.markup_escape_text(s, -1);
+  if (escaped === null) {
+    // This can't happen I believe, because markup_escape_text would always return a string when given a string, but
+    // let's guard against it nonetheless.
+    throw new Error(`Failed to escape markup in ${s}`);
+  }
+  return escaped;
 }
 
 const formatStacktrace = (stack: string | undefined): string => {
