@@ -1807,13 +1807,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@girs/adw-1": "npm:^1.4.0-3.2.6"
     "@girs/gjs": "npm:^3.2.6"
     "@girs/gnome-shell": "npm:^45.0.0-beta6"
-    "@girs/gtk-4.0": "npm:^4.12.3-3.2.6"
-    "@girs/shell-13": "npm:^13.0.0-3.2.6"
     "@girs/soup-3.0": "npm:^3.4.4-3.2.6"
-    "@girs/st-13": "npm:^13.0.0-3.2.6"
     "@tsconfig/strictest": "npm:^2.0.2"
     "@typescript-eslint/eslint-plugin": "npm:^6.16.0"
     "@typescript-eslint/parser": "npm:^6.16.0"
