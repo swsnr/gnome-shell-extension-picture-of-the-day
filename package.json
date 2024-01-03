@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@girs/gjs": "^3.2.7",
-    "@girs/gnome-shell": "^45.0.0-beta6",
+    "@girs/gnome-shell": "^45.0.0-beta8",
     "@girs/soup-3.0": "^3.4.4-3.2.7",
     "@tsconfig/strictest": "^2.0.2",
     "@typescript-eslint/eslint-plugin": "^6.17.0",

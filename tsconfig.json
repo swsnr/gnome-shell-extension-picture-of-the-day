@@ -9,11 +9,6 @@
     "skipLibCheck": true,
     "moduleResolution": "NodeNext"
   },
-  "include": [
-    "@types/gnome-shell/global.d.ts",
-    "@types/gnome-shell/ambient.d.ts",
-    // Our sources
-    "src/**/*.ts"
-  ],
+  "include": ["@types/gnome-shell/ambient.d.ts", "src/**/*.ts"],
   "exclude": [".eslintrc.cjs"]
 }

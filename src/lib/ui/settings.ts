@@ -19,7 +19,6 @@
 
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
-import Shell from "gi://Shell";
 
 /**
  * Launch a system settings panel.
@@ -40,7 +39,7 @@ export const launchSettingsPanel = (
   const platformData = {
     "desktop-startup-id": new GLib.Variant(
       "s",
-      `_TIME${Shell.Global.get().get_current_time()}`,
+      `_TIME${global.get_current_time()}`,
     ),
   };
   try {

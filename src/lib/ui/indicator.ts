@@ -20,7 +20,6 @@
 import GObject from "gi://GObject";
 import Gio from "gi://Gio";
 import St from "gi://St";
-import Shell from "gi://Shell";
 
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
@@ -60,7 +59,7 @@ class ImageInfoSection extends PopupMenuSection {
       if (this.urlToOpen !== null) {
         Gio.app_info_launch_default_for_uri(
           this.urlToOpen,
-          Shell.Global.get().create_app_launch_context(0, -1),
+          global.create_app_launch_context(0, -1),
         );
       }
     });
@@ -139,7 +138,7 @@ class ImageOpenSection extends PopupMenuSection {
       if (imageUri) {
         Gio.app_info_launch_default_for_uri(
           imageUri,
-          Shell.Global.get().create_app_launch_context(0, -1),
+          global.create_app_launch_context(0, -1),
         );
       }
     });
@@ -148,7 +147,7 @@ class ImageOpenSection extends PopupMenuSection {
       if (folderUri) {
         Gio.app_info_launch_default_for_uri(
           folderUri,
-          Shell.Global.get().create_app_launch_context(0, -1),
+          global.create_app_launch_context(0, -1),
         );
       }
     });

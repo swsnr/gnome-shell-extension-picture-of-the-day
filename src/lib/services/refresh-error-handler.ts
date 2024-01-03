@@ -19,7 +19,6 @@
 
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
-import Shell from "gi://Shell";
 
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import {
@@ -151,7 +150,7 @@ export class RefreshErrorHandler
           () => {
             Gio.app_info_launch_default_for_uri(
               url,
-              Shell.Global.get().create_app_launch_context(0, -1),
+              global.create_app_launch_context(0, -1),
             );
           },
         );
