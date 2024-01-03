@@ -3,7 +3,7 @@
   "uuid": "picture-of-the-day@swsnr.de",
   "description": "Get a picture of the day as desktop background.\n\nSupports the following sources:\n\n* NASA Astronomy Picture of the Day (APOD) from https://apod.nasa.gov/apod/astropix.html\n* NASA Earth Observatory Image of the Day from https://earthobservatory.nasa.gov/topic/image-of-the-day\n* Bing from https://www.bing.com\n* Wikimedia from https://commons.wikimedia.org/wiki/Main_Page\n",
   "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day",
-  "version-name": "45.11",
+  "version-name": "45.12",
   "shell-version": ["45"],
   "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day",
   "gettext-domain": "picture-of-the-day@swsnr.de"
