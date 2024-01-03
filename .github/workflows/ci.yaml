@@ -79,7 +79,7 @@ jobs:
           name: dist
       - name: "ego-upload picture-of-the-day@swsnr.de.shell-extension.zip"
         run: |
-          deno run \
+          deno run --quiet \
             --allow-read \
             --allow-env=EGO_USERNAME,EGO_PASSWORD \
             --allow-net=extensions.gnome.org \
