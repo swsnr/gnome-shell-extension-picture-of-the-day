@@ -20,6 +20,7 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
+import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import { Source } from "../source.js";
 import { getJSON } from "../network/http.js";
@@ -40,7 +41,7 @@ interface FeaturedImageCredit {
 }
 
 interface FeaturedImageLicense {
-  readonly type: string;
+  readonly type?: string | null;
 }
 
 interface FeaturedImageDescription {
@@ -51,15 +52,37 @@ interface FeaturedImage {
   readonly title: string;
   readonly image: FeaturedImageImage;
   readonly file_page: string;
-  readonly artist: FeaturedImageArtist;
-  readonly credit: FeaturedImageCredit;
-  readonly license: FeaturedImageLicense;
+  readonly artist?: FeaturedImageArtist | null;
+  readonly credit?: FeaturedImageCredit | null;
+  readonly license?: FeaturedImageLicense | null;
   readonly description: FeaturedImageDescription;
 }
 
 interface FeaturedContentResponse {
   readonly image?: FeaturedImage | null;
 }
+
+/**
+ * Assemble a copyright description from the image metadata.
+ *
+ * @param image The featured imaged
+ */
+const getCopyrightText = (image: FeaturedImage): string => {
+  const { artist, license, credit } = image;
+  if (artist?.text && license?.type && credit?.text) {
+    return `${artist.text} (${credit.text}, ${license.type})`;
+  } else if (artist?.text && license?.type) {
+    return `${artist.text} (${license.type})`;
+  } else if (artist?.text) {
+    return artist.text;
+  } else if (license?.type) {
+    return license.type;
+  } else {
+    // We do not know anything about the copyright here, so let's default to
+    // some "all rights reserved" blurp.
+    return _("Unknown, all rights reserved");
+  }
+};
 
 const getFeaturedContent = async (
   session: Soup.Session,
@@ -85,12 +108,12 @@ const getImages = async (
   if (!featuredContent.image) {
     throw new NoPictureTodayError(metadata);
   }
-  const { artist, license, description, file_page, image, title } =
-    featuredContent.image;
+  const { description, file_page, image, title } = featuredContent.image;
   const pubdate = date.format("%Y-%m-%d");
   if (pubdate === null) {
     throw new Error(`Formatting GLib.DateTime returned null?`);
   }
+  const copyright = getCopyrightText(featuredContent.image);
   const imageToDownload: DownloadableImage = {
     imageUrl: image.source,
     pubdate,
@@ -98,7 +121,7 @@ const getImages = async (
       // Drop File: prefix and file extension from image title.
       title: title.replaceAll(/(^File:|.[^.]+$)/g, ""),
       description: description.text,
-      copyright: `${artist.text} (${artist.text}, ${license.type})`,
+      copyright,
       url: file_page,
     },
   };
