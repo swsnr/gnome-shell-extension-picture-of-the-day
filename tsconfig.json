@@ -7,8 +7,8 @@
     "lib": ["ES2022"],
     "removeComments": false,
     "skipLibCheck": true,
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
   "include": ["@types/gnome-shell/ambient.d.ts", "src/**/*.ts"],
-  "exclude": [".eslintrc.cjs"],
+  "exclude": [".eslintrc.cjs"]
 }
