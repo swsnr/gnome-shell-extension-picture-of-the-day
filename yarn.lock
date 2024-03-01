@@ -316,6 +316,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@girs/gjs@npm:^3.2.8":
+  version: 3.2.8
+  resolution: "@girs/gjs@npm:3.2.8"
+  dependencies:
+    "@girs/glib-2.0": "npm:^2.77.0-3.2.8"
+    "@girs/gobject-2.0": "npm:^2.77.0-3.2.8"
+  checksum: 2b54c871716581b2ab7e403d16253f47d61ffbe1497945f1c0d479ac60aa83960714df553e8db9e0248501ac4505bd5a4f5de6e6816ab27be68002715adeeb29
+  languageName: node
+  linkType: hard
+
 "@girs/gl-1.0@npm:^1.0.0-3.2.7":
   version: 1.0.0-3.2.7
   resolution: "@girs/gl-1.0@npm:1.0.0-3.2.7"
@@ -323,6 +333,16 @@ __metadata:
     "@girs/gjs": "npm:^3.2.7"
     "@girs/gobject-2.0": "npm:^2.78.0-3.2.7"
   checksum: 6ed6d3db834aec1404b3b83b9ae1fa783859802cc62fc96af6bd7b3ae6fdacd996106d02600ee2ac26eb41066edf5b2983cc755012bee9841189f8be5c8e9670
+  languageName: node
+  linkType: hard
+
+"@girs/glib-2.0@npm:^2.77.0-3.2.8":
+  version: 2.77.0-3.2.8
+  resolution: "@girs/glib-2.0@npm:2.77.0-3.2.8"
+  dependencies:
+    "@girs/gjs": "npm:^3.2.8"
+    "@girs/gobject-2.0": "npm:^2.77.0-3.2.8"
+  checksum: fc0d3bb2f5f8d91e94163df10a8b42b18d1bf30f6faea51f4548e43574be10ae0587082d4aa9b9aab9da886e41a9d301bf1990117a74500946854f0a56f39fd9
   languageName: node
   linkType: hard
 
@@ -425,6 +445,16 @@ __metadata:
     "@girs/gmodule-2.0": "npm:^2.0.0-3.2.7"
     "@girs/gobject-2.0": "npm:^2.78.0-3.2.7"
   checksum: d71eebe828c11386d4c19070242652e12b24062e8344410395e2dc6e75d80be6532c13e650b966340b59b5cb75933c9778da96a0cc22a0e0f5a8ecd21deda2b8
+  languageName: node
+  linkType: hard
+
+"@girs/gobject-2.0@npm:^2.77.0-3.2.8":
+  version: 2.77.0-3.2.8
+  resolution: "@girs/gobject-2.0@npm:2.77.0-3.2.8"
+  dependencies:
+    "@girs/gjs": "npm:^3.2.8"
+    "@girs/glib-2.0": "npm:^2.77.0-3.2.8"
+  checksum: 2736a03c2b5992140a06c4074315ea2cb9f83c028798cc51a5355b879d22b619c4515acd1b95eec70902bccb773d97dd97645efaae6e910d4176bbfd8d7c21d1
   languageName: node
   linkType: hard
 
@@ -1808,7 +1838,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@girs/gjs": "npm:^3.2.7"
+    "@girs/gjs": "npm:^3.2.8"
     "@girs/gnome-shell": "npm:^45.0.0-beta9"
     "@girs/soup-3.0": "npm:^3.4.4-3.2.7"
     "@tsconfig/strictest": "npm:^2.0.2"
