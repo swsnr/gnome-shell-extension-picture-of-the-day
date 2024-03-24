@@ -95,11 +95,11 @@ export const ErrorDetailDialog = GObject.registerClass(
 
       const contentBox = new St.BoxLayout({
         name: "error-detail-dialog-content-box",
-        x_expand: true,
-        y_expand: true,
+        xExpand: true,
+        yExpand: true,
         vertical: true,
-        style_class: "message-dialog-content",
-        y_align: Clutter.ActorAlign.FILL,
+        styleClass: "message-dialog-content",
+        yAlign: Clutter.ActorAlign.FILL,
       });
 
       const scrollView = new St.ScrollView({
@@ -110,9 +110,9 @@ export const ErrorDetailDialog = GObject.registerClass(
       const messageLayout = new St.BoxLayout({
         name: "error-detail-dialog-message-layout",
         vertical: true,
-        x_expand: true,
-        y_expand: true,
-        y_align: Clutter.ActorAlign.FILL,
+        xExpand: true,
+        yExpand: true,
+        yAlign: Clutter.ActorAlign.FILL,
         style: "spacing: 1m",
       });
 
@@ -122,27 +122,27 @@ export const ErrorDetailDialog = GObject.registerClass(
           "The following text contains the internal error messages and stacktraces of the error.  You may find additional details which may help you to fix the error, or you may use this data to report an issue on Github.",
         ),
       });
-      explanationLabel.clutter_text.line_wrap = true;
+      explanationLabel.clutterText.lineWrap = true;
 
       this.messageLabel = new St.Label({
         name: "error-detail-dialog-message-label",
         // Expand the label in all directions, so that the scroll view can take over.
-        x_expand: true,
-        y_expand: true,
+        xExpand: true,
+        yExpand: true,
         style: "font-family: monospace; font-size: 9pt; font-weight: 400;",
       });
       // Show full text; don't ellipsize at widget border
-      this.messageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-      this.messageLabel.clutter_text.selectable = true;
+      this.messageLabel.clutterText.ellipsize = Pango.EllipsizeMode.NONE;
+      this.messageLabel.clutterText.selectable = true;
 
       this.setInitialKeyFocus(this.messageLabel);
 
       messageLayout.add_child(this.messageLabel);
-      scrollView.add_actor(messageLayout);
+      scrollView.add_child(messageLayout);
       contentBox.add_child(
         new St.Label({
           text: pgettext("ErrorDetailDialog", "Picture of the Day failed"),
-          style_class: "message-dialog-title",
+          styleClass: "message-dialog-title",
         }),
       );
       contentBox.add_child(explanationLabel);
@@ -161,20 +161,20 @@ export const ErrorDetailDialog = GObject.registerClass(
         label: pgettext("Error Dialog", "Close"),
         key: Clutter.KEY_Escape,
         action: () => {
-          this.close(global.get_current_time());
+          this.close();
         },
       });
     }
 
     openOnPrimary(): void {
-      this.open(global.get_current_time(), true);
+      this.open();
     }
 
     /**
      * Set the error to show.
      */
     showError(error: unknown): void {
-      this.messageLabel.clutter_text.set_markup(buildErrorMessage(error));
+      this.messageLabel.clutterText.set_markup(buildErrorMessage(error));
     }
   },
 );

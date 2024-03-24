@@ -23,6 +23,7 @@ import St from "gi://St";
 
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import {
+  PopupMenu,
   PopupMenuItem,
   PopupMenuSection,
   PopupSeparatorMenuItem,
@@ -68,11 +69,11 @@ class ImageInfoSection extends PopupMenuSection {
     // enable text wrapping.
     this.description = new PopupMenuItem("");
     this.description.style = "max-width: 400px";
-    this.description.label.clutter_text.line_wrap = true;
+    this.description.label.clutterText.lineWrap = true;
 
     this.copyright = new PopupMenuItem("");
     this.copyright.style = "max-width: 400px";
-    this.copyright.label.clutter_text.line_wrap = true;
+    this.copyright.label.clutterText.lineWrap = true;
 
     for (const item of this.allItems) {
       item.set_reactive(false);
@@ -238,9 +239,13 @@ export const PictureOfTheDayIndicator = GObject.registerClass(
 
     constructor(iconLoader: IconLoader) {
       super(0, "PictureOfTheDayIndicator", false);
+      if (!(this.menu instanceof PopupMenu)) {
+        throw new Error("Menu not present!");
+      }
+
       this.add_child(
         new St.Icon({
-          style_class: "system-status-icon",
+          styleClass: "system-status-icon",
           gicon: iconLoader.loadIcon("picture-of-the-day-symbolic"),
         }),
       );

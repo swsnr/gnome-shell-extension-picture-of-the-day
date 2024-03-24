@@ -20,16 +20,13 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 
-import * as Main from "resource:///org/gnome/shell/ui/main.js";
 import {
   gettext as _,
   pgettext,
 } from "resource:///org/gnome/shell/extensions/extension.js";
-import { Notification } from "resource:///org/gnome/shell/ui/messageTray.js";
+import * as MessageTray from "resource:///org/gnome/shell/ui/messageTray.js";
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
-import { IconLoader } from "../common/ui/icons.js";
-import { PictureOfTheDaySource } from "../ui/notifications.js";
 import { ErrorDetailDialog } from "../ui/error-detail-dialog.js";
 import {
   ConfigurationError,
@@ -55,22 +52,23 @@ export class RefreshErrorHandler
   extends EventEmitter<RefreshErrorHandlerSignals>
   implements Destructible
 {
-  constructor(private readonly iconLoader: IconLoader) {
+  constructor(private readonly source: MessageTray.Source) {
     super();
   }
 
   private showErrorInNotification(
-    notification: Notification,
+    notification: MessageTray.Notification,
     error: unknown,
   ): void {
     // Pick some errors apart to figure how what's wrong.
     if (error instanceof InvalidAPIKeyError) {
-      notification.update(
-        pgettext("Error notification", "Picture of the Day needs an API key"),
-        pgettext(
-          "Error notification",
-          "Please configure a valid API key for the configured source in the extensions settings.",
-        ),
+      notification.title = pgettext(
+        "Error notification",
+        "Picture of the Day needs an API key",
+      );
+      notification.body = pgettext(
+        "Error notification",
+        "Please configure a valid API key for the configured source in the extensions settings.",
       );
       notification.addAction(
         pgettext("Error notification", "Open preferences"),
@@ -79,24 +77,23 @@ export class RefreshErrorHandler
         },
       );
     } else if (error instanceof RateLimitedError) {
-      notification.update(
-        pgettext("Error notification", "Picture of the Day was rate-limited"),
-        pgettext(
-          "Error notification",
-          "The server for the configured source is rate-limited and does not permit to fetch an image currently. " +
-            "Try again later, or try a different image source.",
-        ),
+      notification.title = pgettext(
+        "Error notification",
+        "Picture of the Day was rate-limited",
+      );
+      notification.body = pgettext(
+        "Error notification",
+        "The server for the configured source is rate-limited and does not permit to fetch an image currently. " +
+          "Try again later, or try a different image source.",
       );
     } else if (error instanceof ConfigurationError) {
-      notification.update(
-        pgettext(
-          "Error notification",
-          "Picture of the Day has some invalid configuration",
-        ),
-        pgettext(
-          "Error notification",
-          "Please correct the invalid configuration in the extension settings.",
-        ),
+      notification.title = pgettext(
+        "Error notification",
+        "Picture of the Day has some invalid configuration",
+      );
+      notification.body = pgettext(
+        "Error notification",
+        "Please correct the invalid configuration in the extension settings.",
       );
       notification.addAction(
         pgettext("Error notification", "Open preferences"),
@@ -105,16 +102,15 @@ export class RefreshErrorHandler
         },
       );
     } else if (error instanceof HttpRequestError) {
-      const title = pgettext(
+      notification.title = pgettext(
         "Error notification",
         "Picture of the Day failed to fetch today's picture.",
       );
-      let description = "";
       if (
         Gio.NetworkMonitor.get_default().connectivity !==
         Gio.NetworkConnectivity.FULL
       ) {
-        description = pgettext(
+        notification.body = pgettext(
           "Error notification",
           "The system seems to have limited network connectivity. Try to connect to the internet. " +
             "If the error persists, try again later.",
@@ -126,22 +122,19 @@ export class RefreshErrorHandler
           },
         );
       } else {
-        description = pgettext(
+        notification.body = pgettext(
           "Error notification",
           "The server for the configured source seems to have issues. Try to configure a different image source or try again later.",
         );
       }
-      notification.update(title, description);
     } else if (error instanceof NotAnImageError) {
-      notification.update(
-        pgettext("Error notification", "No picture today"),
-        i18n.format(
-          pgettext(
-            "Error notification",
-            "%s is not an image, and cannot be used as background. You can perhaps view it directly on the website.",
-          ),
-          error.metadata.title,
+      notification.title = pgettext("Error notification", "No picture today");
+      notification.body = i18n.format(
+        pgettext(
+          "Error notification",
+          "%s is not an image, and cannot be used as background. You can perhaps view it directly on the website.",
         ),
+        error.metadata.title,
       );
       if (error.metadata.url) {
         const url = error.metadata.url;
@@ -156,17 +149,19 @@ export class RefreshErrorHandler
         );
       }
     } else if (error instanceof NoPictureTodayError) {
-      notification.update(
-        pgettext("Error notification", "No picture today"),
-        i18n.format(
-          pgettext(
-            "Error notification",
-            "%s does not provide a picture today.  Try again tomorrow, or try a different source.",
-          ),
-          error.source.name,
+      notification.title = pgettext("Error notification", "No picture today");
+      notification.body = i18n.format(
+        pgettext(
+          "Error notification",
+          "%s does not provide a picture today.  Try again tomorrow, or try a different source.",
         ),
+        error.source.name,
       );
     } else if (error instanceof IOError) {
+      notification.title = pgettext(
+        "Error notification",
+        "Image could not be downloaded",
+      );
       const description = pgettext(
         "Error notification",
         "An I/O error occurred while fetching today's image, with this message %s. Check your network connection and the permissions in the download folder.",
@@ -177,10 +172,7 @@ export class RefreshErrorHandler
         (error.cause instanceof GLib.Error
           ? error.cause.message
           : error.message) ?? "";
-      notification.update(
-        pgettext("Error notification", "Image could not be downloaded"),
-        i18n.format(description, errorMessage),
-      );
+      notification.body = i18n.format(description, errorMessage);
     }
   }
 
@@ -197,22 +189,20 @@ export class RefreshErrorHandler
    * @param error The error to show
    */
   showError(error: unknown): void {
-    const source = new PictureOfTheDaySource(this.iconLoader);
-    Main.messageTray.add(source);
-    const notification = new Notification(
-      source,
-      pgettext("Error notification", "Picture of the Day failed"),
-      pgettext(
+    const notification = new MessageTray.Notification({
+      source: this.source,
+      title: pgettext("Error notification", "Picture of the Day failed"),
+      body: pgettext(
         "Error notification",
         "We are sorry but there seems to be an error.",
       ),
-    );
-    notification.setForFeedback(true);
+      forFeedback: true,
+    });
     notification.addAction(_("Details"), () => {
       this.showErrorDetails(error);
     });
     this.showErrorInNotification(notification, error);
-    notification.source.showNotification(notification);
+    this.source.addNotification(notification);
   }
 
   /**
