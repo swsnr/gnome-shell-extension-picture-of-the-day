@@ -93,6 +93,9 @@ const getFeaturedContent = async (
   const locales = GLib.get_language_names_with_category("LC_MESSAGES");
   const languageCode = locales[0]?.split("_")[0] ?? "en";
   const urlDate = date.format("%Y/%m/%d");
+  if (urlDate === null) {
+    throw new Error("Failed to format timestamp");
+  }
   const url = `https://api.wikimedia.org/feed/v1/wikipedia/${languageCode}/featured/${urlDate}`;
   console.log(`Fetching featured content from ${url}`);
   const response = await getJSON(session, url, cancellable);

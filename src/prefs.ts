@@ -200,7 +200,7 @@ const SourcesPage = GObject.registerClass(
         this.settings.extension.reset("image-download-folder");
       });
       this._selectDownloadFolder.connect("clicked", () => {
-        this.selectDownloadDirectory().catch((error) => {
+        this.selectDownloadDirectory().catch((error: unknown) => {
           if (
             error instanceof GLib.Error &&
             error.matches(
@@ -296,11 +296,13 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
 
     // Load relevant settings
     const extensionSettings = this.getSettings();
+    const schema_id = extensionSettings.schema_id;
+    if (schema_id === null) {
+      throw new Error("Schema ID of settings schema unexpectedly null?");
+    }
     const allSettings: AllSettings = {
       extension: extensionSettings,
-      sourceAPOD: this.getSettings(
-        `${extensionSettings.schema_id}.source.${apod.key}`,
-      ),
+      sourceAPOD: this.getSettings(`${schema_id}.source.${apod.key}`),
     };
 
     // Add pages to the window.

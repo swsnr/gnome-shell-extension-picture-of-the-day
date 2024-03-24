@@ -39,7 +39,7 @@ export const launchSettingsPanel = (
   const platformData = {
     "desktop-startup-id": new GLib.Variant(
       "s",
-      `_TIME${global.get_current_time()}`,
+      `_TIME${global.get_current_time().toString()}`,
     ),
   };
   try {

@@ -75,10 +75,11 @@ export class RefreshScheduler
     } else {
       const now = GLib.DateTime.new_now_utc();
       const diff_mus = now.difference(this.lastRefresh);
+      const last_refresh_iso = this.lastRefresh.format_iso8601() ?? "n/a";
       if (DEFAULT_REFRESH_INTERVAL_S * GLib.TIME_SPAN_SECOND <= diff_mus) {
         // We already missed a refresh interval, so let's refresh now
         console.log(
-          `Last refresh was at ${this.lastRefresh.format_iso8601()}, more than ${DEFAULT_REFRESH_INTERVAL_S}s ago, refreshing immediately`,
+          `Last refresh was at ${last_refresh_iso}, more than ${DEFAULT_REFRESH_INTERVAL_S.toString()}s ago, refreshing immediately`,
         );
         this.doRefresh();
       } else {
@@ -92,7 +93,7 @@ export class RefreshScheduler
         );
 
         console.log(
-          `Last refresh was at ${this.lastRefresh.format_iso8601()}, scheduling a regular refresh in ${next_s}s`,
+          `Last refresh was at ${last_refresh_iso}, scheduling a regular refresh in ${next_s.toString()}s`,
         );
         this.scheduleRegularRefresh(next_s);
       }
@@ -127,13 +128,13 @@ export class RefreshScheduler
         this.errorRefreshCount = 0;
         this.lastRefresh = GLib.DateTime.new_now_utc();
         console.log(
-          `Automatic refresh completed successfully at ${this.lastRefresh.format_iso8601()}`,
+          `Automatic refresh completed successfully at ${this.lastRefresh.format_iso8601() ?? "n/a"}`,
         );
         this.emit("refresh-completed", this.lastRefresh);
         this.scheduleRegularRefresh();
         return;
       })
-      .catch((error) => {
+      .catch((error: unknown) => {
         // The refresh failed, so we inspect the error to figure out what's the
         // problem, and schedule a more aggressive retry for some errors.
         if (
@@ -167,7 +168,7 @@ export class RefreshScheduler
     this.errorRefreshCount += 1;
     if (ERROR_REFRESH_LIMIT < this.errorRefreshCount) {
       console.warn(
-        `Fast refresh limit ${ERROR_REFRESH_LIMIT} hit, reverting to regular refreshes`,
+        `Fast refresh limit ${ERROR_REFRESH_LIMIT.toString()} hit, reverting to regular refreshes`,
       );
       // We tried more frequent refreshes for a few times, but to no avail, so
       // show the last error to the user, and refresh again at the regular interval.
@@ -175,7 +176,7 @@ export class RefreshScheduler
       this.scheduleRegularRefresh();
     } else {
       console.log(
-        `Scheduling fast refresh after error in ${ERROR_REFRESH_INTERVAL_S}s`,
+        `Scheduling fast refresh after error in ${ERROR_REFRESH_INTERVAL_S.toString()}s`,
       );
       this.timer = this.timerRegistry.oneshotSeconds(
         ERROR_REFRESH_INTERVAL_S,
@@ -188,7 +189,9 @@ export class RefreshScheduler
 
   private scheduleRegularRefresh(interval_s?: number): void {
     const timeout_s = interval_s ?? DEFAULT_REFRESH_INTERVAL_S;
-    console.log(`Scheduling refresh of Picture of the Day in ${timeout_s}s`);
+    console.log(
+      `Scheduling refresh of Picture of the Day in ${timeout_s.toString()}s`,
+    );
     this.timer = this.timerRegistry.oneshotSeconds(timeout_s, () => {
       this.doRefresh();
     });

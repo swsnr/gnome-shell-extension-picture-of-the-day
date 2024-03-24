@@ -185,7 +185,7 @@ const initializeExtension = (
   // Unlike scheduled refreshes we immediately show all errors, and do not handle
   // intermittent network errors in any special way.
   const refreshAfterUserAction = () => {
-    refreshService.refresh().catch((error) => {
+    refreshService.refresh().catch((error: unknown) => {
       errorHandler.showError(error);
     });
   };

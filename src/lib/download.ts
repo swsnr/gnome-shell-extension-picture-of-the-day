@@ -92,7 +92,7 @@ export const downloadImage = async (
     `${image.pubdate}-${filename}`,
   );
   console.log(
-    `Downloading image from ${image.imageUrl} to ${targetFile.get_path()}`,
+    `Downloading image from ${image.imageUrl} to ${targetFile.get_path() ?? ""}`,
   );
   await downloadToFile(session, image.imageUrl, targetFile, cancellable);
   return {

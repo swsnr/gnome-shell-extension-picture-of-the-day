@@ -45,7 +45,9 @@ export class HttpStatusError extends Error {
     /** The body returned with the response */
     readonly body?: Uint8Array | null,
   ) {
-    super(`HTTP request failed with HTTP status ${status} ${reason ?? ""}`);
+    super(
+      `HTTP request failed with HTTP status ${status.toString()} ${reason ?? ""}`,
+    );
   }
 }
 
@@ -93,7 +95,7 @@ export const getString = async (
     try {
       if (data === null || data.byteLength === 0) {
         throw new NoDataError(
-          `Response with status code ${message.get_status()} contained no data`,
+          `Response with status code ${message.get_status().toString()} contained no data`,
         );
       }
       return new TextDecoder().decode(data);
@@ -147,7 +149,7 @@ const deletePartialDownloadIgnoreError = async (
     await file.delete_async(0, cancellable);
   } catch (error) {
     console.warn(
-      `Failed to delete result of partial download at ${file.get_path()}`,
+      `Failed to delete result of partial download at ${file.get_path() ?? ""}`,
       error,
     );
   }
@@ -205,7 +207,7 @@ export const downloadToFile = async (
         )
       ) {
         throw new IOError(
-          `Failed to create target directory at ${parentDirectory.get_path()} to download from ${url}`,
+          `Failed to create target directory at ${parentDirectory.get_path() ?? ""} to download from ${url}`,
           { cause },
         );
       }
@@ -217,7 +219,7 @@ export const downloadToFile = async (
       .create_async(Gio.FileCreateFlags.NONE, 0, null)
       .catch((cause: unknown) => {
         throw new IOError(
-          `Failed to open target file at ${target.get_path()} to download from ${url}`,
+          `Failed to open target file at ${target.get_path() ?? ""} to download from ${url}`,
           { cause },
         );
       });
@@ -232,7 +234,7 @@ export const downloadToFile = async (
       .catch((cause: unknown) => {
         throw new HttpRequestError(
           url,
-          `Failed to download data from ${url} to ${target.get_path()}`,
+          `Failed to download data from ${url} to ${target.get_path() ?? ""}`,
           { cause },
         );
       });
@@ -242,7 +244,7 @@ export const downloadToFile = async (
     // we're passing null for all cancellables here.
     if (target.query_exists(null)) {
       console.warn(
-        `Download failed, deleting partial target file at ${target.get_path()}`,
+        `Download failed, deleting partial target file at ${target.get_path() ?? ""}`,
       );
       await deletePartialDownloadIgnoreError(target, null);
     }
