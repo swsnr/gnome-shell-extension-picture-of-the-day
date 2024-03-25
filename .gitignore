@@ -1,6 +1,5 @@
-# Package manager artefacts
-/.yarn
-/.pnp.*
+# Packages
+/node_modules/
 
 # Extension artifact
 /dist/
