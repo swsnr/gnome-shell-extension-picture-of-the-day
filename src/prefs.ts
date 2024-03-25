@@ -296,7 +296,7 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
 
     // Load relevant settings
     const extensionSettings = this.getSettings();
-    const schema_id = extensionSettings.schema_id;
+    const schema_id = extensionSettings.schemaId;
     if (schema_id === null) {
       throw new Error("Schema ID of settings schema unexpectedly null?");
     }

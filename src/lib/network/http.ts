@@ -29,7 +29,7 @@ export const createSession = (
 ): Soup.Session => {
   const version = extensionMetadata["version-name"] ?? "n/a";
   return new Soup.Session({
-    user_agent: `${extensionMetadata.uuid}/${version} GNOME Shell extension`,
+    userAgent: `${extensionMetadata.uuid}/${version} GNOME Shell extension`,
   });
 };
 
