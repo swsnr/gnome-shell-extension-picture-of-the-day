@@ -21,8 +21,12 @@ import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+import {
+  Extension,
+  gettext as _,
+} from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
+import * as MessageTray from "resource:///org/gnome/shell/ui/messageTray.js";
 
 import { GetImages, Source } from "./lib/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
@@ -135,7 +139,21 @@ const initializeExtension = (
   Main.panel.addToStatusArea(extension.metadata.uuid, indicator);
 
   // Set up error notifications by this extension.
-  const errorHandler = destroyer.add(new RefreshErrorHandler(iconLoader));
+  const notificationSource = new MessageTray.Source({
+    title: _("Picture of the Day"),
+    icon: iconLoader.loadIcon("picture-of-the-day-symbolic"),
+  });
+  destroyer.add({
+    destroy: () => {
+      notificationSource.destroy(
+        MessageTray.NotificationDestroyedReason.SOURCE_CLOSED,
+      );
+    },
+  });
+  Main.messageTray.add(notificationSource);
+  const errorHandler = destroyer.add(
+    new RefreshErrorHandler(notificationSource),
+  );
 
   // Restore metadata for the current image
   const desktopBackground = DesktopBackgroundService.default();
@@ -232,15 +250,15 @@ const initializeExtension = (
   indicator.connect("activated::cancel-refresh", () => {
     void refreshService.cancelRefresh();
   });
-  indicator.connect("switch-source", (_, sourceKey: string) => {
+  indicator.connect("switch-source", (_obj, sourceKey: string) => {
     settings.set_string("selected-source", sourceKey);
   });
 
   // Make everyone react on a new picture of the day
-  refreshService.connect("state-changed", (_, state): undefined => {
+  refreshService.connect("state-changed", (_obj, state): undefined => {
     indicator.updateRefreshState(state);
   });
-  refreshService.connect("refresh-completed", (_, image): undefined => {
+  refreshService.connect("refresh-completed", (_obj, image): undefined => {
     indicator.showImageMetadata(image);
     imageMetadataStore.storedMetadataForImage(image);
     desktopBackground.setBackgroundImageFile(image.file);
@@ -268,15 +286,18 @@ const initializeExtension = (
       null,
     );
   }
-  refreshScheduler.connect("refresh-completed", (_, timestamp): undefined => {
-    const formatted = timestamp.format_iso8601();
-    if (formatted === null) {
-      // I don't think this can ever fail; presumably the derived types are just
-      // inaccurate here, but let's guard against this nonetheless.
-      throw new Error("Failed to convert timestamp to ISO 8601");
-    }
-    settings.set_string("last-scheduled-refresh", formatted);
-  });
+  refreshScheduler.connect(
+    "refresh-completed",
+    (_obj, timestamp): undefined => {
+      const formatted = timestamp.format_iso8601();
+      if (formatted === null) {
+        // I don't think this can ever fail; presumably the derived types are just
+        // inaccurate here, but let's guard against this nonetheless.
+        throw new Error("Failed to convert timestamp to ISO 8601");
+      }
+      settings.set_string("last-scheduled-refresh", formatted);
+    },
+  );
   if (settings.get_boolean("refresh-automatically")) {
     refreshScheduler.start();
   }

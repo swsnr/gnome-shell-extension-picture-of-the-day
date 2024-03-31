@@ -126,12 +126,12 @@ const SourcesPage = GObject.registerClass(
       // ts-for-gir doesn't recognize "select_folder" as async function, so we
       // have to convince typescript explicitly that we have a promise here.
       const dialog = Gtk.FileDialog.new();
-      dialog.accept_label = _("Select download folder");
+      dialog.acceptLabel = _("Select download folder");
       const picturesDirectory = GLib.get_user_special_dir(
         GLib.UserDirectory.DIRECTORY_PICTURES,
       );
       if (picturesDirectory) {
-        dialog.initial_folder = Gio.file_new_for_path(picturesDirectory);
+        dialog.initialFolder = Gio.file_new_for_path(picturesDirectory);
       }
       // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
       const file = await (dialog.select_folder(
