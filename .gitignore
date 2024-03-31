@@ -1,3 +1,6 @@
+# VSCode things
+/.vscode/
+
 # Packages
 /node_modules/
 
