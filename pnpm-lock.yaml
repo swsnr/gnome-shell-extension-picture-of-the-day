@@ -15,8 +15,8 @@ devDependencies:
     specifier: ^3.4.4-3.3.0
     version: 3.4.4-3.3.0
   '@tsconfig/strictest':
-    specifier: ^2.0.4
-    version: 2.0.4
+    specifier: ^2.0.5
+    version: 2.0.5
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.3.1
     version: 7.3.1(@typescript-eslint/parser@7.3.1)(eslint@8.57.0)(typescript@5.4.3)
@@ -697,8 +697,8 @@ packages:
       fastq: 1.16.0
     dev: true
 
-  /@tsconfig/strictest@2.0.4:
-    resolution: {integrity: sha512-/VKO/oufDOvAE48KGzZOEXFBKtR3PnGlb4cJoRtw3Ax5tYwaWnaNgyTJDviIbvjlnn82WMfTNvhegFkj5Xt2UA==}
+  /@tsconfig/strictest@2.0.5:
+    resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
     dev: true
 
   /@types/json-schema@7.0.15:
