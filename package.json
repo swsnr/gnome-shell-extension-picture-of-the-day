@@ -15,7 +15,7 @@
     "@girs/soup-3.0": "^3.4.4-3.3.0",
     "@tsconfig/strictest": "^2.0.5",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/parser": "^7.4.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-promise": "^6.1.1",
