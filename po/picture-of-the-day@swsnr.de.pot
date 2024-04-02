@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-31 19:45+0200\n"
+"POT-Creation-Date: 2024-04-02 20:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -204,48 +204,48 @@ msgstr ""
 msgid "Select download folder"
 msgstr ""
 
-#: ui/AboutPage.blp:7
+#: ui/AboutPage.ui:5
 msgid "About"
 msgstr ""
 
-#: ui/AboutPage.blp:37
+#: ui/AboutPage.ui:42
 msgid "Get a picture of the day as desktop background."
 msgstr ""
 
-#: ui/AboutPage.blp:46
+#: ui/AboutPage.ui:53
 msgctxt "about link"
 msgid "Github"
 msgstr ""
 
-#: ui/AboutPage.blp:51
+#: ui/AboutPage.ui:58
 msgctxt "about link"
 msgid "Issue tracker"
 msgstr ""
 
-#: ui/SourcesPage.blp:7
+#: ui/SourcesPage.ui:5
 msgid "Picture Sources"
 msgstr ""
 
-#: ui/SourcesPage.blp:8
+#: ui/SourcesPage.ui:6
 msgid "Configure sources for the Picture of the Day."
 msgstr ""
 
-#: ui/SourcesPage.blp:13
+#: ui/SourcesPage.ui:12
 msgid "Selected source"
 msgstr ""
 
-#: ui/SourcesPage.blp:18
+#: ui/SourcesPage.ui:20
 msgid "Refresh automatically"
 msgstr ""
 
-#: ui/SourcesPage.blp:24
+#: ui/SourcesPage.ui:29
 msgid "Custom download folder"
 msgstr ""
 
-#: ui/SourcesPage.blp:43
+#: ui/SourcesPage.ui:57
 msgid "API key"
 msgstr ""
 
-#: ui/SourcesPage.blp:47
+#: ui/SourcesPage.ui:60
 msgid "Get API key"
 msgstr ""
