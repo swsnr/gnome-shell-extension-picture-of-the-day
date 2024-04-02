@@ -99,7 +99,9 @@ const SourcesPage = GObject.registerClass(
   class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
     constructor(private readonly settings: AllSettings) {
       super();
-      (this as unknown as PictureOfTheDaySourcesPage & SourcesPageProperties).initialize();
+      (
+        this as unknown as PictureOfTheDaySourcesPage & SourcesPageProperties
+      ).initialize();
     }
 
     private showSelectedSource(
@@ -111,7 +113,9 @@ const SourcesPage = GObject.registerClass(
       );
     }
 
-    private showDownloadFolder(this: PictureOfTheDaySourcesPage & SourcesPageProperties) {
+    private showDownloadFolder(
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
+    ) {
       const downloadDirectory = this.settings.extension
         .get_value("image-download-folder")
         .deepUnpack<string | null>();
@@ -142,7 +146,9 @@ const SourcesPage = GObject.registerClass(
       this.settings.extension.set_value("image-download-folder", value);
     }
 
-    private initialize(this: PictureOfTheDaySourcesPage & SourcesPageProperties): void {
+    private initialize(
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
+    ): void {
       // Fill the expander with all sources
       const buttons = new Map(
         SOURCES.map((source) => {
