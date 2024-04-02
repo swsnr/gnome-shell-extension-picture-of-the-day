@@ -84,7 +84,7 @@ interface SourcesPageProperties {
 
 const SourcesPage = GObject.registerClass(
   {
-    GTypeName: "SourcesPage",
+    GTypeName: "PictureOfTheDaySourcesPage",
     Template: getTemplate("SourcesPage"),
     InternalChildren: [
       "apodGroup",
@@ -96,14 +96,16 @@ const SourcesPage = GObject.registerClass(
       "resetDownloadFolder",
     ],
   },
-  class SourcesPage extends Adw.PreferencesPage {
+  class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
     constructor(private readonly settings: AllSettings) {
       super();
-      (this as unknown as SourcesPage & SourcesPageProperties).initialize();
+      (
+        this as unknown as PictureOfTheDaySourcesPage & SourcesPageProperties
+      ).initialize();
     }
 
     private showSelectedSource(
-      this: SourcesPage & SourcesPageProperties,
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
       source: SourceMetadata,
     ): void {
       this._sourcesRow.set_subtitle(
@@ -111,7 +113,9 @@ const SourcesPage = GObject.registerClass(
       );
     }
 
-    private showDownloadFolder(this: SourcesPage & SourcesPageProperties) {
+    private showDownloadFolder(
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
+    ) {
       const downloadDirectory = this.settings.extension
         .get_value("image-download-folder")
         .deepUnpack<string | null>();
@@ -121,7 +125,7 @@ const SourcesPage = GObject.registerClass(
     }
 
     private async selectDownloadDirectory(
-      this: SourcesPage & SourcesPageProperties,
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
     ): Promise<void> {
       // ts-for-gir doesn't recognize "select_folder" as async function, so we
       // have to convince typescript explicitly that we have a promise here.
@@ -142,7 +146,9 @@ const SourcesPage = GObject.registerClass(
       this.settings.extension.set_value("image-download-folder", value);
     }
 
-    private initialize(this: SourcesPage & SourcesPageProperties): void {
+    private initialize(
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
+    ): void {
       // Fill the expander with all sources
       const buttons = new Map(
         SOURCES.map((source) => {
@@ -244,7 +250,7 @@ interface AboutPageChildren {
 
 const AboutPage = GObject.registerClass(
   {
-    GTypeName: "AboutPage",
+    GTypeName: "PictureOfTheDayAboutPage",
     Template: getTemplate("AboutPage"),
     InternalChildren: [
       "extensionName",
@@ -254,7 +260,7 @@ const AboutPage = GObject.registerClass(
       "extensionLicense",
     ],
   },
-  class AboutPage extends Adw.PreferencesPage {
+  class PictureOfTheDayAboutPage extends Adw.PreferencesPage {
     constructor(metadata: ExtensionMetadata) {
       super();
 
