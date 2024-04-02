@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface domain="picture-of-the-day@swsnr.de">
   <requires lib="gtk" version="4.0"/>
-  <template class="SourcesPage" parent="AdwPreferencesPage">
+  <template class="PictureOfTheDaySourcesPage" parent="AdwPreferencesPage">
     <property name="title" translatable="true">Picture Sources</property>
     <property name="description" translatable="true">Configure sources for the Picture of the Day.</property>
     <property name="icon-name">picture-of-the-day-symbolic</property>

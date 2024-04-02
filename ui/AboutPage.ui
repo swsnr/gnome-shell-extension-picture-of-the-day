@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface domain="picture-of-the-day@swsnr.de">
   <requires lib="gtk" version="4.0"/>
-  <template class="AboutPage" parent="AdwPreferencesPage">
+  <template class="PictureOfTheDayAboutPage" parent="AdwPreferencesPage">
     <property name="title" translatable="true">About</property>
     <property name="icon-name">dialog-information-symbolic</property>
     <child>
