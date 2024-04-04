@@ -22,7 +22,7 @@ import Soup from "gi://Soup";
 
 import { HttpRequestError, getString } from "../network/http.js";
 import * as dom from "../simpledom.js";
-import { Source } from "../source.js";
+import { Source } from "../source/source.js";
 import metadata from "./metadata/eopod.js";
 import { DownloadableImage } from "../download.js";
 

@@ -18,7 +18,7 @@
 // GNU General Public License for more details.
 
 import Gio from "gi://Gio";
-import { ImageMetadata } from "../source.js";
+import { ImageMetadata } from "../source/source.js";
 import { ImageFile } from "../download.js";
 
 interface StoredMetadata {

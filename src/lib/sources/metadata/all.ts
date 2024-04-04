@@ -17,10 +17,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import APOD from "./sources/apod.js";
-import EOPOD from "./sources/eopod.js";
-import Bing from "./sources/bing.js";
-import Wikimedia from "./sources/wikimedia.js";
+import APOD from "./apod.js";
+import EOPOD from "./eopod.js";
+import Bing from "./bing.js";
+import Wikimedia from "./wikimedia.js";
 
 /**
  * All registered sources.

@@ -20,7 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { Source } from "../source.js";
+import { Source } from "../source/source.js";
 import {
   NotAnImageError,
   InvalidAPIKeyError,

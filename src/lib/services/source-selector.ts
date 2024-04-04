@@ -19,8 +19,8 @@
 
 import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
-import { Source } from "../source.js";
-import sources from "../sources.js";
+import { Source } from "../source/source.js";
+import sources from "../sources/all.js";
 import { Destructible } from "../common/lifecycle.js";
 
 export class NoSuchSource extends Error {
