@@ -20,10 +20,10 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { SourceMetadata } from "./source/metadata.js";
-import { DownloadableImage } from "./download.js";
+import { SourceMetadata } from "./metadata.js";
+import { DownloadableImage } from "../download.js";
 
-export type { SourceMetadata } from "./source/metadata.js";
+export type { SourceMetadata } from "./metadata.js";
 
 /**
  * Metadata of a downloaded image.

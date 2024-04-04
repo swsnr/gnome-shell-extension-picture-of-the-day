@@ -29,8 +29,8 @@ import {
 } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 import apod from "./lib/sources/metadata/apod.js";
-import SOURCES from "./lib/sources/metadata/sources.js";
-import { SourceMetadata } from "./lib/source.js";
+import SOURCES from "./lib/sources/metadata/all.js";
+import { SourceMetadata } from "./lib/source/source.js";
 
 import type { ExtensionMetadata } from "@girs/gnome-shell/extensions/extension";
 

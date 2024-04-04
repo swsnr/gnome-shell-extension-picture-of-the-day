@@ -24,7 +24,7 @@ import Soup from "gi://Soup";
 import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
-import { GetImages, Source } from "./lib/source.js";
+import { GetImages, Source } from "./lib/source/source.js";
 import { PictureOfTheDayIndicator } from "./lib/ui/indicator.js";
 import { DownloadImage, RefreshService } from "./lib/services/refresh.js";
 import { IconThemeLoader } from "./lib/common/ui/icons.js";

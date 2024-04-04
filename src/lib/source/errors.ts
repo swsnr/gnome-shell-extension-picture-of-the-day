@@ -17,7 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import { ImageMetadata, SourceMetadata } from "../source.js";
+import { ImageMetadata, SourceMetadata } from "./source.js";
 
 /**
  * An error denoting a wrong configuration for a source.

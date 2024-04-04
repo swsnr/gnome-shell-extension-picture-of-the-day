@@ -20,7 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { ImageMetadata } from "./source.js";
+import { ImageMetadata } from "./source/source.js";
 import { downloadToFile } from "./network/http.js";
 
 /**
