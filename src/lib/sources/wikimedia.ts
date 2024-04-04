@@ -55,7 +55,7 @@ interface FeaturedImage {
   readonly artist?: FeaturedImageArtist | null;
   readonly credit?: FeaturedImageCredit | null;
   readonly license?: FeaturedImageLicense | null;
-  readonly description: FeaturedImageDescription;
+  readonly description?: FeaturedImageDescription | null;
 }
 
 interface FeaturedContentResponse {
@@ -123,7 +123,7 @@ const getImages = async (
     metadata: {
       // Drop File: prefix and file extension from image title.
       title: title.replaceAll(/(^File:|.[^.]+$)/g, ""),
-      description: description.text,
+      description: description?.text ?? null,
       copyright,
       url: file_page,
     },
