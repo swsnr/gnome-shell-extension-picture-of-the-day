@@ -56,14 +56,14 @@ jobs:
         with:
           path: dist
           name: dist
-      - run: echo "RELEASE_BODY=$(git tag -ln1 --format='%(contents:body)' "${GITHUB_REF_NAME}")" >> "$GITHUB_ENV"
       - run: echo "RELEASE_SUBJECT=$(git tag -ln1 --format='%(contents:subject)' "${GITHUB_REF_NAME}")" >> "$GITHUB_ENV"
-      - uses: ncipollo/release-action@v1
+      - run: git tag -ln1 --format='%(contents:body)' "${GITHUB_REF_NAME}" > ${{ github.workspace }}-body.txt
+      - uses: softprops/action-gh-release@v2
         with:
-          allowUpdates: false
           name: "${{ env.RELEASE_SUBJECT }}"
-          body: "${{ env.RELEASE_BODY }}"
-          artifacts: "dist/*"
+          body_path: "${{ github.workspace }}-body.txt"
+          files: "dist/*"
+          fail_on_unmatched_files: true
 
   upload-ego:
     runs-on: ubuntu-latest
