@@ -9,8 +9,8 @@ devDependencies:
     specifier: ^3.3.0
     version: 3.3.0
   '@girs/gnome-shell':
-    specifier: ^46.0.0-beta5
-    version: 46.0.0-beta5
+    specifier: ^46.0.0-beta6
+    version: 46.0.0-beta6
   '@girs/soup-3.0':
     specifier: ^3.4.4-3.3.0
     version: 3.4.4-3.3.0
@@ -316,8 +316,8 @@ packages:
       '@girs/gobject-2.0': 2.78.0-3.3.0
     dev: true
 
-  /@girs/gnome-shell@46.0.0-beta5:
-    resolution: {integrity: sha512-gB4hWwzzPK0zSM/VAJJfwY4Luk4LW/5XddMUzHO5qdJIhtZod0bTX5K3ExOGazXx5NikyUqKNEKLuEyj+MboPQ==}
+  /@girs/gnome-shell@46.0.0-beta6:
+    resolution: {integrity: sha512-ZDTtXDueIfYfkvQP4xjVcr809eeLGcJfmRAe4taY9KEfrMe/Ha79gTLFpkIKN/zecIft7Gb6emXSfBTWyfBrlA==}
     dependencies:
       '@girs/accountsservice-1.0': 1.0.0-3.3.0
       '@girs/adw-1': 1.4.3-3.3.0
