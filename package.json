@@ -14,7 +14,7 @@
     "@girs/gnome-shell": "^46.0.0-beta5",
     "@girs/soup-3.0": "^3.4.4-3.3.0",
     "@tsconfig/strictest": "^2.0.5",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
