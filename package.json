@@ -20,7 +20,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "packageManager": "pnpm@8.15.5"
 }
