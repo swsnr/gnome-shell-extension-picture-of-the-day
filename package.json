@@ -4,23 +4,22 @@
   "private": true,
   "scripts": {
     "compile": "tsc --build tsconfig.json",
-    "dist:format": "eslint --no-eslintrc --config .eslintrc.dist.cjs --quiet --fix build/",
+    "dist:format": "eslint --no-config-lookup --config eslint.config.dist.js --quiet --fix build/",
     "check:types": "tsc --build tsconfig.types.json --force",
     "lint": "eslint .",
     "format": "prettier ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.2.0",
     "@girs/gjs": "^3.3.0",
     "@girs/gnome-shell": "^46.0.0-beta6",
     "@girs/soup-3.0": "^3.4.4-3.3.0",
     "@tsconfig/strictest": "^2.0.5",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-promise": "^6.1.1",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0"
   },
   "packageManager": "pnpm@9.1.1"
 }

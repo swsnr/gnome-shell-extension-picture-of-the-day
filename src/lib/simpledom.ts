@@ -127,7 +127,7 @@ const runParser = (
   return toplevels;
 };
 
-type Parser<O> = new (opts?: O) => SaxesParser;
+type AbstractParser<O> = new (opts?: O) => SaxesParser;
 
 /**
  * Parse an XML document in `s`.
@@ -135,7 +135,7 @@ type Parser<O> = new (opts?: O) => SaxesParser;
  * @returns The single root element
  */
 export const parse =
-  (Parser: Parser<object>) =>
+  (Parser: AbstractParser<object>) =>
   (s: string, options?: ParseOptions): Element => {
     const roots = runParser(new Parser(), s, options);
     if (roots.length === 1 && isElement(roots[0])) {
@@ -151,7 +151,7 @@ export const parse =
  * @returns An array with all fragments.
  */
 export const parseFragments =
-  (Parser: Parser<SaxesOptions>) =>
+  (Parser: AbstractParser<SaxesOptions>) =>
   (s: string, options?: ParseOptions): readonly Node[] =>
     runParser(new Parser({ fragment: true }), s, options);
 
