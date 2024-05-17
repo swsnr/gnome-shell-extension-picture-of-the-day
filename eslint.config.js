@@ -6,8 +6,8 @@
 
 // @ts-check
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 import gjsGuide from "./eslint.config.gjs-guide.js";
@@ -56,6 +56,6 @@ export default tseslint.config(
       "node_modules/**",
       // Vendored dependencies
       "src/lib/vendor/**",
-    ]
-  }
+    ],
+  },
 );
