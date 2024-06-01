@@ -15,7 +15,7 @@
     "@girs/gnome-shell": "^46.0.0-beta6",
     "@girs/soup-3.0": "^3.4.4-3.3.0",
     "@tsconfig/strictest": "^2.0.5",
-    "eslint": "^9.2.0",
+    "eslint": "^9.4.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
