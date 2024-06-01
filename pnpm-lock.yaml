@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@eslint/js':
-        specifier: ^9.2.0
-        version: 9.2.0
+        specifier: ^9.4.0
+        version: 9.4.0
       '@girs/gjs':
         specifier: ^3.3.0
         version: 3.3.0
@@ -61,6 +61,10 @@ packages:
 
   '@eslint/js@9.2.0':
     resolution: {integrity: sha512-ESiIudvhoYni+MdsI8oD7skpprZ89qKocwRM2KEvhhBJ9nl5MRh7BXU5GTod7Mdygq+AUl+QzId6iWJKR/wABA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.4.0':
+    resolution: {integrity: sha512-fdI7VJjP3Rvc70lC4xkFXHB0fiPeojiL1PxVG6t1ZvXQrarj893PweuBTujxDUFk0Fxj4R7PIIAZ/aiiyZPZcg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@girs/accountsservice-1.0@1.0.0-3.3.0':
@@ -714,6 +718,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@9.2.0': {}
+
+  '@eslint/js@9.4.0': {}
 
   '@girs/accountsservice-1.0@1.0.0-3.3.0':
     dependencies:
