@@ -8,6 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
+        with:
+          # Keep in sync with engines.pnpm in package.json
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: latest
@@ -22,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
+        with:
+          # Keep in sync with engines.pnpm in package.json
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: latest
