@@ -1,7 +1,7 @@
 # Picture of the Day
 
 [![Download on EGO](https://img.shields.io/badge/EGO-install-blue)](https://extensions.gnome.org/extension/6469/picture-of-the-day/)
-[![](https://img.shields.io/github/v/release/swsnr/gnome-shell-extension-picture-of-the-day)](https://github.com/swsnr/mdcat/releases/)
+[![](https://img.shields.io/github/v/release/swsnr/gnome-shell-extension-picture-of-the-day)](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/releases/)
 [![CI status](https://img.shields.io/github/actions/workflow/status/swsnr/gnome-shell-extension-picture-of-the-day/ci.yaml)](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/actions)
 
 Use a picture of the day from various sources as GNOME desktop background.
