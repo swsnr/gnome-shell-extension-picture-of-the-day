@@ -92,7 +92,12 @@ const createDownloader = (
       throw new NoPictureTodayError(source.metadata);
     }
     try {
-      return downloadImage(session, downloadDirectory, cancellable, image);
+      return await downloadImage(
+        session,
+        downloadDirectory,
+        cancellable,
+        image,
+      );
     } catch (error) {
       if (
         error instanceof HttpStatusError &&
@@ -217,7 +222,7 @@ const initializeExtension = (
         try {
           sourceSelector.selectSource(key);
         } catch (error) {
-          console.error("Source could not be loaded", key);
+          console.error(`Source could not be loaded: ${error as string}`, key);
         }
       }
     }),
