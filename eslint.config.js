@@ -9,6 +9,7 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
+import pluginPromise from "eslint-plugin-promise";
 
 import gjsGuide from "./eslint.config.gjs-guide.js";
 
@@ -31,6 +32,8 @@ export default tseslint.config(
       },
     },
   },
+  // See https://github.com/eslint-community/eslint-plugin-promise?tab=readme-ov-file#usage
+  pluginPromise.configs["flat/recommended"],
   // See https://github.com/prettier/eslint-config-prettier?tab=readme-ov-file#installation
   eslintConfigPrettier,
   {
