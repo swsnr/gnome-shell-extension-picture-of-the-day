@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-02 20:28+0200\n"
-"PO-Revision-Date: 2024-03-31 19:43+0200\n"
+"POT-Creation-Date: 2024-08-29 22:11+0200\n"
+"PO-Revision-Date: 2024-08-29 22:15+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: src/lib/services/refresh-error-handler.ts:67
 msgctxt "Error notification"
@@ -159,33 +159,6 @@ msgstr "Details"
 msgid "Unknown, all rights reserved"
 msgstr "Unbekannt, alle Rechte vorbehalten"
 
-#: src/lib/ui/error-detail-dialog.ts:122
-msgctxt "ErrorDetailDialog"
-msgid ""
-"The following text contains the internal error messages and stacktraces of "
-"the error.  You may find additional details which may help you to fix the "
-"error, or you may use this data to report an issue on Github."
-msgstr ""
-"Der folgende Text enthält die interne Fehlermeldung und den Stacktrace des "
-"Fehlers. Der Text kann zusätzliche Informationen zur Beseitigung des Fehlers "
-"enthalten, oder zum Einreichen eines Fehlerberichts auf Github genutzt "
-"werden."
-
-#: src/lib/ui/error-detail-dialog.ts:144
-msgctxt "ErrorDetailDialog"
-msgid "Picture of the Day failed"
-msgstr "Bild des Tages fehlgeschlagen"
-
-#: src/lib/ui/error-detail-dialog.ts:153
-msgctxt "ErrorDetailDialog"
-msgid "Copy to clipboard"
-msgstr "In die Zwischenablage kopieren"
-
-#: src/lib/ui/error-detail-dialog.ts:161
-msgctxt "Error Dialog"
-msgid "Close"
-msgstr "Schließen"
-
 #: src/lib/ui/indicator.ts:120
 #, javascript-format
 msgid "Copyright %s"
@@ -216,60 +189,76 @@ msgstr "Aktualisieren"
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: src/extension.ts:143
-msgid "Picture of the Day"
-msgstr "Bild des Tages"
+#: src/lib/ui/error-detail-dialog.ts:122
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
+msgstr ""
+"Der folgende Text enthält die interne Fehlermeldung und den Stacktrace des "
+"Fehlers. Der Text kann zusätzliche Informationen zur Beseitigung des Fehlers "
+"enthalten, oder zum Einreichen eines Fehlerberichts auf Github genutzt "
+"werden."
 
-#: src/prefs.ts:119
+#: src/lib/ui/error-detail-dialog.ts:144
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr "Bild des Tages fehlgeschlagen"
+
+#: src/lib/ui/error-detail-dialog.ts:153
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
+
+#: src/lib/ui/error-detail-dialog.ts:161
+msgctxt "Error Dialog"
+msgid "Close"
+msgstr "Schließen"
+
+#: src/prefs.ts:123
 msgid "XDG State directory"
 msgstr "XDG Zustandsverzeichnis"
 
-#: src/prefs.ts:129
+#: src/prefs.ts:133
 msgid "Select download folder"
 msgstr "Download-Ordner auswählen"
 
-#: ui/AboutPage.ui:5
-msgid "About"
-msgstr "Über"
+#: src/extension.ts:148
+msgid "Picture of the Day"
+msgstr "Bild des Tages"
 
-#: ui/AboutPage.ui:42
-msgid "Get a picture of the day as desktop background."
-msgstr "Bilder des Tages als Desktop-Hintergrund."
+#~ msgid "About"
+#~ msgstr "Über"
 
-#: ui/AboutPage.ui:53
-msgctxt "about link"
-msgid "Github"
-msgstr "Github"
+#~ msgid "Get a picture of the day as desktop background."
+#~ msgstr "Bilder des Tages als Desktop-Hintergrund."
 
-#: ui/AboutPage.ui:58
-msgctxt "about link"
-msgid "Issue tracker"
-msgstr "Issue tracker"
+#~ msgctxt "about link"
+#~ msgid "Github"
+#~ msgstr "Github"
 
-#: ui/SourcesPage.ui:5
-msgid "Picture Sources"
-msgstr "Bildquellen"
+#~ msgctxt "about link"
+#~ msgid "Issue tracker"
+#~ msgstr "Issue tracker"
 
-#: ui/SourcesPage.ui:6
-msgid "Configure sources for the Picture of the Day."
-msgstr "Quellen für das Bild des Tages einrichten."
+#~ msgid "Picture Sources"
+#~ msgstr "Bildquellen"
 
-#: ui/SourcesPage.ui:12
-msgid "Selected source"
-msgstr "Bildquellen"
+#~ msgid "Configure sources for the Picture of the Day."
+#~ msgstr "Quellen für das Bild des Tages einrichten."
 
-#: ui/SourcesPage.ui:20
-msgid "Refresh automatically"
-msgstr "Automatisch aktualisieren"
+#~ msgid "Selected source"
+#~ msgstr "Bildquellen"
 
-#: ui/SourcesPage.ui:29
-msgid "Custom download folder"
-msgstr "Benutzerdefinierter Download-Ordner"
+#~ msgid "Refresh automatically"
+#~ msgstr "Automatisch aktualisieren"
 
-#: ui/SourcesPage.ui:57
-msgid "API key"
-msgstr "API Schlüssel"
+#~ msgid "Custom download folder"
+#~ msgstr "Benutzerdefinierter Download-Ordner"
 
-#: ui/SourcesPage.ui:60
-msgid "Get API key"
-msgstr "API Schlüssel erhalten"
+#~ msgid "API key"
+#~ msgstr "API Schlüssel"
+
+#~ msgid "Get API key"
+#~ msgstr "API Schlüssel erhalten"

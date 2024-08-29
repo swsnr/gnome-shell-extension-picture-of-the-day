@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-02 20:28+0200\n"
+"POT-Creation-Date: 2024-08-29 22:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,29 +139,6 @@ msgstr ""
 msgid "Unknown, all rights reserved"
 msgstr ""
 
-#: src/lib/ui/error-detail-dialog.ts:122
-msgctxt "ErrorDetailDialog"
-msgid ""
-"The following text contains the internal error messages and stacktraces of "
-"the error.  You may find additional details which may help you to fix the "
-"error, or you may use this data to report an issue on Github."
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:144
-msgctxt "ErrorDetailDialog"
-msgid "Picture of the Day failed"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:153
-msgctxt "ErrorDetailDialog"
-msgid "Copy to clipboard"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:161
-msgctxt "Error Dialog"
-msgid "Close"
-msgstr ""
-
 #: src/lib/ui/indicator.ts:120
 #, javascript-format
 msgid "Copyright %s"
@@ -192,60 +169,37 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/extension.ts:143
-msgid "Picture of the Day"
+#: src/lib/ui/error-detail-dialog.ts:122
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
 msgstr ""
 
-#: src/prefs.ts:119
+#: src/lib/ui/error-detail-dialog.ts:144
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:153
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:161
+msgctxt "Error Dialog"
+msgid "Close"
+msgstr ""
+
+#: src/prefs.ts:123
 msgid "XDG State directory"
 msgstr ""
 
-#: src/prefs.ts:129
+#: src/prefs.ts:133
 msgid "Select download folder"
 msgstr ""
 
-#: ui/AboutPage.ui:5
-msgid "About"
-msgstr ""
-
-#: ui/AboutPage.ui:42
-msgid "Get a picture of the day as desktop background."
-msgstr ""
-
-#: ui/AboutPage.ui:53
-msgctxt "about link"
-msgid "Github"
-msgstr ""
-
-#: ui/AboutPage.ui:58
-msgctxt "about link"
-msgid "Issue tracker"
-msgstr ""
-
-#: ui/SourcesPage.ui:5
-msgid "Picture Sources"
-msgstr ""
-
-#: ui/SourcesPage.ui:6
-msgid "Configure sources for the Picture of the Day."
-msgstr ""
-
-#: ui/SourcesPage.ui:12
-msgid "Selected source"
-msgstr ""
-
-#: ui/SourcesPage.ui:20
-msgid "Refresh automatically"
-msgstr ""
-
-#: ui/SourcesPage.ui:29
-msgid "Custom download folder"
-msgstr ""
-
-#: ui/SourcesPage.ui:57
-msgid "API key"
-msgstr ""
-
-#: ui/SourcesPage.ui:60
-msgid "Get API key"
+#: src/extension.ts:148
+msgid "Picture of the Day"
 msgstr ""
