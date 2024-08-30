@@ -31,15 +31,7 @@ import { unfoldCauses } from "../common/error.js";
 /**
  * Shortcut for `GLib.markup_escape_text`.
  */
-function e(s: string): string {
-  const escaped = GLib.markup_escape_text(s, -1);
-  if (escaped === null) {
-    // This can't happen I believe, because markup_escape_text would always return a string when given a string, but
-    // let's guard against it nonetheless.
-    throw new Error(`Failed to escape markup in ${s}`);
-  }
-  return escaped;
-}
+const e = (s: string): string => GLib.markup_escape_text(s, -1);
 
 const formatStacktrace = (stack: string | undefined): string => {
   return (
@@ -90,7 +82,7 @@ export const ErrorDetailDialog = GObject.registerClass(
   class ErrorDetailDialog extends ModalDialog {
     private readonly messageLabel: St.Label;
 
-    constructor(params?: ModalDialog.ConstructorProperties) {
+    constructor(params?: Partial<ModalDialog.ConstructorProps>) {
       super(params);
 
       const contentBox = new St.BoxLayout({

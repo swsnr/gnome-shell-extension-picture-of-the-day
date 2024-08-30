@@ -178,9 +178,6 @@ const initializeExtension = (
 
   // Wire up the current source
   const currentSource = settings.get_string("selected-source");
-  if (currentSource === null) {
-    throw new Error("Current source 'null'?");
-  }
   const sourceSelector = destroyer.add(SourceSelector.forKey(currentSource));
   indicator.updateSelectedSource(sourceSelector.selectedSource.metadata);
   const sourceSettings = SourceSettings.fromBaseSettings(extension, settings);

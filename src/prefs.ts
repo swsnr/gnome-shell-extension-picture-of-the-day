@@ -55,17 +55,12 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.`;
 
-const getTemplate = (name: string): string => {
-  const uri = GLib.uri_resolve_relative(
+const getTemplate = (name: string): string =>
+  GLib.uri_resolve_relative(
     import.meta.url,
     `ui/${name}.ui`,
     GLib.UriFlags.NONE,
   );
-  if (uri === null) {
-    throw new Error(`Failed to resolve URI for template ${name}!`);
-  }
-  return uri;
-};
 
 interface AllSettings {
   readonly extension: Gio.Settings;
@@ -176,9 +171,6 @@ const SourcesPage = GObject.registerClass(
         });
 
       const selectedKey = this.settings.extension.get_string("selected-source");
-      if (selectedKey === null) {
-        throw new Error("'selected-source' is null?");
-      }
       const selectedSource = buttons.get(selectedKey)?.source;
       if (typeof selectedSource === "undefined") {
         throw new Error(`${selectedKey} does not denote a known source!`);
@@ -187,9 +179,6 @@ const SourcesPage = GObject.registerClass(
       buttons.get(selectedKey)?.button.set_active(true);
       this.settings.extension.connect("changed::selected-source", () => {
         const newKey = this.settings.extension.get_string("selected-source");
-        if (newKey === null) {
-          throw new Error("'selected-source' is null?");
-        }
         const item = buttons.get(newKey);
         if (typeof item === "undefined") {
           throw new Error(`Source ${newKey} not known?`);
@@ -303,9 +292,6 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
     // Load relevant settings
     const extensionSettings = this.getSettings();
     const schema_id = extensionSettings.schemaId;
-    if (schema_id === null) {
-      throw new Error("Schema ID of settings schema unexpectedly null?");
-    }
     const allSettings: AllSettings = {
       extension: extensionSettings,
       sourceAPOD: this.getSettings(`${schema_id}.source.${apod.key}`),

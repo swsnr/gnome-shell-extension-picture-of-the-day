@@ -63,10 +63,6 @@ export class DesktopBackgroundService {
    * @param image The image file to use as new background
    */
   setBackgroundImageFile(image: Gio.File): void {
-    const uri = image.get_uri();
-    if (uri === null) {
-      throw new Error("Failed obtain URI from file");
-    }
-    this.backgroundImage = uri;
+    this.backgroundImage = image.get_uri();
   }
 }

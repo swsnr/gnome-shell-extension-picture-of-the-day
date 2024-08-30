@@ -169,9 +169,7 @@ export class RefreshErrorHandler
       // If the inner error is a GLib error use its message instead of the wrapper message for better accuracy
       // and locatization.
       const errorMessage =
-        (error.cause instanceof GLib.Error
-          ? error.cause.message
-          : error.message) ?? "";
+        error.cause instanceof GLib.Error ? error.cause.message : error.message;
       notification.body = i18n.format(description, errorMessage);
     }
   }
