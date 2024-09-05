@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-29 22:11+0200\n"
+"POT-Creation-Date: 2024-09-05 10:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -192,6 +192,10 @@ msgctxt "Error Dialog"
 msgid "Close"
 msgstr ""
 
+#: src/extension.ts:148
+msgid "Picture of the Day"
+msgstr ""
+
 #: src/prefs.ts:123
 msgid "XDG State directory"
 msgstr ""
@@ -200,6 +204,48 @@ msgstr ""
 msgid "Select download folder"
 msgstr ""
 
-#: src/extension.ts:148
-msgid "Picture of the Day"
+#: ui/AboutPage.blp:7
+msgid "About"
+msgstr ""
+
+#: ui/AboutPage.blp:37
+msgid "Get a picture of the day as desktop background."
+msgstr ""
+
+#: ui/AboutPage.blp:46
+msgctxt "about link"
+msgid "Github"
+msgstr ""
+
+#: ui/AboutPage.blp:51
+msgctxt "about link"
+msgid "Issue tracker"
+msgstr ""
+
+#: ui/SourcesPage.blp:7
+msgid "Picture Sources"
+msgstr ""
+
+#: ui/SourcesPage.blp:8
+msgid "Configure sources for the Picture of the Day."
+msgstr ""
+
+#: ui/SourcesPage.blp:13
+msgid "Selected source"
+msgstr ""
+
+#: ui/SourcesPage.blp:18
+msgid "Refresh automatically"
+msgstr ""
+
+#: ui/SourcesPage.blp:24
+msgid "Custom download folder"
+msgstr ""
+
+#: ui/SourcesPage.blp:43
+msgid "API key"
+msgstr ""
+
+#: ui/SourcesPage.blp:47
+msgid "Get API key"
 msgstr ""

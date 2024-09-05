@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-29 22:11+0200\n"
-"PO-Revision-Date: 2024-08-29 22:15+0200\n"
+"POT-Creation-Date: 2024-09-05 10:59+0200\n"
+"PO-Revision-Date: 2024-09-05 10:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -216,6 +216,10 @@ msgctxt "Error Dialog"
 msgid "Close"
 msgstr "Schließen"
 
+#: src/extension.ts:148
+msgid "Picture of the Day"
+msgstr "Bild des Tages"
+
 #: src/prefs.ts:123
 msgid "XDG State directory"
 msgstr "XDG Zustandsverzeichnis"
@@ -224,41 +228,48 @@ msgstr "XDG Zustandsverzeichnis"
 msgid "Select download folder"
 msgstr "Download-Ordner auswählen"
 
-#: src/extension.ts:148
-msgid "Picture of the Day"
-msgstr "Bild des Tages"
+#: ui/AboutPage.blp:7
+msgid "About"
+msgstr "Über"
 
-#~ msgid "About"
-#~ msgstr "Über"
+#: ui/AboutPage.blp:37
+msgid "Get a picture of the day as desktop background."
+msgstr "Bilder des Tages als Desktop-Hintergrund."
 
-#~ msgid "Get a picture of the day as desktop background."
-#~ msgstr "Bilder des Tages als Desktop-Hintergrund."
+#: ui/AboutPage.blp:46
+msgctxt "about link"
+msgid "Github"
+msgstr "Github"
 
-#~ msgctxt "about link"
-#~ msgid "Github"
-#~ msgstr "Github"
+#: ui/AboutPage.blp:51
+msgctxt "about link"
+msgid "Issue tracker"
+msgstr "Issue tracker"
 
-#~ msgctxt "about link"
-#~ msgid "Issue tracker"
-#~ msgstr "Issue tracker"
+#: ui/SourcesPage.blp:7
+msgid "Picture Sources"
+msgstr "Bildquellen"
 
-#~ msgid "Picture Sources"
-#~ msgstr "Bildquellen"
+#: ui/SourcesPage.blp:8
+msgid "Configure sources for the Picture of the Day."
+msgstr "Quellen für das Bild des Tages einrichten."
 
-#~ msgid "Configure sources for the Picture of the Day."
-#~ msgstr "Quellen für das Bild des Tages einrichten."
+#: ui/SourcesPage.blp:13
+msgid "Selected source"
+msgstr "Bildquellen"
 
-#~ msgid "Selected source"
-#~ msgstr "Bildquellen"
+#: ui/SourcesPage.blp:18
+msgid "Refresh automatically"
+msgstr "Automatisch aktualisieren"
 
-#~ msgid "Refresh automatically"
-#~ msgstr "Automatisch aktualisieren"
+#: ui/SourcesPage.blp:24
+msgid "Custom download folder"
+msgstr "Benutzerdefinierter Download-Ordner"
 
-#~ msgid "Custom download folder"
-#~ msgstr "Benutzerdefinierter Download-Ordner"
+#: ui/SourcesPage.blp:43
+msgid "API key"
+msgstr "API Schlüssel"
 
-#~ msgid "API key"
-#~ msgstr "API Schlüssel"
-
-#~ msgid "Get API key"
-#~ msgstr "API Schlüssel erhalten"
+#: ui/SourcesPage.blp:47
+msgid "Get API key"
+msgstr "API Schlüssel erhalten"

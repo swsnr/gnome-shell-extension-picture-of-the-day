@@ -1,0 +1,52 @@
+using Gtk 4.0;
+using Adw 1;
+
+translation-domain "picture-of-the-day@swsnr.de";
+
+template $PictureOfTheDaySourcesPage: Adw.PreferencesPage {
+  title: _("Picture Sources");
+  description: _("Configure sources for the Picture of the Day.");
+  icon-name: "picture-of-the-day-symbolic";
+
+  Adw.PreferencesGroup {
+    Adw.ExpanderRow sourcesRow {
+      title: _("Selected source");
+      styles ["property"]
+    }
+
+    Adw.SwitchRow refreshAutomatically {
+      title: _("Refresh automatically");
+    }
+  }
+
+  Adw.PreferencesGroup {
+    Adw.ActionRow downloadFolder {
+      title: _("Custom download folder");
+      styles ["property"]
+
+      [suffix]
+      Gtk.Button selectDownloadFolder {
+        icon-name: "folder-open-symbolic";
+        styles ["flat"]
+      }
+
+      [suffix]
+      Gtk.Button resetDownloadFolder {
+        icon-name: "edit-clear-symbolic";
+        styles ["flat"]
+      }
+    }
+  }
+
+  Adw.PreferencesGroup apodGroup {
+    Adw.EntryRow apodApiKey {
+      title: _("API key");
+
+      [suffix]
+      Gtk.LinkButton {
+        label: _("Get API key");
+        uri: "https://api.nasa.gov/";
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+using Gtk 4.0;
+using Adw 1;
+
+translation-domain "picture-of-the-day@swsnr.de";
+
+template $PictureOfTheDayAboutPage : Adw.PreferencesPage {
+  title: _("About");
+  icon-name: "dialog-information-symbolic";
+
+  Adw.PreferencesGroup {
+    valign: fill;
+    halign: fill;
+
+    Box {
+      orientation: vertical;
+      halign: center;
+      margin-bottom: 15;
+
+      Label extensionName {
+        label: "The name of this extension";
+        margin-bottom: 5;
+        styles ["title-1"]
+      }
+
+      Label extensionVersion {
+        label: "0.0.0";
+        styles ["caption"]
+      }
+    }
+
+    Box {
+      orientation: vertical;
+      halign: center;
+      margin-bottom: 5;
+
+      Label extensionDescription {
+        label: _("Get a picture of the day as desktop background.");
+        justify: center;
+      }
+    }
+
+    Box {
+      halign: center;
+
+      LinkButton linkGithub {
+        label: C_("about link", "Github");
+
+      }
+
+      LinkButton linkIssues {
+        label: C_("about link", "Issue tracker");
+      }
+    }
+
+    Box {
+      orientation: vertical;
+      vexpand: true;
+      hexpand: true;
+
+      ScrolledWindow {
+        margin-top: 24;
+        vexpand: true;
+        hexpand: true;
+
+        TextView extensionLicense {
+          editable: false;
+          cursor-visible: false;
+          wrap-mode: word;
+          justification: center;
+        }
+      }
+    }
+  }
+}

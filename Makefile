@@ -8,8 +8,11 @@ XGETTEXT_METADATA = \
 	--copyright-holder "Sebastian Wiesner <sebastian@swsnr.de>"
 
 DIST-EXTRA-SRC = README.md LICENSE-GPL2 LICENSE-MPL2 icons/
-UIDEFS = $(wildcard ui/*.ui)
+BLUEPRINTS = $(wildcard ui/*.blp)
+UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 CATALOGS = $(wildcard po/*.po)
+
+BLUEPRINT-COMPILER = "blueprint-compiler"
 
 .PHONY: dist
 dist: compile
@@ -66,15 +69,17 @@ clean:
 compile: $(UIDEFS)
 	pnpm compile
 
-# For Gtk builder the Gtk development package needs to be installed;
-# otherwise xgettext uses its built-in fallback rule and fails to extract messages.
+# For blueprint, see https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/translations.html
+# The language doesn't really matter for blueprint, but xgettext warns if we don't set it
 .PHONY: pot
 pot:
 	find src -name '*.ts' | \
 		xargs xgettext $(XGETTEXT_METADATA) \
 			--from-code=UTF-8 --language=JavaScript --output=po/$(UUID).pot
-	xgettext $(XGETTEXT_METADATA) --from-code=UTF-8 --join-existing --output=po/$(UUID).pot \
-		 --add-comments $(UIDEFS)
+	xgettext $(XGETTEXT_METADATA) --from-code=UTF-8 --language=C \
+		--join-existing --output=po/$(UUID).pot \
+		 --add-comments --keyword=_ --keyword=C_:1c,2 \
+		$(wildcard ui/*.blp)
 
 .PHONY: messages
 messages: $(CATALOGS)
@@ -98,6 +103,9 @@ check: lint check-types
 .PHONY: fix
 fix: format
 	pnpm lint --fix
+
+$(UIDEFS): %.ui: %.blp
+	$(BLUEPRINT-COMPILER) compile --output $@ $<
 
 $(CATALOGS): %.po: pot
 	msgmerge --update --backup=none --lang=$(notdir $(basename $@)) $@ po/picture-of-the-day@swsnr.de.pot
