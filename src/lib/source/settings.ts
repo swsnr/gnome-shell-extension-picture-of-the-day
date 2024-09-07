@@ -34,11 +34,7 @@ export class SourceSettings {
     extension: Extension,
     settings: Gio.Settings,
   ): SourceSettings {
-    const schemaId = settings.schemaId;
-    if (schemaId === null) {
-      throw new Error("Base settings have no schema ID!");
-    }
-    return new SourceSettings(extension, schemaId);
+    return new SourceSettings(extension, settings.schemaId);
   }
 
   /**

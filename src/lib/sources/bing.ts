@@ -23,7 +23,7 @@ import Soup from "gi://Soup";
 
 import metadata from "./metadata/bing.js";
 import { Source } from "../source/source.js";
-import { HttpRequestError, getJSON } from "../network/http.js";
+import { getJSON } from "../network/http.js";
 import { DownloadableImage } from "../download.js";
 import { decodeQuery, encodeQuery } from "../network/uri.js";
 
@@ -76,12 +76,6 @@ export const getTodaysImages = async (
       urlbaseUHD,
       GLib.UriFlags.NONE,
     );
-    if (imageUrl === null) {
-      throw new HttpRequestError(
-        url,
-        `Failed to join ${urlbaseUHD} to https://www.bing.com`,
-      );
-    }
     const startdate = image.startdate;
     const suggestedFilename = decodeQuery(imageUrl)["id"];
     return {

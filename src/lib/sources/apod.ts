@@ -168,7 +168,7 @@ const getImage = async (
   cancellable: Gio.Cancellable,
 ): Promise<DownloadableImage> => {
   const apiKey = settings.get_string("api-key");
-  if (apiKey === null || apiKey.length === 0) {
+  if (apiKey.length === 0) {
     throw new InvalidAPIKeyError(metadata);
   }
 

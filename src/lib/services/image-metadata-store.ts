@@ -70,13 +70,9 @@ export class ImageMetadataStore {
    * Store metadata for the given image.
    */
   storedMetadataForImage(image: ImageFile) {
-    const uri = image.file.get_uri();
-    if (uri === null) {
-      throw new Error("Failed to get URI for current image, not storing!");
-    }
     const stored: StoredMetadata = {
       metadata: image.metadata,
-      uri: uri,
+      uri: image.file.get_uri(),
     };
     this.settings.set_string("current-metadata", JSON.stringify(stored));
   }
@@ -87,11 +83,9 @@ export class ImageMetadataStore {
    * @returns The stored image or null if no image was stored or the store was invalid
    */
   loadFromMetadata(): ImageFile | null {
-    const storedRaw = this.settings.get_string("current-metadata");
-    if (storedRaw === null) {
-      return null;
-    }
-    const stored = parseStoredMetadata(storedRaw);
+    const stored = parseStoredMetadata(
+      this.settings.get_string("current-metadata"),
+    );
     if (stored !== null) {
       return {
         metadata: stored.metadata,

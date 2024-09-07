@@ -27,19 +27,12 @@ import { pgettext } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import { ModalDialog } from "resource:///org/gnome/shell/ui/modalDialog.js";
 import { unfoldCauses } from "../common/error.js";
+import { GLibErrorWithStack } from "../fixes.js";
 
 /**
  * Shortcut for `GLib.markup_escape_text`.
  */
-function e(s: string): string {
-  const escaped = GLib.markup_escape_text(s, -1);
-  if (escaped === null) {
-    // This can't happen I believe, because markup_escape_text would always return a string when given a string, but
-    // let's guard against it nonetheless.
-    throw new Error(`Failed to escape markup in ${s}`);
-  }
-  return escaped;
-}
+const e = (s: string): string => GLib.markup_escape_text(s, -1);
 
 const formatStacktrace = (stack: string | undefined): string => {
   return (
@@ -63,7 +56,7 @@ const formatOneError = (error: unknown): string => {
     const stack = formatStacktrace(error.stack);
     return `<b>${e(error.name)}: ${e(error.message)}</b>\n${stack}`;
   } else if (error instanceof GLib.Error) {
-    const stack = formatStacktrace(error.stack);
+    const stack = formatStacktrace((error as GLibErrorWithStack).stack);
     return `<b>${error.toString()}</b>\n${stack}`;
   } else if (typeof error === "string") {
     return e(`<b>${error}</b>`);
@@ -90,7 +83,7 @@ export const ErrorDetailDialog = GObject.registerClass(
   class ErrorDetailDialog extends ModalDialog {
     private readonly messageLabel: St.Label;
 
-    constructor(params?: ModalDialog.ConstructorProperties) {
+    constructor(params?: Partial<ModalDialog.ConstructorProps>) {
       super(params);
 
       const contentBox = new St.BoxLayout({
