@@ -23,6 +23,11 @@ import Soup from "gi://Soup";
 import { IOError } from "../common/gio.js";
 
 import type { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
+import {
+  PromisifiedFileOutputStream,
+  PromisifiedGioFile,
+  PromisifiedSoupSession,
+} from "../fixes.js";
 
 export const createSession = (
   extensionMetadata: ExtensionMetadata,
@@ -83,7 +88,7 @@ export const getString = async (
   cancellable: Gio.Cancellable,
 ): Promise<string> => {
   const message = Soup.Message.new("GET", url);
-  const response = await session
+  const response = await (session as PromisifiedSoupSession)
     .send_and_read_async(message, 0, cancellable)
     .catch((cause: unknown) => {
       throw new HttpRequestError(url, `Failed to get data from ${url}`, {
@@ -146,7 +151,7 @@ const deletePartialDownloadIgnoreError = async (
   cancellable: Gio.Cancellable | null,
 ): Promise<void> => {
   try {
-    await file.delete_async(0, cancellable);
+    await (file as PromisifiedGioFile).delete_async(0, cancellable);
   } catch (error) {
     console.warn(
       `Failed to delete result of partial download at ${file.get_path() ?? ""}`,
@@ -173,7 +178,7 @@ export const downloadToFile = async (
     return;
   }
   const message = Soup.Message.new("GET", url);
-  const source = await session
+  const source = await (session as PromisifiedSoupSession)
     .send_async(message, 0, cancellable)
     .catch((cause: unknown) => {
       throw new HttpRequestError(url, `Failed to make GET request to ${url}`, {
@@ -215,7 +220,7 @@ export const downloadToFile = async (
   }
   // Now open the target file for reading, and safely delete it in case of error.
   try {
-    const sink = await target
+    const sink = await (target as PromisifiedGioFile)
       .create_async(Gio.FileCreateFlags.NONE, 0, null)
       .catch((cause: unknown) => {
         throw new IOError(
@@ -223,7 +228,7 @@ export const downloadToFile = async (
           { cause },
         );
       });
-    await sink
+    await (sink as PromisifiedFileOutputStream)
       .splice_async(
         source,
         Gio.OutputStreamSpliceFlags.CLOSE_SOURCE |
