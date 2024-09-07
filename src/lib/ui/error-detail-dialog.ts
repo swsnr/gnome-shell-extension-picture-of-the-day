@@ -27,6 +27,7 @@ import { pgettext } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import { ModalDialog } from "resource:///org/gnome/shell/ui/modalDialog.js";
 import { unfoldCauses } from "../common/error.js";
+import { GLibErrorWithStack } from "../fixes.js";
 
 /**
  * Shortcut for `GLib.markup_escape_text`.
@@ -55,7 +56,7 @@ const formatOneError = (error: unknown): string => {
     const stack = formatStacktrace(error.stack);
     return `<b>${e(error.name)}: ${e(error.message)}</b>\n${stack}`;
   } else if (error instanceof GLib.Error) {
-    const stack = formatStacktrace(error.stack);
+    const stack = formatStacktrace((error as GLibErrorWithStack).stack);
     return `<b>${error.toString()}</b>\n${stack}`;
   } else if (typeof error === "string") {
     return e(`<b>${error}</b>`);
