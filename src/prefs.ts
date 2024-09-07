@@ -33,6 +33,7 @@ import SOURCES from "./lib/sources/metadata/all.js";
 import { SourceMetadata } from "./lib/source/source.js";
 
 import type { ExtensionMetadata } from "@girs/gnome-shell/extensions/extension";
+import { PromisifiedGtkFileDialog } from "./lib/fixes.js";
 
 Gio._promisify(Gtk.FileDialog.prototype, "select_folder");
 
@@ -132,13 +133,15 @@ const SourcesPage = GObject.registerClass(
       if (picturesDirectory) {
         dialog.initialFolder = Gio.file_new_for_path(picturesDirectory);
       }
-      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-      const file = await (dialog.select_folder(
+      const file = await (dialog as PromisifiedGtkFileDialog).select_folder(
         this.root as Gtk.Window,
-        null,
-      ) as unknown as Promise<Gio.File>);
-      const value = new GLib.Variant("ms", file.get_uri());
-      this.settings.extension.set_value("image-download-folder", value);
+      );
+      if (file) {
+        const value = new GLib.Variant("ms", file.get_uri());
+        this.settings.extension.set_value("image-download-folder", value);
+      } else {
+        console.warn("No folder selected; dialog cancelled?");
+      }
     }
 
     private initialize(

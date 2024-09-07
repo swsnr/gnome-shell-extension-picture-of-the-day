@@ -17,9 +17,11 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
+// Only use type imports here, as this module is used in prefs as well as extension code!
 import type GLib from "gi://GLib";
 import type Gio from "gi://Gio";
 import type Soup from "gi://Soup";
+import type Gtk from "gi://Gtk";
 
 /**
  * This module provides workarounds and fixes for various incomplete type
@@ -81,4 +83,16 @@ export interface PromisifiedSoupSession extends Soup.Session {
     io_priority: number,
     cancellable?: Gio.Cancellable | null,
   ): Promise<ReturnType<Soup.Session["send_and_read_finish"]>>;
+}
+
+/**
+ * @see https://github.com/gjsify/ts-for-gir/issues/200
+ * @see https://github.com/gjsify/ts-for-gir/issues/140
+ */
+export interface PromisifiedGtkFileDialog extends Gtk.FileDialog {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  select_folder(
+    parent?: Gtk.Window | null,
+    cancellable?: Gio.Cancellable | null,
+  ): Promise<ReturnType<Gtk.FileDialog["select_folder_finish"]>>;
 }
