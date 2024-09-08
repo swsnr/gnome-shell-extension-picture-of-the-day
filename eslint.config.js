@@ -59,6 +59,8 @@ export default tseslint.config(
       "node_modules/**",
       // Vendored dependencies
       "src/lib/vendor/**",
+      // Scripts in deno
+      "scripts/scrape-stalenhag.ts",
     ],
   },
 );

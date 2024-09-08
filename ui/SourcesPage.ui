@@ -70,5 +70,14 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
         </child>
       </object>
     </child>
+    <child>
+      <object class="AdwPreferencesGroup" id="stalenhagGroup">
+        <child>
+          <object class="AdwExpanderRow" id="stalenhagCollections">
+            <property name="title" translatable="yes">Enabled collections</property>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>

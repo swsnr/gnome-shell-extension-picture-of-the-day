@@ -21,10 +21,11 @@ import APOD from "./apod.js";
 import EOPOD from "./eopod.js";
 import Bing from "./bing.js";
 import Wikimedia from "./wikimedia.js";
+import Stalenhag from "./stalenhag.js";
 
 /**
  * All registered sources.
  */
-export const sources = [APOD, EOPOD, Bing, Wikimedia];
+export const sources = [APOD, EOPOD, Bing, Wikimedia, Stalenhag];
 
 export default sources;

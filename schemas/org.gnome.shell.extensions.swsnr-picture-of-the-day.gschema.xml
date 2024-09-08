@@ -45,4 +45,14 @@
       </description>
     </key>
   </schema>
+  <schema id="org.gnome.shell.extensions.swsnr-picture-of-the-day.source.stalenhag" path="/org/gnome/shell/extensions/swsnr-picture-of-the-day/source/stalenhag/">
+    <key name="disabled-collections" type="as">
+      <default>[]</default>
+      <description>
+      Collections from Stålenhag which to ignore.
+
+      This extension will not use images from these collections.
+      </description>
+    </key>
+  </schema>
 </schemalist>

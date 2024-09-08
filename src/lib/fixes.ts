@@ -52,6 +52,14 @@ export interface PromisifiedFileOutputStream extends Gio.FileOutputStream {
  * @see https://github.com/gjsify/ts-for-gir/issues/171#issuecomment-2117301067
  */
 export interface PromisifiedGioFile extends Gio.File {
+  // _promisify explicitly cuts out a boolean success value in a tuple return,
+  // see https://gitlab.gnome.org/GNOME/gjs/-/blob/master/modules/core/overrides/Gio.js#L455
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  load_contents_async(
+    cancellable: Gio.Cancellable | null,
+  ): Promise<[Uint8Array, string]>;
+
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   create_async(
     flags: Gio.FileCreateFlags,

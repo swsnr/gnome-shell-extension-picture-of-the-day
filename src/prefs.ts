@@ -26,15 +26,19 @@ import Adw from "gi://Adw";
 import {
   ExtensionPreferences,
   gettext as _,
+  ngettext,
 } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 import apod from "./lib/sources/metadata/apod.js";
+import * as stalenhag from "./lib/sources/stalenhag.js";
 import SOURCES from "./lib/sources/metadata/all.js";
 import type { SourceMetadata } from "./lib/source/source.js";
 
 import type { ExtensionMetadata } from "@girs/gnome-shell/extensions/extension";
 import type { PromisifiedGtkFileDialog } from "./lib/fixes.js";
+import i18n from "./lib/common/i18n.js";
 
+Gio._promisify(Gio.File.prototype, "load_contents_async");
 Gio._promisify(Gtk.FileDialog.prototype, "select_folder");
 
 const LICENSE = `Copyright Sebastian Wiesner <sebastian@swsnr.de>
@@ -66,11 +70,14 @@ const getTemplate = (name: string): string =>
 interface AllSettings {
   readonly extension: Gio.Settings;
   readonly sourceAPOD: Gio.Settings;
+  readonly sourceStalenhag: Gio.Settings;
 }
 
 interface SourcesPageProperties {
   readonly _sourcesRow: Adw.ExpanderRow;
   readonly _apodGroup: Adw.PreferencesGroup;
+  readonly _stalenhagGroup: Adw.PreferencesGroup;
+  readonly _stalenhagCollections: Adw.ExpanderRow;
   readonly _apodApiKey: Adw.EntryRow;
   readonly _refreshAutomatically: Adw.SwitchRow;
   readonly _downloadFolder: Adw.ActionRow;
@@ -85,6 +92,8 @@ const SourcesPage = GObject.registerClass(
     InternalChildren: [
       "apodGroup",
       "apodApiKey",
+      "stalenhagGroup",
+      "stalenhagCollections",
       "sourcesRow",
       "refreshAutomatically",
       "downloadFolder",
@@ -142,6 +151,44 @@ const SourcesPage = GObject.registerClass(
       } else {
         console.warn("No folder selected; dialog cancelled?");
       }
+    }
+
+    private toggleCollection(
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
+      collection: stalenhag.ImageCollection,
+      enabled: boolean,
+    ): void {
+      const disabledCollections = new Set(
+        this.settings.sourceStalenhag.get_strv("disabled-collections"),
+      );
+      if (enabled) {
+        disabledCollections.delete(collection.tag);
+      } else {
+        disabledCollections.add(collection.tag);
+      }
+      this.settings.sourceStalenhag.set_strv(
+        "disabled-collections",
+        Array.from(disabledCollections),
+      );
+    }
+
+    private showCountEnabledCollections(
+      this: PictureOfTheDaySourcesPage & SourcesPageProperties,
+      collections: readonly stalenhag.ImageCollection[],
+    ): void {
+      const disabled = this.settings.sourceStalenhag.get_strv(
+        "disabled-collections",
+      );
+      const countEnabled = collections.length - disabled.length;
+      this._stalenhagCollections.subtitle = i18n.format(
+        ngettext(
+          "%s/%s collection enabled",
+          "%s/%s collections enabled",
+          countEnabled,
+        ),
+        countEnabled,
+        collections.length,
+      );
     }
 
     private initialize(
@@ -227,6 +274,47 @@ const SourcesPage = GObject.registerClass(
         "text",
         Gio.SettingsBindFlags.DEFAULT,
       );
+
+      this._stalenhagGroup.description = `<a href="${stalenhag.source.metadata.website}">${stalenhag.source.metadata.name}</a>`;
+      // Load all scraped image collections and add them as toggles to the expander.
+      stalenhag
+        .loadImageCollections()
+        .then((collections) => {
+          const disabledCollections = new Set(
+            this.settings.sourceStalenhag.get_strv("disabled-collections"),
+          );
+          collections.forEach((collection) => {
+            const row = new Adw.SwitchRow({
+              title: collection.title,
+              subtitle: `<a href="${collection.url}">${collection.url}</a>`,
+              active: !disabledCollections.has(collection.tag),
+            });
+            this.settings.sourceStalenhag.connect(
+              "changed::disabled-collections",
+              () => {
+                row.active = !this.settings.sourceStalenhag
+                  .get_strv("disabled-collections")
+                  .includes(collection.tag);
+              },
+            );
+            row.connect("notify::active", () => {
+              this.toggleCollection(collection, row.active);
+            });
+            this._stalenhagCollections.add_row(row);
+          });
+
+          this.settings.sourceStalenhag.connect(
+            "changed::disabled-collections",
+            () => {
+              this.showCountEnabledCollections(collections);
+            },
+          );
+          this.showCountEnabledCollections(collections);
+          return;
+        })
+        .catch((error: unknown) => {
+          console.error("Failed to add buttons", error);
+        });
     }
   },
 );
@@ -298,6 +386,9 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
     const allSettings: AllSettings = {
       extension: extensionSettings,
       sourceAPOD: this.getSettings(`${schema_id}.source.${apod.key}`),
+      sourceStalenhag: this.getSettings(
+        `${schema_id}.source.${stalenhag.source.metadata.key}`,
+      ),
     };
 
     // Add pages to the window.
