@@ -18,8 +18,9 @@
 // GNU General Public License for more details.
 
 import Gio from "gi://Gio";
-import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
-import { SourceMetadata } from "./metadata.js";
+import type { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+
+import type { SourceMetadata } from "./metadata.js";
 
 /**
  * Provide setting objects for sources.

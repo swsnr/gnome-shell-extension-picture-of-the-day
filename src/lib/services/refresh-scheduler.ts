@@ -26,7 +26,7 @@ import { IOError } from "../common/gio.js";
 import { HttpRequestError } from "../network/http.js";
 import { RateLimitedError } from "../source/errors.js";
 import { RefreshErrorHandler } from "./refresh-error-handler.js";
-import { Destructible } from "../common/lifecycle.js";
+import type { Destructible } from "../common/lifecycle.js";
 import { Timer, TimerRegistry } from "./timer-registry.js";
 
 interface RefreshSchedulerSignals {

@@ -23,7 +23,7 @@ import Soup from "gi://Soup";
 import { IOError } from "../common/gio.js";
 
 import type { ExtensionMetadata } from "resource:///org/gnome/shell/extensions/extension.js";
-import {
+import type {
   PromisifiedFileOutputStream,
   PromisifiedGioFile,
   PromisifiedSoupSession,

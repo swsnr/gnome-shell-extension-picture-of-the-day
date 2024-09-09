@@ -27,7 +27,7 @@ import { pgettext } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import { ModalDialog } from "resource:///org/gnome/shell/ui/modalDialog.js";
 import { unfoldCauses } from "../common/error.js";
-import { GLibErrorWithStack } from "../fixes.js";
+import type { GLibErrorWithStack } from "../fixes.js";
 
 /**
  * Shortcut for `GLib.markup_escape_text`.

@@ -20,8 +20,8 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { SourceMetadata } from "./metadata.js";
-import { DownloadableImage } from "../download.js";
+import type { SourceMetadata } from "./metadata.js";
+import type { DownloadableImage } from "../download.js";
 
 export type { SourceMetadata } from "./metadata.js";
 

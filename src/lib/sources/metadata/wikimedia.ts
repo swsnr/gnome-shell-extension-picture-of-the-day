@@ -17,7 +17,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import { SourceMetadata } from "../../source/metadata.js";
+import type { SourceMetadata } from "../../source/metadata.js";
 
 const metadata: SourceMetadata = {
   key: "wikimedia",

@@ -30,10 +30,10 @@ import {
 
 import apod from "./lib/sources/metadata/apod.js";
 import SOURCES from "./lib/sources/metadata/all.js";
-import { SourceMetadata } from "./lib/source/source.js";
+import type { SourceMetadata } from "./lib/source/source.js";
 
 import type { ExtensionMetadata } from "@girs/gnome-shell/extensions/extension";
-import { PromisifiedGtkFileDialog } from "./lib/fixes.js";
+import type { PromisifiedGtkFileDialog } from "./lib/fixes.js";
 
 Gio._promisify(Gtk.FileDialog.prototype, "select_folder");
 

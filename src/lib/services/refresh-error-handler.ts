@@ -38,7 +38,7 @@ import {
 import { HttpRequestError } from "../network/http.js";
 import { IOError } from "../common/gio.js";
 import i18n from "../common/i18n.js";
-import { Destructible } from "../common/lifecycle.js";
+import type { Destructible } from "../common/lifecycle.js";
 
 export interface RefreshErrorHandlerSignals {
   readonly "action::open-preferences": [];

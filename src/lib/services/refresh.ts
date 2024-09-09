@@ -24,9 +24,9 @@ import { EventEmitter } from "resource:///org/gnome/shell/misc/signals.js";
 
 import { DownloadScheduler } from "./download-scheduler.js";
 import { unfoldCauses } from "../common/error.js";
-import { CancellableResult } from "../common/gio.js";
-import { Destructible } from "../common/lifecycle.js";
-import { ImageFile } from "../download.js";
+import type { CancellableResult } from "../common/gio.js";
+import type { Destructible } from "../common/lifecycle.js";
+import type { ImageFile } from "../download.js";
 
 export type RefreshState = "ongoing" | "completed" | "cancelled" | "failed";
 

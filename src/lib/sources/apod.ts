@@ -20,7 +20,7 @@
 import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 
-import { Source } from "../source/source.js";
+import type { Source } from "../source/source.js";
 import {
   NotAnImageError,
   InvalidAPIKeyError,
@@ -29,7 +29,7 @@ import {
 import { QueryList, encodeQuery } from "../network/uri.js";
 import { HttpRequestError, HttpStatusError, getJSON } from "../network/http.js";
 import metadata from "./metadata/apod.js";
-import { DownloadableImage } from "../download.js";
+import type { DownloadableImage } from "../download.js";
 
 /**
  * The APOD API did not return any body data.

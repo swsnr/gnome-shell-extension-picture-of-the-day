@@ -22,9 +22,9 @@ import Gio from "gi://Gio";
 import Soup from "gi://Soup";
 import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
-import { Source } from "../source/source.js";
+import type { Source } from "../source/source.js";
 import { getJSON } from "../network/http.js";
-import { DownloadableImage } from "../download.js";
+import type { DownloadableImage } from "../download.js";
 import metadata from "./metadata/wikimedia.js";
 import { NoPictureTodayError } from "../source/errors.js";
 
