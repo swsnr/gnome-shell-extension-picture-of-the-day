@@ -22,7 +22,7 @@ import { SourceMetadata } from "../../source/metadata.js";
 const metadata: SourceMetadata = {
   key: "stalenhag",
   name: "Simon Stålenhag",
-  website: "https://simonstalenhag.se/index.html",
+  website: "https://simonstalenhag.se/",
 };
 
 export default metadata;
