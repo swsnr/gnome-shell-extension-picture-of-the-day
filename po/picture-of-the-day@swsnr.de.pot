@@ -8,7 +8,6 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-05 10:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +15,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: src/extension.ts:149
+msgid "Picture of the Day"
+msgstr ""
 
 #: src/lib/services/refresh-error-handler.ts:67
 msgctxt "Error notification"
@@ -121,22 +125,45 @@ msgid ""
 "Check your network connection and the permissions in the download folder."
 msgstr ""
 
-#: src/lib/services/refresh-error-handler.ts:194
+#: src/lib/services/refresh-error-handler.ts:192
 msgctxt "Error notification"
 msgid "Picture of the Day failed"
 msgstr ""
 
-#: src/lib/services/refresh-error-handler.ts:197
+#: src/lib/services/refresh-error-handler.ts:195
 msgctxt "Error notification"
 msgid "We are sorry but there seems to be an error."
 msgstr ""
 
-#: src/lib/services/refresh-error-handler.ts:201
+#: src/lib/services/refresh-error-handler.ts:199
 msgid "Details"
 msgstr ""
 
 #: src/lib/sources/wikimedia.ts:83
 msgid "Unknown, all rights reserved"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:115
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:137
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:146
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:154
+msgctxt "Error Dialog"
+msgid "Close"
 msgstr ""
 
 #: src/lib/ui/indicator.ts:120
@@ -169,40 +196,20 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/lib/ui/error-detail-dialog.ts:122
-msgctxt "ErrorDetailDialog"
-msgid ""
-"The following text contains the internal error messages and stacktraces of "
-"the error.  You may find additional details which may help you to fix the "
-"error, or you may use this data to report an issue on Github."
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:144
-msgctxt "ErrorDetailDialog"
-msgid "Picture of the Day failed"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:153
-msgctxt "ErrorDetailDialog"
-msgid "Copy to clipboard"
-msgstr ""
-
-#: src/lib/ui/error-detail-dialog.ts:161
-msgctxt "Error Dialog"
-msgid "Close"
-msgstr ""
-
-#: src/extension.ts:148
-msgid "Picture of the Day"
-msgstr ""
-
-#: src/prefs.ts:123
+#: src/prefs.ts:128
 msgid "XDG State directory"
 msgstr ""
 
-#: src/prefs.ts:133
+#: src/prefs.ts:138
 msgid "Select download folder"
 msgstr ""
+
+#: src/prefs.ts:185
+#, javascript-format
+msgid "%s/%s collection enabled"
+msgid_plural "%s/%s collections enabled"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ui/AboutPage.blp:7
 msgid "About"
@@ -248,4 +255,8 @@ msgstr ""
 
 #: ui/SourcesPage.blp:47
 msgid "Get API key"
+msgstr ""
+
+#: ui/SourcesPage.blp:55
+msgid "Enabled collections"
 msgstr ""
