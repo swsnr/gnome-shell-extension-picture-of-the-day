@@ -75,12 +75,13 @@ compile: $(UIDEFS)
 .PHONY: pot
 pot:
 	find src -name '*.ts' | \
-		xargs xgettext $(XGETTEXT_METADATA) \
+		xargs xgettext $(XGETTEXT_METADATA) --sort-by-file \
 			--from-code=UTF-8 --language=JavaScript --output=po/$(UUID).pot
 	xgettext $(XGETTEXT_METADATA) --from-code=UTF-8 --language=C \
-		--join-existing --output=po/$(UUID).pot \
+		--join-existing --sort-by-file --output=po/$(UUID).pot \
 		 --add-comments --keyword=_ --keyword=C_:1c,2 \
 		$(wildcard ui/*.blp)
+	sed -i'' '/^"POT-Creation-Date/d' po/$(UUID).pot
 
 .PHONY: messages
 messages: $(CATALOGS)
@@ -109,4 +110,4 @@ $(UIDEFS): %.ui: %.blp
 	$(BLUEPRINT-COMPILER) compile --output $@ $<
 
 $(CATALOGS): %.po: pot
-	msgmerge --update --backup=none --lang=$(notdir $(basename $@)) $@ po/picture-of-the-day@swsnr.de.pot
+	msgmerge --update --backup=none --sort-output --lang=$(notdir $(basename $@)) $@ po/picture-of-the-day@swsnr.de.pot
