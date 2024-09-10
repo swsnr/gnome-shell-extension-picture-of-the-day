@@ -49,6 +49,7 @@ import { DestructibleExtension } from "./lib/common/extension.js";
 
 // Promisify all the async APIs we use
 Gio._promisify(Gio.OutputStream.prototype, "splice_async");
+Gio._promisify(Gio.File.prototype, "load_contents_async");
 Gio._promisify(Gio.File.prototype, "create_async");
 Gio._promisify(Gio.File.prototype, "delete_async");
 Gio._promisify(Soup.Session.prototype, "send_and_read_async");

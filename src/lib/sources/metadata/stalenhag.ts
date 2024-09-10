@@ -17,15 +17,12 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
-import APOD from "./apod.js";
-import EOPOD from "./eopod.js";
-import Bing from "./bing.js";
-import Wikimedia from "./wikimedia.js";
-import Stalenhag from "./stalenhag.js";
+import { SourceMetadata } from "../../source/metadata.js";
 
-/**
- * All registered sources.
- */
-export const sources = [APOD, EOPOD, Bing, Wikimedia, Stalenhag];
+const metadata: SourceMetadata = {
+  key: "stalenhag",
+  name: "Simon Stålenhag",
+  website: "https://simonstalenhag.se/index.html",
+};
 
-export default sources;
+export default metadata;

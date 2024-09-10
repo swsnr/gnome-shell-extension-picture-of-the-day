@@ -31,14 +31,19 @@ export interface DownloadableImage {
    * The metadata of this image.
    */
   readonly metadata: ImageMetadata;
+
   /**
    * The URL to download this image from.
    */
   readonly imageUrl: string;
+
   /**
-   * The date this image was published at, as YYYY-MM-DD
+   * The date this image was published at, as `YYYY-MM-DD`.
+   *
+   * If non-null the downloader uses this date as prefix for filenames.
    */
-  readonly pubdate: string;
+  readonly pubdate: string | null;
+
   /**
    * The suggested file name for this image.
    *
@@ -87,10 +92,11 @@ export const downloadImage = async (
   image: DownloadableImage,
 ): Promise<ImageFile> => {
   // Replace directory separators and new lines in the file name.
-  const filename = image.suggestedFilename ?? guessFilename(image);
-  const targetFile = downloadDirectory.get_child(
-    `${image.pubdate}-${filename}`,
-  );
+  const basename = image.suggestedFilename ?? guessFilename(image);
+  // If the image has no publication date, assume that it's recurring and do not
+  // add any date to the filename.
+  const filename = image.pubdate ? `${image.pubdate}-${basename}` : basename;
+  const targetFile = downloadDirectory.get_child(filename);
   console.log(
     `Downloading image from ${image.imageUrl} to ${targetFile.get_path() ?? ""}`,
   );
