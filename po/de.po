@@ -1,18 +1,18 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) Sebastian Wiesner <sebastian@swsnr.de>
+# This file is distributed under the same license as the picture-of-the-day@swsnr.de package.
+# Sebastian Wiesner <sebastian@swsnr.de>, 2024.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Last-Translator: Sebastian Wiesner <sebastian@swsnr.de>\n"
+"Language-Team: German\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/lib/services/refresh-error-handler.ts:156
 #, javascript-format
@@ -38,8 +38,8 @@ msgstr ""
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s/%s Sammlungen aktiviert"
+msgstr[1] "%s/%s Sammlungen aktiviert"
 
 #: ui/SourcesPage.blp:43
 msgid "API key"
@@ -93,7 +93,7 @@ msgstr "Details"
 
 #: ui/SourcesPage.blp:55
 msgid "Enabled collections"
-msgstr ""
+msgstr "Aktivierte Sammlungen"
 
 #: ui/SourcesPage.blp:47
 msgid "Get API key"
