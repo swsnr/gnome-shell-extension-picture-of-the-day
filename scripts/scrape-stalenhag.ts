@@ -49,6 +49,7 @@ const scrapeCollection = async (
     await response.text(),
     "text/html",
   );
+  const seenUrls = new Set<string>();
   const images: Image[] = [];
   for (const img of body.querySelectorAll("a > img")) {
     const a = img.parentElement;
@@ -63,14 +64,18 @@ const scrapeCollection = async (
       throw new Error("a tag missing href element");
     }
     if (href.endsWith(".jpg")) {
-      images.push({
-        src: new URL(href, BASE_URL),
-      });
+      const src = new URL(href, BASE_URL);
+      if (!seenUrls.has(src.toString())) {
+        seenUrls.add(src.toString());
+        images.push({
+          src: new URL(href, BASE_URL),
+        });
+      }
     }
   }
   return {
     ...collection,
-    images,
+    images: Array.from(images),
     url,
   };
 };
