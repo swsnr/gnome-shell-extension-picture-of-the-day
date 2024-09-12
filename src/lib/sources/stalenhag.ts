@@ -19,6 +19,7 @@
 
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
+import { gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 
 import type { DownloadableImage } from "../download.js";
 import type { Source } from "../source/source.js";
@@ -28,6 +29,7 @@ import {
   ImageCollection,
   loadImageCollections,
 } from "./stalenhag/collections.js";
+import i18n from "../common/i18n.js";
 
 interface ImageInCollection extends Image {
   readonly collection: ImageCollection;
@@ -98,8 +100,8 @@ const pickTodaysImage = (allImages: ImageInCollection[]): DownloadableImage => {
     pubdate: null,
     metadata: {
       title: prettyTitle(baseName),
-      description: `Collection: ${image.collection.title}`,
-      copyright: "All rights reserved.",
+      description: i18n.format(_("Collection: %s"), image.collection.title),
+      copyright: _("All rights reserved."),
       url: image.collection.url,
     },
   };
