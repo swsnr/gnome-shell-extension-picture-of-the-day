@@ -85,6 +85,26 @@ const toDays = (musec: number): number =>
   );
 
 /**
+ * Convert the filename of an image into a prettier title.
+ *
+ * Remove the file extension, convert underscores to whitespace, and capitalize every word.
+ *
+ * @param filename The filename of an image
+ * @returns The title derived from the filename
+ */
+const prettyTitle = (filename: string): string =>
+  filename
+    .replace(/.[^.]+$/, "")
+    .split("_")
+    .filter((part) => 0 < part.length)
+    .map((part) => {
+      // SAFETY: We filtered empty parts above, so we know part[0] is defined.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return part[0]!.toUpperCase() + part.substring(1);
+    })
+    .join(" ");
+
+/**
  * Pick an image from today from the given list of images.
  *
  * Computes the number of days between today and some base date, and pick an
@@ -113,8 +133,8 @@ const pickTodaysImage = (allImages: ImageInCollection[]): DownloadableImage => {
     // images and will eventually hit this image again.
     pubdate: null,
     metadata: {
-      title: baseName.replace(/.[^.]+$/, ""),
-      description: null,
+      title: prettyTitle(baseName),
+      description: `Collection: ${image.collection.title}`,
       copyright: "All rights reserved.",
       url: image.collection.url,
     },
