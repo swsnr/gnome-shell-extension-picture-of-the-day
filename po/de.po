@@ -50,9 +50,8 @@ msgid "About"
 msgstr "Über"
 
 #: src/lib/sources/stalenhag.ts:104
-#, fuzzy
 msgid "All rights reserved."
-msgstr "Unbekannt, alle Rechte vorbehalten"
+msgstr "Alle Rechte vorbehalten"
 
 #: src/lib/services/refresh-error-handler.ts:167
 #, javascript-format
@@ -75,9 +74,9 @@ msgid "Close"
 msgstr "Schließen"
 
 #: src/lib/sources/stalenhag.ts:103
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Collection: %s"
-msgstr "Aktivierte Sammlungen"
+msgstr "Sammlung: %s"
 
 #: ui/SourcesPage.blp:8
 msgid "Configure sources for the Picture of the Day."
