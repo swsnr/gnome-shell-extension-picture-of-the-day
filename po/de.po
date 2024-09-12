@@ -34,7 +34,7 @@ msgstr ""
 "%s ist kein Bild, und kann nicht als Hintergrund verwendet werden. Es kann "
 "unter Umständen direkt auf der Website angesehen werden."
 
-#: src/prefs.ts:185
+#: src/prefs.ts:186
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
@@ -48,6 +48,11 @@ msgstr "API Schlüssel"
 #: ui/AboutPage.blp:7
 msgid "About"
 msgstr "Über"
+
+#: src/lib/sources/stalenhag.ts:104
+#, fuzzy
+msgid "All rights reserved."
+msgstr "Unbekannt, alle Rechte vorbehalten"
 
 #: src/lib/services/refresh-error-handler.ts:167
 #, javascript-format
@@ -68,6 +73,11 @@ msgstr "Aktualisierung abbrechen…"
 msgctxt "Error Dialog"
 msgid "Close"
 msgstr "Schließen"
+
+#: src/lib/sources/stalenhag.ts:103
+#, fuzzy, javascript-format
+msgid "Collection: %s"
+msgstr "Aktivierte Sammlungen"
 
 #: ui/SourcesPage.blp:8
 msgid "Configure sources for the Picture of the Day."
@@ -214,7 +224,7 @@ msgstr "Aktualisieren"
 msgid "Refresh automatically"
 msgstr "Automatisch aktualisieren"
 
-#: src/prefs.ts:138
+#: src/prefs.ts:139
 msgid "Select download folder"
 msgstr "Download-Ordner auswählen"
 
@@ -278,6 +288,6 @@ msgctxt "Error notification"
 msgid "We are sorry but there seems to be an error."
 msgstr "Leider scheint ein Fehler aufgetreten zu sein."
 
-#: src/prefs.ts:128
+#: src/prefs.ts:129
 msgid "XDG State directory"
 msgstr "XDG Zustandsverzeichnis"

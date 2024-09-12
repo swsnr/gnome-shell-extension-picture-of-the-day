@@ -139,6 +139,15 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
+#: src/lib/sources/stalenhag.ts:103
+#, javascript-format
+msgid "Collection: %s"
+msgstr ""
+
+#: src/lib/sources/stalenhag.ts:104
+msgid "All rights reserved."
+msgstr ""
+
 #: src/lib/sources/wikimedia.ts:83
 msgid "Unknown, all rights reserved"
 msgstr ""
@@ -196,15 +205,15 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: src/prefs.ts:128
+#: src/prefs.ts:129
 msgid "XDG State directory"
 msgstr ""
 
-#: src/prefs.ts:138
+#: src/prefs.ts:139
 msgid "Select download folder"
 msgstr ""
 
-#: src/prefs.ts:185
+#: src/prefs.ts:186
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
