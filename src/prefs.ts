@@ -30,7 +30,8 @@ import {
 } from "resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js";
 
 import apod from "./lib/sources/metadata/apod.js";
-import * as stalenhag from "./lib/sources/stalenhag.js";
+import stalenhag from "./lib/sources/metadata/stalenhag.js";
+import * as StalenhagCollections from "./lib/sources/stalenhag/collections.js";
 import SOURCES from "./lib/sources/metadata/all.js";
 import type { SourceMetadata } from "./lib/source/source.js";
 
@@ -155,7 +156,7 @@ const SourcesPage = GObject.registerClass(
 
     private toggleCollection(
       this: PictureOfTheDaySourcesPage & SourcesPageProperties,
-      collection: stalenhag.ImageCollection,
+      collection: StalenhagCollections.ImageCollection,
       enabled: boolean,
     ): void {
       const disabledCollections = new Set(
@@ -174,7 +175,7 @@ const SourcesPage = GObject.registerClass(
 
     private showCountEnabledCollections(
       this: PictureOfTheDaySourcesPage & SourcesPageProperties,
-      collections: readonly stalenhag.ImageCollection[],
+      collections: readonly StalenhagCollections.ImageCollection[],
     ): void {
       const disabled = this.settings.sourceStalenhag.get_strv(
         "disabled-collections",
@@ -275,10 +276,9 @@ const SourcesPage = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT,
       );
 
-      this._stalenhagGroup.description = `<a href="${stalenhag.source.metadata.website}">${stalenhag.source.metadata.name}</a>`;
+      this._stalenhagGroup.description = `<a href="${stalenhag.website}">${stalenhag.name}</a>`;
       // Load all scraped image collections and add them as toggles to the expander.
-      stalenhag
-        .loadImageCollections()
+      StalenhagCollections.loadImageCollections()
         .then((collections) => {
           const disabledCollections = new Set(
             this.settings.sourceStalenhag.get_strv("disabled-collections"),
@@ -386,9 +386,7 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
     const allSettings: AllSettings = {
       extension: extensionSettings,
       sourceAPOD: this.getSettings(`${schema_id}.source.${apod.key}`),
-      sourceStalenhag: this.getSettings(
-        `${schema_id}.source.${stalenhag.source.metadata.key}`,
-      ),
+      sourceStalenhag: this.getSettings(`${schema_id}.source.${stalenhag.key}`),
     };
 
     // Add pages to the window.
