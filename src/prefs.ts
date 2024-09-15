@@ -268,7 +268,8 @@ const SourcesPage = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT,
       );
 
-      this._apodGroup.description = `<a href="${apod.website}">${apod.name}</a>`;
+      this._apodGroup.title = apod.name;
+      this._apodGroup.description = `<a href="${apod.website}">${apod.website}</a>`;
       this.settings.sourceAPOD.bind(
         "api-key",
         this._apodApiKey,
@@ -276,7 +277,8 @@ const SourcesPage = GObject.registerClass(
         Gio.SettingsBindFlags.DEFAULT,
       );
 
-      this._stalenhagGroup.description = `<a href="${stalenhag.website}">${stalenhag.name}</a>`;
+      this._stalenhagGroup.title = stalenhag.name;
+      this._stalenhagGroup.description = `<a href="${stalenhag.website}">${stalenhag.website}</a>`;
       // Load all scraped image collections and add them as toggles to the expander.
       StalenhagCollections.loadImageCollections()
         .then((collections) => {
