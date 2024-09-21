@@ -103,7 +103,10 @@ const SourcesPage = GObject.registerClass(
     ],
   },
   class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
-    constructor(private readonly settings: AllSettings) {
+    constructor(
+      private readonly settings: AllSettings,
+      private readonly stalenhagCollections: readonly StalenhagCollections.ImageCollection[],
+    ) {
       super();
       (
         this as unknown as PictureOfTheDaySourcesPage & SourcesPageProperties
@@ -175,12 +178,11 @@ const SourcesPage = GObject.registerClass(
 
     private showCountEnabledCollections(
       this: PictureOfTheDaySourcesPage & SourcesPageProperties,
-      collections: readonly StalenhagCollections.ImageCollection[],
     ): void {
       const disabled = this.settings.sourceStalenhag.get_strv(
         "disabled-collections",
       );
-      const countEnabled = collections.length - disabled.length;
+      const countEnabled = this.stalenhagCollections.length - disabled.length;
       this._stalenhagCollections.subtitle = i18n.format(
         ngettext(
           "%s/%s collection enabled",
@@ -188,7 +190,7 @@ const SourcesPage = GObject.registerClass(
           countEnabled,
         ),
         countEnabled,
-        collections.length,
+        this.stalenhagCollections.length,
       );
     }
 
@@ -279,44 +281,35 @@ const SourcesPage = GObject.registerClass(
 
       this._stalenhagGroup.title = stalenhag.name;
       this._stalenhagGroup.description = `<a href="${stalenhag.website}">${stalenhag.website}</a>`;
-      // Load all scraped image collections and add them as toggles to the expander.
-      StalenhagCollections.loadImageCollections()
-        .then((collections) => {
-          const disabledCollections = new Set(
-            this.settings.sourceStalenhag.get_strv("disabled-collections"),
-          );
-          collections.forEach((collection) => {
-            const row = new Adw.SwitchRow({
-              title: collection.title,
-              subtitle: `<a href="${collection.url}">${collection.url}</a>`,
-              active: !disabledCollections.has(collection.tag),
-            });
-            this.settings.sourceStalenhag.connect(
-              "changed::disabled-collections",
-              () => {
-                row.active = !this.settings.sourceStalenhag
-                  .get_strv("disabled-collections")
-                  .includes(collection.tag);
-              },
-            );
-            row.connect("notify::active", () => {
-              this.toggleCollection(collection, row.active);
-            });
-            this._stalenhagCollections.add_row(row);
-          });
-
-          this.settings.sourceStalenhag.connect(
-            "changed::disabled-collections",
-            () => {
-              this.showCountEnabledCollections(collections);
-            },
-          );
-          this.showCountEnabledCollections(collections);
-          return;
-        })
-        .catch((error: unknown) => {
-          console.error("Failed to add buttons", error);
+      const disabledCollections = new Set(
+        this.settings.sourceStalenhag.get_strv("disabled-collections"),
+      );
+      for (const collection of this.stalenhagCollections) {
+        const row = new Adw.SwitchRow({
+          title: collection.title,
+          subtitle: `<a href="${collection.url}">${collection.url}</a>`,
+          active: !disabledCollections.has(collection.tag),
         });
+        this.settings.sourceStalenhag.connect(
+          "changed::disabled-collections",
+          () => {
+            row.active = !this.settings.sourceStalenhag
+              .get_strv("disabled-collections")
+              .includes(collection.tag);
+          },
+        );
+        row.connect("notify::active", () => {
+          this.toggleCollection(collection, row.active);
+        });
+        this._stalenhagCollections.add_row(row);
+      }
+      this.settings.sourceStalenhag.connect(
+        "changed::disabled-collections",
+        () => {
+          this.showCountEnabledCollections();
+        },
+      );
+      this.showCountEnabledCollections();
     }
   },
 );
@@ -391,9 +384,18 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
       sourceStalenhag: this.getSettings(`${schema_id}.source.${stalenhag.key}`),
     };
 
-    // Add pages to the window.
-    window.add(new SourcesPage(allSettings));
-    window.add(new AboutPage(this.metadata));
+    // Load image collection data
+    // TODO: Make fillPreferencesWindow async and await the promise here!
+    StalenhagCollections.loadImageCollections()
+      .then((collections) => {
+        // Add pages to the window.
+        window.add(new SourcesPage(allSettings, collections));
+        window.add(new AboutPage(this.metadata));
+        return;
+      })
+      .catch((error: unknown) => {
+        console.error("Failed to load image collections from datafile", error);
+      });
 
     // Attach our settings to the window to keep them alive as long as the window lives
     window._settings = allSettings;
