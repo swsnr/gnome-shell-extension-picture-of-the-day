@@ -15,8 +15,8 @@ importers:
         specifier: 4.0.0-beta.16
         version: 4.0.0-beta.16
       '@girs/gnome-shell':
-        specifier: 47.0.0-next.3
-        version: 47.0.0-next.3
+        specifier: 47.0.0-next.4
+        version: 47.0.0-next.4
       '@girs/soup-3.0':
         specifier: 3.6.0-4.0.0-beta.16
         version: 3.6.0-4.0.0-beta.16
@@ -137,8 +137,8 @@ packages:
   '@girs/gmodule-2.0@2.0.0-4.0.0-beta.16':
     resolution: {integrity: sha512-jhl7j0JOtttJnOFQ4OypPjGP5DL8AlEiSsd8YKpXI3CEC7tUFZXHq+/mymFeZ6m4GFLEdC4j0efl9roPTSEYnA==}
 
-  '@girs/gnome-shell@47.0.0-next.3':
-    resolution: {integrity: sha512-799M9nF/FexqAowXfSf7JC0pFKntz8TPxEV7o9L7JiKn7hzmJt/IETTGKj/es/0X1mwb05LBQp+ry5Gl3ooeYQ==}
+  '@girs/gnome-shell@47.0.0-next.4':
+    resolution: {integrity: sha512-jBXs3B0bKu/ILFYPjfflXCQ70om9YtOfPzZsM5OBbm3WsCWPpyT6PjdHiRo6LXcZeAGWHbfSv79QCKCXNfTukg==}
 
   '@girs/gnomebg-4.0@4.0.0-4.0.0-beta.16':
     resolution: {integrity: sha512-d7wcZhYQ6irP2QZWKtyOommi2mw5wA1QfAcor+GkJgui25lwOmPVCwQhYmLLrh6fOj7Ao85bsqEc4dPNlA3tKA==}
@@ -919,7 +919,7 @@ snapshots:
       '@girs/glib-2.0': 2.82.0-4.0.0-beta.16
       '@girs/gobject-2.0': 2.82.0-4.0.0-beta.16
 
-  '@girs/gnome-shell@47.0.0-next.3':
+  '@girs/gnome-shell@47.0.0-next.4':
     dependencies:
       '@girs/accountsservice-1.0': 1.0.0-4.0.0-beta.16
       '@girs/adw-1': 1.6.0-4.0.0-beta.16

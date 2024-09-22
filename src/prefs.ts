@@ -363,9 +363,9 @@ interface WindowSettingRegistry {
 }
 
 export default class PictureOfTheDayPreferences extends ExtensionPreferences {
-  override fillPreferencesWindow(
+  override async fillPreferencesWindow(
     window: Adw.PreferencesWindow & WindowSettingRegistry,
-  ): void {
+  ): Promise<void> {
     // Add our icons directory to the Gtk theme path, so that we're able to use
     // our icons in Adwaita widgets.
     const iconTheme = Gtk.IconTheme.get_for_display(window.get_display());
@@ -385,17 +385,10 @@ export default class PictureOfTheDayPreferences extends ExtensionPreferences {
     };
 
     // Load image collection data
-    // TODO: Make fillPreferencesWindow async and await the promise here!
-    StalenhagCollections.loadImageCollections()
-      .then((collections) => {
-        // Add pages to the window.
-        window.add(new SourcesPage(allSettings, collections));
-        window.add(new AboutPage(this.metadata));
-        return;
-      })
-      .catch((error: unknown) => {
-        console.error("Failed to load image collections from datafile", error);
-      });
+    const collections = await StalenhagCollections.loadImageCollections();
+    // Add pages to the window.
+    window.add(new SourcesPage(allSettings, collections));
+    window.add(new AboutPage(this.metadata));
 
     // Attach our settings to the window to keep them alive as long as the window lives
     window._settings = allSettings;
