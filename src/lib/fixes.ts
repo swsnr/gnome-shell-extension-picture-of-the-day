@@ -18,22 +18,9 @@
 // GNU General Public License for more details.
 
 // Only use type imports here, as this module is used in prefs as well as extension code!
-import type GLib from "gi://GLib";
 import type Gio from "gi://Gio";
 import type Soup from "gi://Soup";
 import type Gtk from "gi://Gtk";
-
-/**
- * This module provides workarounds and fixes for various incomplete type
- * declarations in Gnome shell types and its dependencies.
- */
-
-/**
- * @see https://github.com/gjsify/ts-for-gir/issues/196
- */
-export interface GLibErrorWithStack extends GLib.Error {
-  readonly stack: string;
-}
 
 /**
  * @see https://github.com/gjsify/ts-for-gir/issues/171#issuecomment-2117301067
