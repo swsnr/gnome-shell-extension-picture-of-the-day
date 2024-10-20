@@ -79,8 +79,8 @@ pot:
 			--from-code=UTF-8 --language=JavaScript --output=po/$(UUID).pot
 	xgettext $(XGETTEXT_METADATA) --from-code=UTF-8 --language=C \
 		--join-existing --sort-by-file --output=po/$(UUID).pot \
-		 --add-comments --keyword=_ --keyword=C_:1c,2 \
-		$(wildcard ui/*.blp)
+		--add-comments --keyword=_ --keyword=C_:1c,2 \
+		$(BLUEPRINTS)
 	sed -i'' '/^"POT-Creation-Date/d' po/$(UUID).pot
 
 .PHONY: messages
