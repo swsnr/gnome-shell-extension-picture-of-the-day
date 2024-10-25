@@ -87,7 +87,7 @@ export interface PromisifiedSoupSession extends Soup.Session {
 export interface PromisifiedGtkFileDialog extends Gtk.FileDialog {
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   select_folder(
-    parent?: Gtk.Window | null,
-    cancellable?: Gio.Cancellable | null,
+    parent: Gtk.Window | null,
+    cancellable: Gio.Cancellable | null,
   ): Promise<ReturnType<Gtk.FileDialog["select_folder_finish"]>>;
 }

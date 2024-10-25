@@ -200,8 +200,12 @@ class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
     if (picturesDirectory) {
       dialog.initialFolder = Gio.file_new_for_path(picturesDirectory);
     }
+    console.info("Root window", this.root);
     const file = await (dialog as PromisifiedGtkFileDialog).select_folder(
       this.root as Gtk.Window,
+      // We have to specify the cancellable argument explicitly; otherwise we
+      // get a TypeError here, see https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/issues/109
+      null,
     );
     if (file) {
       const value = new GLib.Variant("ms", file.get_uri());
