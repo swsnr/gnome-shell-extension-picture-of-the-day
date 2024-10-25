@@ -120,7 +120,7 @@ class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
         ) {
           // The user dismissed the dialog; we'll do nothing in this case.
         } else {
-          throw error;
+          console.error("Failed to select download directory", error);
         }
       });
     });
