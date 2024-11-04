@@ -81,7 +81,6 @@ pot:
 		--join-existing --sort-by-file --output=po/$(UUID).pot \
 		--add-comments --keyword=_ --keyword=C_:1c,2 \
 		$(BLUEPRINTS)
-	sed -i'' '/^"POT-Creation-Date/d' po/$(UUID).pot
 
 .PHONY: messages
 messages: $(CATALOGS)
