@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-04 13:46+0100\n"
+"POT-Creation-Date: 2024-11-04 13:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,6 +237,11 @@ msgstr ""
 #: ui/AboutPage.blp:51
 msgctxt "about link"
 msgid "Issue tracker"
+msgstr ""
+
+#: ui/AboutPage.blp:55
+msgctxt "translations link"
+msgid "Translations"
 msgstr ""
 
 #: ui/SourcesPage.blp:7
