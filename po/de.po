@@ -7,13 +7,16 @@ msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-04 13:46+0100\n"
-"Last-Translator: Sebastian Wiesner <sebastian@swsnr.de>\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2024-11-04 12:53+0000\n"
+"Last-Translator: swsnr <swsnr@users.noreply.translate.codeberg.org>\n"
+"Language-Team: German <https://translate.codeberg.org/projects/"
+"picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8.1\n"
 
 #: src/extension.ts:149
 msgid "Picture of the Day"
@@ -31,7 +34,7 @@ msgstr "Download-Ordner auswählen"
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
-msgstr[0] "%s/%s Sammlungen aktiviert"
+msgstr[0] "%s/%s Sammlung aktiviert"
 msgstr[1] "%s/%s Sammlungen aktiviert"
 
 #: src/lib/services/refresh-error-handler.ts:67
@@ -179,7 +182,7 @@ msgstr "Sammlung: %s"
 
 #: src/lib/sources/stalenhag.ts:104
 msgid "All rights reserved."
-msgstr "Alle Rechte vorbehalten"
+msgstr "Alle Rechte vorbehalten."
 
 #: src/lib/sources/wikimedia.ts:83
 msgid "Unknown, all rights reserved"
@@ -258,7 +261,7 @@ msgstr "Github"
 #: ui/AboutPage.blp:51
 msgctxt "about link"
 msgid "Issue tracker"
-msgstr "Issue tracker"
+msgstr "Fehlerberichte"
 
 #: ui/SourcesPage.blp:7
 msgid "Picture Sources"
@@ -270,7 +273,7 @@ msgstr "Quellen für das Bild des Tages einrichten."
 
 #: ui/SourcesPage.blp:13
 msgid "Selected source"
-msgstr "Bildquellen"
+msgstr "Gewählte Quelle"
 
 #: ui/SourcesPage.blp:18
 msgid "Refresh automatically"
