@@ -43,6 +43,8 @@ $ gnome-extensions prefs picture-of-the-day@swsnr.de
 
 ## Translations
 
+Please contribute translations on Codeberg Translate under the [picture-of-the-day-swsnr-de](https://translate.codeberg.org/projects/picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/#translations) project:
+
 [![Translation status](https://translate.codeberg.org/widget/picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/multi-blue.svg)](https://translate.codeberg.org/engage/picture-of-the-day-swsnr-de/)
 
 ## Credits and Acknowledgments
