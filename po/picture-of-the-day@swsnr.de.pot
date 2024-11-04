@@ -8,6 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-04 13:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +21,21 @@ msgstr ""
 #: src/extension.ts:149
 msgid "Picture of the Day"
 msgstr ""
+
+#: src/lib/prefs/sources_page.ts:187
+msgid "XDG State directory"
+msgstr ""
+
+#: src/lib/prefs/sources_page.ts:195
+msgid "Select download folder"
+msgstr ""
+
+#: src/lib/prefs/sources_page.ts:242
+#, javascript-format
+msgid "%s/%s collection enabled"
+msgid_plural "%s/%s collections enabled"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/lib/services/refresh-error-handler.ts:67
 msgctxt "Error notification"
@@ -152,7 +168,7 @@ msgstr ""
 msgid "Unknown, all rights reserved"
 msgstr ""
 
-#: src/lib/ui/error-detail-dialog.ts:115
+#: src/lib/ui/error-detail-dialog.ts:114
 msgctxt "ErrorDetailDialog"
 msgid ""
 "The following text contains the internal error messages and stacktraces of "
@@ -160,17 +176,17 @@ msgid ""
 "error, or you may use this data to report an issue on Github."
 msgstr ""
 
-#: src/lib/ui/error-detail-dialog.ts:137
+#: src/lib/ui/error-detail-dialog.ts:136
 msgctxt "ErrorDetailDialog"
 msgid "Picture of the Day failed"
 msgstr ""
 
-#: src/lib/ui/error-detail-dialog.ts:146
+#: src/lib/ui/error-detail-dialog.ts:145
 msgctxt "ErrorDetailDialog"
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/lib/ui/error-detail-dialog.ts:154
+#: src/lib/ui/error-detail-dialog.ts:153
 msgctxt "Error Dialog"
 msgid "Close"
 msgstr ""
@@ -204,21 +220,6 @@ msgstr ""
 #: src/lib/ui/indicator.ts:273
 msgid "Preferences"
 msgstr ""
-
-#: src/prefs.ts:129
-msgid "XDG State directory"
-msgstr ""
-
-#: src/prefs.ts:139
-msgid "Select download folder"
-msgstr ""
-
-#: src/prefs.ts:186
-#, javascript-format
-msgid "%s/%s collection enabled"
-msgid_plural "%s/%s collections enabled"
-msgstr[0] ""
-msgstr[1] ""
 
 #: ui/AboutPage.blp:7
 msgid "About"
