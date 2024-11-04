@@ -6,6 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-04 13:46+0100\n"
 "Last-Translator: Sebastian Wiesner <sebastian@swsnr.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -17,6 +18,21 @@ msgstr ""
 #: src/extension.ts:149
 msgid "Picture of the Day"
 msgstr "Bild des Tages"
+
+#: src/lib/prefs/sources_page.ts:187
+msgid "XDG State directory"
+msgstr "XDG Zustandsverzeichnis"
+
+#: src/lib/prefs/sources_page.ts:195
+msgid "Select download folder"
+msgstr "Download-Ordner auswählen"
+
+#: src/lib/prefs/sources_page.ts:242
+#, javascript-format
+msgid "%s/%s collection enabled"
+msgid_plural "%s/%s collections enabled"
+msgstr[0] "%s/%s Sammlungen aktiviert"
+msgstr[1] "%s/%s Sammlungen aktiviert"
 
 #: src/lib/services/refresh-error-handler.ts:67
 msgctxt "Error notification"
@@ -169,7 +185,7 @@ msgstr "Alle Rechte vorbehalten"
 msgid "Unknown, all rights reserved"
 msgstr "Unbekannt, alle Rechte vorbehalten"
 
-#: src/lib/ui/error-detail-dialog.ts:115
+#: src/lib/ui/error-detail-dialog.ts:114
 msgctxt "ErrorDetailDialog"
 msgid ""
 "The following text contains the internal error messages and stacktraces of "
@@ -181,17 +197,17 @@ msgstr ""
 "enthalten, oder zum Einreichen eines Fehlerberichts auf Github genutzt "
 "werden."
 
-#: src/lib/ui/error-detail-dialog.ts:137
+#: src/lib/ui/error-detail-dialog.ts:136
 msgctxt "ErrorDetailDialog"
 msgid "Picture of the Day failed"
 msgstr "Bild des Tages fehlgeschlagen"
 
-#: src/lib/ui/error-detail-dialog.ts:146
+#: src/lib/ui/error-detail-dialog.ts:145
 msgctxt "ErrorDetailDialog"
 msgid "Copy to clipboard"
 msgstr "In die Zwischenablage kopieren"
 
-#: src/lib/ui/error-detail-dialog.ts:154
+#: src/lib/ui/error-detail-dialog.ts:153
 msgctxt "Error Dialog"
 msgid "Close"
 msgstr "Schließen"
@@ -225,21 +241,6 @@ msgstr "Aktualisieren"
 #: src/lib/ui/indicator.ts:273
 msgid "Preferences"
 msgstr "Einstellungen"
-
-#: src/prefs.ts:129
-msgid "XDG State directory"
-msgstr "XDG Zustandsverzeichnis"
-
-#: src/prefs.ts:139
-msgid "Select download folder"
-msgstr "Download-Ordner auswählen"
-
-#: src/prefs.ts:186
-#, javascript-format
-msgid "%s/%s collection enabled"
-msgid_plural "%s/%s collections enabled"
-msgstr[0] "%s/%s Sammlungen aktiviert"
-msgstr[1] "%s/%s Sammlungen aktiviert"
 
 #: ui/AboutPage.blp:7
 msgid "About"
