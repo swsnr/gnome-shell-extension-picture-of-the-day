@@ -63,6 +63,12 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
                 <property name="label" translatable="yes" context="about link">Issue tracker</property>
               </object>
             </child>
+            <child>
+              <object class="GtkLinkButton">
+                <property name="label" translatable="yes" context="translations link">Translations</property>
+                <property name="uri">https://translate.codeberg.org/projects/picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/#translations</property>
+              </object>
+            </child>
           </object>
         </child>
         <child>
