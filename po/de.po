@@ -14,15 +14,92 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/lib/services/refresh-error-handler.ts:156
-#, javascript-format
+#: src/extension.ts:149
+msgid "Picture of the Day"
+msgstr "Bild des Tages"
+
+#: src/lib/services/refresh-error-handler.ts:67
+msgctxt "Error notification"
+msgid "Picture of the Day needs an API key"
+msgstr "Das Bild des Tages benötigt einen API-Schlüssel"
+
+#: src/lib/services/refresh-error-handler.ts:71
 msgctxt "Error notification"
 msgid ""
-"%s does not provide a picture today.  Try again tomorrow, or try a different "
-"source."
+"Please configure a valid API key for the configured source in the extensions "
+"settings."
 msgstr ""
-"%s stellt heute kein Bild zur Verfügung. Versuchen Sie es morgen erneut, "
-"oder wechseln Sie zu einer anderen Quelle."
+"Bitte richten Sie in den Einstellungen dieser Erweiterung einen API-"
+"Schlüssel für die gewählte Bildquelle ein."
+
+#: src/lib/services/refresh-error-handler.ts:74
+#: src/lib/services/refresh-error-handler.ts:99
+msgctxt "Error notification"
+msgid "Open preferences"
+msgstr "Einstellungen öffnen"
+
+#: src/lib/services/refresh-error-handler.ts:82
+msgctxt "Error notification"
+msgid "Picture of the Day was rate-limited"
+msgstr "Abruf des Bild des Tages wurde begrenzt"
+
+#: src/lib/services/refresh-error-handler.ts:86
+msgctxt "Error notification"
+msgid ""
+"The server for the configured source is rate-limited and does not permit to "
+"fetch an image currently. Try again later, or try a different image source."
+msgstr ""
+"Der Server für die gewählte Bildquelle hat den Abruf des Bilds begrenzt und "
+"erlaubt aktuell nicht, das Bild abzurufen. Versuchen Sie es später erneut, "
+"oder nutzen Sie eine andere Quelle."
+
+#: src/lib/services/refresh-error-handler.ts:92
+msgctxt "Error notification"
+msgid "Picture of the Day has some invalid configuration"
+msgstr "Die Konfiguration für das Bild des Tages ist nicht gültig"
+
+#: src/lib/services/refresh-error-handler.ts:96
+msgctxt "Error notification"
+msgid "Please correct the invalid configuration in the extension settings."
+msgstr ""
+"Bitte korrigieren Sie die ungültige Konfiguration in den Einstellungen "
+"dieser Erweiterung."
+
+#: src/lib/services/refresh-error-handler.ts:107
+msgctxt "Error notification"
+msgid "Picture of the Day failed to fetch today's picture."
+msgstr "Das heutige Bild konnte nicht abgerufen werden."
+
+#: src/lib/services/refresh-error-handler.ts:115
+msgctxt "Error notification"
+msgid ""
+"The system seems to have limited network connectivity. Try to connect to the "
+"internet. If the error persists, try again later."
+msgstr ""
+"Das System scheint nur begrenzten Zugang zum Netzwerk zu haben. Stellen Sie "
+"eine Internetverbindung her, oder versuchen Sie es später noch einmal, wenn "
+"der Fehler weiterhin auftritt."
+
+#: src/lib/services/refresh-error-handler.ts:119
+msgctxt "Error notification"
+msgid "Open network settings"
+msgstr "Netzwerkeinstellungen öffnen"
+
+#: src/lib/services/refresh-error-handler.ts:127
+msgctxt "Error notification"
+msgid ""
+"The server for the configured source seems to have issues. Try to configure "
+"a different image source or try again later."
+msgstr ""
+"Der Server für die gewählte Bildquelle scheint Probleme zu haben. Versuchen "
+"SIe eine andere Bildquelle zu nutzen, oder versuchen Sie es später noch "
+"einmal."
+
+#: src/lib/services/refresh-error-handler.ts:131
+#: src/lib/services/refresh-error-handler.ts:152
+msgctxt "Error notification"
+msgid "No picture today"
+msgstr "Heute kein Bild"
 
 #: src/lib/services/refresh-error-handler.ts:135
 #, javascript-format
@@ -34,24 +111,25 @@ msgstr ""
 "%s ist kein Bild, und kann nicht als Hintergrund verwendet werden. Es kann "
 "unter Umständen direkt auf der Website angesehen werden."
 
-#: src/prefs.ts:186
+#: src/lib/services/refresh-error-handler.ts:142
+msgctxt "Error notification"
+msgid "Open website"
+msgstr "Website öffnen"
+
+#: src/lib/services/refresh-error-handler.ts:156
 #, javascript-format
-msgid "%s/%s collection enabled"
-msgid_plural "%s/%s collections enabled"
-msgstr[0] "%s/%s Sammlungen aktiviert"
-msgstr[1] "%s/%s Sammlungen aktiviert"
+msgctxt "Error notification"
+msgid ""
+"%s does not provide a picture today.  Try again tomorrow, or try a different "
+"source."
+msgstr ""
+"%s stellt heute kein Bild zur Verfügung. Versuchen Sie es morgen erneut, "
+"oder wechseln Sie zu einer anderen Quelle."
 
-#: ui/SourcesPage.blp:43
-msgid "API key"
-msgstr "API Schlüssel"
-
-#: ui/AboutPage.blp:7
-msgid "About"
-msgstr "Über"
-
-#: src/lib/sources/stalenhag.ts:104
-msgid "All rights reserved."
-msgstr "Alle Rechte vorbehalten"
+#: src/lib/services/refresh-error-handler.ts:163
+msgctxt "Error notification"
+msgid "Image could not be downloaded"
+msgstr "Das Bild konnte nicht heruntergeladen werden"
 
 #: src/lib/services/refresh-error-handler.ts:167
 #, javascript-format
@@ -64,177 +142,32 @@ msgstr ""
 "aufgetreten, mit folgender Fehlermeldung: %s. Prüfen Sie Ihre "
 "Internetverbindung, und die Berechtigungen im Download-Verzeichnis."
 
-#: src/lib/ui/indicator.ts:209
-msgid "Cancel refresh…"
-msgstr "Aktualisierung abbrechen…"
+#: src/lib/services/refresh-error-handler.ts:192
+msgctxt "Error notification"
+msgid "Picture of the Day failed"
+msgstr "Bild des Tages fehlgeschlagen"
 
-#: src/lib/ui/error-detail-dialog.ts:154
-msgctxt "Error Dialog"
-msgid "Close"
-msgstr "Schließen"
+#: src/lib/services/refresh-error-handler.ts:195
+msgctxt "Error notification"
+msgid "We are sorry but there seems to be an error."
+msgstr "Leider scheint ein Fehler aufgetreten zu sein."
+
+#: src/lib/services/refresh-error-handler.ts:199
+msgid "Details"
+msgstr "Details"
 
 #: src/lib/sources/stalenhag.ts:103
 #, javascript-format
 msgid "Collection: %s"
 msgstr "Sammlung: %s"
 
-#: ui/SourcesPage.blp:8
-msgid "Configure sources for the Picture of the Day."
-msgstr "Quellen für das Bild des Tages einrichten."
+#: src/lib/sources/stalenhag.ts:104
+msgid "All rights reserved."
+msgstr "Alle Rechte vorbehalten"
 
-#: src/lib/ui/error-detail-dialog.ts:146
-msgctxt "ErrorDetailDialog"
-msgid "Copy to clipboard"
-msgstr "In die Zwischenablage kopieren"
-
-#: src/lib/ui/indicator.ts:120
-#, javascript-format
-msgid "Copyright %s"
-msgstr "Urheberrecht: %s"
-
-#: ui/SourcesPage.blp:24
-msgid "Custom download folder"
-msgstr "Benutzerdefinierter Download-Ordner"
-
-#: src/lib/services/refresh-error-handler.ts:199
-msgid "Details"
-msgstr "Details"
-
-#: ui/SourcesPage.blp:55
-msgid "Enabled collections"
-msgstr "Aktivierte Sammlungen"
-
-#: ui/SourcesPage.blp:47
-msgid "Get API key"
-msgstr "API Schlüssel erhalten"
-
-#: ui/AboutPage.blp:37
-msgid "Get a picture of the day as desktop background."
-msgstr "Bilder des Tages als Desktop-Hintergrund."
-
-#: ui/AboutPage.blp:46
-msgctxt "about link"
-msgid "Github"
-msgstr "Github"
-
-#: src/lib/services/refresh-error-handler.ts:163
-msgctxt "Error notification"
-msgid "Image could not be downloaded"
-msgstr "Das Bild konnte nicht heruntergeladen werden"
-
-#: ui/AboutPage.blp:51
-msgctxt "about link"
-msgid "Issue tracker"
-msgstr "Issue tracker"
-
-#: src/lib/services/refresh-error-handler.ts:131
-#: src/lib/services/refresh-error-handler.ts:152
-msgctxt "Error notification"
-msgid "No picture today"
-msgstr "Heute kein Bild"
-
-#: src/lib/ui/indicator.ts:137
-msgid "Open image"
-msgstr "Bild öffnen"
-
-#: src/lib/ui/indicator.ts:146
-msgid "Open image folder"
-msgstr "Bildverzeichnis öffnen"
-
-#: src/lib/services/refresh-error-handler.ts:119
-msgctxt "Error notification"
-msgid "Open network settings"
-msgstr "Netzwerkeinstellungen öffnen"
-
-#: src/lib/services/refresh-error-handler.ts:74
-#: src/lib/services/refresh-error-handler.ts:99
-msgctxt "Error notification"
-msgid "Open preferences"
-msgstr "Einstellungen öffnen"
-
-#: src/lib/services/refresh-error-handler.ts:142
-msgctxt "Error notification"
-msgid "Open website"
-msgstr "Website öffnen"
-
-#: ui/SourcesPage.blp:7
-msgid "Picture Sources"
-msgstr "Bildquellen"
-
-#: src/extension.ts:149
-msgid "Picture of the Day"
-msgstr "Bild des Tages"
-
-#: src/lib/services/refresh-error-handler.ts:192
-msgctxt "Error notification"
-msgid "Picture of the Day failed"
-msgstr "Bild des Tages fehlgeschlagen"
-
-#: src/lib/ui/error-detail-dialog.ts:137
-msgctxt "ErrorDetailDialog"
-msgid "Picture of the Day failed"
-msgstr "Bild des Tages fehlgeschlagen"
-
-#: src/lib/services/refresh-error-handler.ts:107
-msgctxt "Error notification"
-msgid "Picture of the Day failed to fetch today's picture."
-msgstr "Das heutige Bild konnte nicht abgerufen werden."
-
-#: src/lib/services/refresh-error-handler.ts:92
-msgctxt "Error notification"
-msgid "Picture of the Day has some invalid configuration"
-msgstr "Die Konfiguration für das Bild des Tages ist nicht gültig"
-
-#: src/lib/services/refresh-error-handler.ts:67
-msgctxt "Error notification"
-msgid "Picture of the Day needs an API key"
-msgstr "Das Bild des Tages benötigt einen API-Schlüssel"
-
-#: src/lib/services/refresh-error-handler.ts:82
-msgctxt "Error notification"
-msgid "Picture of the Day was rate-limited"
-msgstr "Abruf des Bild des Tages wurde begrenzt"
-
-#: src/lib/services/refresh-error-handler.ts:71
-msgctxt "Error notification"
-msgid ""
-"Please configure a valid API key for the configured source in the extensions "
-"settings."
-msgstr ""
-"Bitte richten Sie in den Einstellungen dieser Erweiterung einen API-"
-"Schlüssel für die gewählte Bildquelle ein."
-
-#: src/lib/services/refresh-error-handler.ts:96
-msgctxt "Error notification"
-msgid "Please correct the invalid configuration in the extension settings."
-msgstr ""
-"Bitte korrigieren Sie die ungültige Konfiguration in den Einstellungen "
-"dieser Erweiterung."
-
-#: src/lib/ui/indicator.ts:273
-msgid "Preferences"
-msgstr "Einstellungen"
-
-#: src/lib/ui/indicator.ts:212
-msgid "Refresh"
-msgstr "Aktualisieren"
-
-#: ui/SourcesPage.blp:18
-msgid "Refresh automatically"
-msgstr "Automatisch aktualisieren"
-
-#: src/prefs.ts:139
-msgid "Select download folder"
-msgstr "Download-Ordner auswählen"
-
-#: ui/SourcesPage.blp:13
-msgid "Selected source"
-msgstr "Bildquellen"
-
-#: src/lib/ui/indicator.ts:204
-#, javascript-format
-msgid "Source: %s"
-msgstr "Quelle: %s"
+#: src/lib/sources/wikimedia.ts:83
+msgid "Unknown, all rights reserved"
+msgstr "Unbekannt, alle Rechte vorbehalten"
 
 #: src/lib/ui/error-detail-dialog.ts:115
 msgctxt "ErrorDetailDialog"
@@ -248,45 +181,112 @@ msgstr ""
 "enthalten, oder zum Einreichen eines Fehlerberichts auf Github genutzt "
 "werden."
 
-#: src/lib/services/refresh-error-handler.ts:86
-msgctxt "Error notification"
-msgid ""
-"The server for the configured source is rate-limited and does not permit to "
-"fetch an image currently. Try again later, or try a different image source."
-msgstr ""
-"Der Server für die gewählte Bildquelle hat den Abruf des Bilds begrenzt und "
-"erlaubt aktuell nicht, das Bild abzurufen. Versuchen Sie es später erneut, "
-"oder nutzen Sie eine andere Quelle."
+#: src/lib/ui/error-detail-dialog.ts:137
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr "Bild des Tages fehlgeschlagen"
 
-#: src/lib/services/refresh-error-handler.ts:127
-msgctxt "Error notification"
-msgid ""
-"The server for the configured source seems to have issues. Try to configure "
-"a different image source or try again later."
-msgstr ""
-"Der Server für die gewählte Bildquelle scheint Probleme zu haben. Versuchen "
-"SIe eine andere Bildquelle zu nutzen, oder versuchen Sie es später noch "
-"einmal."
+#: src/lib/ui/error-detail-dialog.ts:146
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
 
-#: src/lib/services/refresh-error-handler.ts:115
-msgctxt "Error notification"
-msgid ""
-"The system seems to have limited network connectivity. Try to connect to the "
-"internet. If the error persists, try again later."
-msgstr ""
-"Das System scheint nur begrenzten Zugang zum Netzwerk zu haben. Stellen Sie "
-"eine Internetverbindung her, oder versuchen Sie es später noch einmal, wenn "
-"der Fehler weiterhin auftritt."
+#: src/lib/ui/error-detail-dialog.ts:154
+msgctxt "Error Dialog"
+msgid "Close"
+msgstr "Schließen"
 
-#: src/lib/sources/wikimedia.ts:83
-msgid "Unknown, all rights reserved"
-msgstr "Unbekannt, alle Rechte vorbehalten"
+#: src/lib/ui/indicator.ts:120
+#, javascript-format
+msgid "Copyright %s"
+msgstr "Urheberrecht: %s"
 
-#: src/lib/services/refresh-error-handler.ts:195
-msgctxt "Error notification"
-msgid "We are sorry but there seems to be an error."
-msgstr "Leider scheint ein Fehler aufgetreten zu sein."
+#: src/lib/ui/indicator.ts:137
+msgid "Open image"
+msgstr "Bild öffnen"
+
+#: src/lib/ui/indicator.ts:146
+msgid "Open image folder"
+msgstr "Bildverzeichnis öffnen"
+
+#: src/lib/ui/indicator.ts:204
+#, javascript-format
+msgid "Source: %s"
+msgstr "Quelle: %s"
+
+#: src/lib/ui/indicator.ts:209
+msgid "Cancel refresh…"
+msgstr "Aktualisierung abbrechen…"
+
+#: src/lib/ui/indicator.ts:212
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: src/lib/ui/indicator.ts:273
+msgid "Preferences"
+msgstr "Einstellungen"
 
 #: src/prefs.ts:129
 msgid "XDG State directory"
 msgstr "XDG Zustandsverzeichnis"
+
+#: src/prefs.ts:139
+msgid "Select download folder"
+msgstr "Download-Ordner auswählen"
+
+#: src/prefs.ts:186
+#, javascript-format
+msgid "%s/%s collection enabled"
+msgid_plural "%s/%s collections enabled"
+msgstr[0] "%s/%s Sammlungen aktiviert"
+msgstr[1] "%s/%s Sammlungen aktiviert"
+
+#: ui/AboutPage.blp:7
+msgid "About"
+msgstr "Über"
+
+#: ui/AboutPage.blp:37
+msgid "Get a picture of the day as desktop background."
+msgstr "Bilder des Tages als Desktop-Hintergrund."
+
+#: ui/AboutPage.blp:46
+msgctxt "about link"
+msgid "Github"
+msgstr "Github"
+
+#: ui/AboutPage.blp:51
+msgctxt "about link"
+msgid "Issue tracker"
+msgstr "Issue tracker"
+
+#: ui/SourcesPage.blp:7
+msgid "Picture Sources"
+msgstr "Bildquellen"
+
+#: ui/SourcesPage.blp:8
+msgid "Configure sources for the Picture of the Day."
+msgstr "Quellen für das Bild des Tages einrichten."
+
+#: ui/SourcesPage.blp:13
+msgid "Selected source"
+msgstr "Bildquellen"
+
+#: ui/SourcesPage.blp:18
+msgid "Refresh automatically"
+msgstr "Automatisch aktualisieren"
+
+#: ui/SourcesPage.blp:24
+msgid "Custom download folder"
+msgstr "Benutzerdefinierter Download-Ordner"
+
+#: ui/SourcesPage.blp:43
+msgid "API key"
+msgstr "API Schlüssel"
+
+#: ui/SourcesPage.blp:47
+msgid "Get API key"
+msgstr "API Schlüssel erhalten"
+
+#: ui/SourcesPage.blp:55
+msgid "Enabled collections"
+msgstr "Aktivierte Sammlungen"
