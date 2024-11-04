@@ -33,7 +33,6 @@ import * as StalenhagCollections from "../sources/stalenhag/collections.js";
 import { AllSettings } from "./settings.js";
 import { SourceMetadata } from "../source/metadata.js";
 import SOURCES from "../sources/metadata/all.js";
-import { PromisifiedGtkFileDialog } from "../fixes.js";
 import i18n from "../common/i18n.js";
 import apod from "../sources/metadata/apod.js";
 import stalenhag from "../sources/metadata/stalenhag.js";
@@ -201,7 +200,7 @@ class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
       dialog.initialFolder = Gio.file_new_for_path(picturesDirectory);
     }
     console.info("Root window", this.root);
-    const file = await (dialog as PromisifiedGtkFileDialog).select_folder(
+    const file = await dialog.select_folder(
       this.root as Gtk.Window,
       // We have to specify the cancellable argument explicitly; otherwise we
       // get a TypeError here, see https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/issues/109

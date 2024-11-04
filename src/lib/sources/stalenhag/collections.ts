@@ -23,8 +23,6 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 
-import type { PromisifiedGioFile } from "../../fixes.js";
-
 export interface Collection {
   readonly tag: string;
   readonly title: string;
@@ -56,10 +54,9 @@ export const loadImageCollections = async (): Promise<
       GLib.UriFlags.NONE,
     ),
   );
-  const [contents] = await (dataFile as PromisifiedGioFile).load_contents_async(
-    null,
-  );
+  const [contents] = await dataFile.load_contents_async(null);
   return JSON.parse(
-    new TextDecoder().decode(contents),
+    // load_contents_async has a wrong erturn type, see https://github.com/gjsify/ts-for-gir/issues/211
+    new TextDecoder().decode(contents as unknown as Uint8Array),
   ) as readonly ImageCollection[];
 };
