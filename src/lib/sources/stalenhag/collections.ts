@@ -56,7 +56,6 @@ export const loadImageCollections = async (): Promise<
   );
   const [contents] = await dataFile.load_contents_async(null);
   return JSON.parse(
-    // load_contents_async has a wrong erturn type, see https://github.com/gjsify/ts-for-gir/issues/211
-    new TextDecoder().decode(contents as unknown as Uint8Array),
+    new TextDecoder().decode(contents),
   ) as readonly ImageCollection[];
 };
