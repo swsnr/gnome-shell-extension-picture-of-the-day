@@ -112,10 +112,7 @@ class PictureOfTheDaySourcesPage extends Adw.PreferencesPage {
       this.selectDownloadDirectory().catch((error: unknown) => {
         if (
           error instanceof GLib.Error &&
-          error.matches(
-            Gtk.DialogError as unknown as number,
-            Gtk.DialogError.DISMISSED,
-          )
+          error.matches(Gtk.DialogError, Gtk.DialogError.DISMISSED)
         ) {
           // The user dismissed the dialog; we'll do nothing in this case.
         } else {

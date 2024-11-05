@@ -36,10 +36,7 @@ export type CancellableResult<T> =
  */
 export const isGioErrorCancelled = (reason: unknown): reason is GLib.Error =>
   reason instanceof GLib.Error &&
-  reason.matches(
-    Gio.IOErrorEnum as unknown as number,
-    Gio.IOErrorEnum.CANCELLED,
-  );
+  reason.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED);
 
 /**
  * Run an IO operation as cancellable promise.

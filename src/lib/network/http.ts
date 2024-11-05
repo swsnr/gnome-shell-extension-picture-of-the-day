@@ -200,10 +200,7 @@ export const downloadToFile = async (
       if (
         !(
           cause instanceof GLib.Error &&
-          cause.matches(
-            Gio.IOErrorEnum as unknown as number,
-            Gio.IOErrorEnum.EXISTS,
-          )
+          cause.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS)
         )
       ) {
         throw new IOError(
