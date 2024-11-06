@@ -107,6 +107,3 @@ fix: format
 
 $(UIDEFS): %.ui: %.blp
 	$(BLUEPRINT-COMPILER) compile --output $@ $<
-
-$(CATALOGS): %.po: pot
-	msgmerge --update --backup=none --sort-output --lang=$(notdir $(basename $@)) $@ po/picture-of-the-day@swsnr.de.pot
