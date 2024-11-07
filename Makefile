@@ -1,6 +1,5 @@
 PREFIX = /usr/local
 DESTDIR =
-HOME-DESTDIR = $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 
 UUID = picture-of-the-day@swsnr.de
 XGETTEXT_METADATA = \
@@ -33,16 +32,6 @@ dist: compile
 .PHONY: dist-repro
 dist-repro: dist
 	strip-nondeterminism dist/$(UUID).shell-extension.zip
-
-# Install to local home directory; this simply unpacks the zip file as GNOME would do
-.PHONY: install-home
-install-home: dist
-	mkdir -p $(HOME-DESTDIR)
-	gnome-extensions install -f dist/$(UUID).shell-extension.zip
-
-.PHONY: uninstall-home
-uninstall-home:
-	rm -rf $(HOME-DESTDIR)
 
 # Install as a system-wide installation schema, into a separate directory
 # Intended for distribution packaging
