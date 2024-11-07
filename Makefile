@@ -74,25 +74,5 @@ pot:
 .PHONY: messages
 messages: $(CATALOGS)
 
-.PHONY: format
-format:
-	pnpm format --write
-
-.PHONY: lint
-lint:
-	pnpm lint
-
-.PHONY: check-types
-check-types:
-	pnpm check:types
-
-.PHONY: check
-check: lint check-types
-	pnpm format --check
-
-.PHONY: fix
-fix: format
-	pnpm lint --fix
-
 $(UIDEFS): %.ui: %.blp
 	$(BLUEPRINT-COMPILER) compile --output $@ $<
