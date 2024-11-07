@@ -18,8 +18,8 @@ importers:
         specifier: 3.6.0-4.0.0-beta.18
         version: 3.6.0-4.0.0-beta.18
       '@swsnr/gsebuild':
-        specifier: file:../gsebuild
-        version: file:../gsebuild(typescript@5.6.3)
+        specifier: 0.0.3
+        version: 0.0.3(typescript@5.6.3)
       eslint:
         specifier: ^9.13.0
         version: 9.13.0
@@ -252,8 +252,9 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@swsnr/gsebuild@file:../gsebuild':
-    resolution: {directory: ../gsebuild, type: directory}
+  '@swsnr/gsebuild@0.0.3':
+    resolution: {integrity: sha512-wnN1Au73dqzonrk/lgvI5rdH4ak5Sz7VfnHH5pi7oM+t2OHNxuKy4A7erWn+R3NhBrx9XhYDb8iQBATWlyNduQ==}
+    engines: {node: '>=23'}
 
   '@tsconfig/strictest@2.0.5':
     resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
@@ -1314,7 +1315,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@swsnr/gsebuild@file:../gsebuild(typescript@5.6.3)':
+  '@swsnr/gsebuild@0.0.3(typescript@5.6.3)':
     dependencies:
       '@eslint/js': 9.14.0
       '@tsconfig/strictest': 2.0.5
@@ -1344,7 +1345,7 @@ snapshots:
 
   '@typescript-eslint/eslint-plugin@8.13.0(@typescript-eslint/parser@8.13.0(eslint@9.14.0)(typescript@5.6.3))(eslint@9.14.0)(typescript@5.6.3)':
     dependencies:
-      '@eslint-community/regexpp': 4.11.1
+      '@eslint-community/regexpp': 4.12.1
       '@typescript-eslint/parser': 8.13.0(eslint@9.14.0)(typescript@5.6.3)
       '@typescript-eslint/scope-manager': 8.13.0
       '@typescript-eslint/type-utils': 8.13.0(eslint@9.14.0)(typescript@5.6.3)

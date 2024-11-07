@@ -14,7 +14,7 @@
     "pnpm": "^9"
   },
   "devDependencies": {
-    "@swsnr/gsebuild": "file:../gsebuild",
+    "@swsnr/gsebuild": "0.0.3",
     "@girs/gjs": "4.0.0-beta.18",
     "@girs/gnome-shell": "47.0.0",
     "@girs/soup-3.0": "3.6.0-4.0.0-beta.18",
