@@ -20,6 +20,9 @@ importers:
       '@girs/soup-3.0':
         specifier: 3.6.0-4.0.0-beta.18
         version: 3.6.0-4.0.0-beta.18
+      '@swsnr/gsebuild':
+        specifier: file:../gsebuild
+        version: file:../gsebuild
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
@@ -240,6 +243,9 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@swsnr/gsebuild@file:../gsebuild':
+    resolution: {directory: ../gsebuild, type: directory}
 
   '@tsconfig/strictest@2.0.5':
     resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
@@ -1248,6 +1254,11 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@swsnr/gsebuild@file:../gsebuild':
+    dependencies:
+      '@tsconfig/strictest': 2.0.5
+      typescript: 5.6.3
 
   '@tsconfig/strictest@2.0.5': {}
 
