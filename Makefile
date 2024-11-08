@@ -18,7 +18,6 @@ dist: compile
 	cp -t ./build/ui $(UIDEFS)
 	cp -t ./build/lib/vendor/saxes ./src/lib/vendor/saxes/README.md
 	cp -t ./build/lib/vendor/xmlchars ./src/lib/vendor/xmlchars/README.md
-	cp -t ./build/lib/sources/stalenhag ./src/lib/sources/stalenhag/*.json
 	gnome-extensions pack --force --out-dir dist build \
 		--podir=../po --extra-source=../metadata.json \
 		--extra-source=ui --extra-source=lib \

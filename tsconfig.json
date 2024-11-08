@@ -1,7 +1,8 @@
 {
   "extends": "@swsnr/gsebuild/tsconfig.json",
   "compilerOptions": {
-    "outDir": "build"
+    "outDir": "build",
+    "resolveJsonModule": true
   },
   "include": ["@types/gnome-shell/ambient.d.ts", "src/**/*.ts"]
 }

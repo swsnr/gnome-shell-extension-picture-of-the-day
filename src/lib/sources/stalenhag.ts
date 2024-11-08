@@ -34,6 +34,7 @@ import i18n from "../common/i18n.js";
 interface ImageInCollection extends Image {
   readonly collection: ImageCollection;
 }
+
 /**
  * Convert microseconds to days.
  *
