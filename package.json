@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "compile": "tsc --build tsconfig.json",
-    "dist:format": "eslint --no-config-lookup --config eslint.config.dist.js --quiet --fix build/",
+    "postcompile": "eslint --no-config-lookup --config eslint.config.dist.js --quiet --fix .",
     "check:types": "tsc --build tsconfig.types.json --force",
     "lint": "eslint .",
     "format": "prettier .",

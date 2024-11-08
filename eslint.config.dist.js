@@ -8,4 +8,9 @@
 
 import { dist } from "@swsnr/gsebuild/eslint";
 
-export default dist;
+export default [
+  dist,
+  {
+    files: ["build/**/*"],
+  },
+];
