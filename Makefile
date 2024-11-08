@@ -50,11 +50,6 @@ install-package: dist
 		$(DESTDIR)/$(PREFIX)/share/gnome-shell/extensions/$(UUID)/locale \
 		$(DESTDIR)/$(PREFIX)/share/locale
 
-.PHONY: clean
-clean:
-	rm -rf dist build
-	rm -rf $(addsuffix .mo,$(basename $(CATALOGS)))
-
 .PHONY: compile
 compile: $(UIDEFS)
 	pnpm compile
