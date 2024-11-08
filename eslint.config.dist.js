@@ -6,10 +6,10 @@
 
 // @ts-check
 
-import { dist } from "@swsnr/gsebuild/eslint";
+import gsebuild from "@swsnr/gsebuild/eslint";
 
 export default [
-  dist,
+  gsebuild.configs.dist,
   {
     files: ["build/**/*"],
   },

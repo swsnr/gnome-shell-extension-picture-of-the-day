@@ -7,6 +7,8 @@
     "postblueprint": "glob -c 'git add' 'ui/*.ui'",
     "compile": "tsc --build tsconfig.json",
     "postcompile": "eslint --no-config-lookup --config eslint.config.dist.js --quiet --fix .",
+    "prepack": "pnpm run compile",
+    "pack": "gsebuild pack",
     "check:types": "tsc --build tsconfig.types.json --force",
     "lint": "eslint .",
     "format": "prettier .",
@@ -20,12 +22,34 @@
     "@girs/gjs": "4.0.0-beta.18",
     "@girs/gnome-shell": "47.0.0",
     "@girs/soup-3.0": "3.6.0-4.0.0-beta.18",
-    "@swsnr/gsebuild": "0.0.4",
+    "@swsnr/gsebuild": "0.0.5",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.6.3"
+  },
+  "gsebuild": {
+    "pack": {
+      "copy-to-source": [
+        "ui/*.ui",
+        ["./src/lib/vendor/saxes/README.md", "lib/vendor/saxes/README.md"],
+        ["./src/lib/vendor/xmlchars/README.md", "lib/vendor/xmlchars/README.md"]
+      ],
+      "source-directory": "build",
+      "extra-sources": [
+        "ui",
+        "lib",
+        "../README.md",
+        "../LICENSE*",
+        "../icons/",
+        "../metadata.json"
+      ],
+      "po-directory": "../po",
+      "schemas": [
+        "../schemas/*.gschema.xml"
+      ]
+    }
   }
 }
