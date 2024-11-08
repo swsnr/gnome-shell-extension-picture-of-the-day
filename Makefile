@@ -11,8 +11,6 @@ BLUEPRINTS = $(wildcard ui/*.blp)
 UIDEFS = $(addsuffix .ui,$(basename $(BLUEPRINTS)))
 CATALOGS = $(wildcard po/*.po)
 
-BLUEPRINT-COMPILER = "blueprint-compiler"
-
 .PHONY: dist
 dist: compile
 	mkdir -p ./dist/
@@ -50,7 +48,7 @@ install-package: dist
 		$(DESTDIR)/$(PREFIX)/share/locale
 
 .PHONY: compile
-compile: $(UIDEFS)
+compile:
 	pnpm compile
 
 # For blueprint, see https://jwestman.pages.gitlab.gnome.org/blueprint-compiler/translations.html
@@ -64,6 +62,3 @@ pot:
 		--join-existing --sort-by-file --output=po/$(UUID).pot \
 		--add-comments --keyword=_ --keyword=C_:1c,2 \
 		$(BLUEPRINTS)
-
-$(UIDEFS): %.ui: %.blp
-	$(BLUEPRINT-COMPILER) compile --output $@ $<
