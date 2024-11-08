@@ -3,6 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "blueprint": "glob -c 'blueprint-compiler batch-compile ui ui' 'ui/*.blp'",
+    "postblueprint": "glob -c 'git add' 'ui/*.ui'",
     "compile": "tsc --build tsconfig.json",
     "postcompile": "eslint --no-config-lookup --config eslint.config.dist.js --quiet --fix .",
     "check:types": "tsc --build tsconfig.types.json --force",
@@ -21,6 +23,7 @@
     "@swsnr/gsebuild": "0.0.4",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
+    "glob": "^11.0.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.6.3"
