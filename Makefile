@@ -65,8 +65,5 @@ pot:
 		--add-comments --keyword=_ --keyword=C_:1c,2 \
 		$(BLUEPRINTS)
 
-.PHONY: messages
-messages: $(CATALOGS)
-
 $(UIDEFS): %.ui: %.blp
 	$(BLUEPRINT-COMPILER) compile --output $@ $<
