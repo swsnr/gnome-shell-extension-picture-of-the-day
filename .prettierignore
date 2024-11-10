@@ -8,7 +8,7 @@
 
 # Packages
 /package.json
-/pnpm-lock.yaml
+/package-lock.json
 /node_modules/
 
 # Vendored code

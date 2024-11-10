@@ -7,7 +7,7 @@
     "postblueprint": "glob -c 'git add' 'ui/*.ui'",
     "compile": "tsc --build tsconfig.json",
     "postcompile": "eslint --no-config-lookup --config eslint.config.dist.js --quiet --fix .",
-    "prepack": "pnpm run compile",
+    "prepack": "npm run compile",
     "pack": "gsebuild pack",
     "check:types": "tsc --build tsconfig.types.json --force",
     "xgettext": "gsebuild xgettext",
@@ -16,8 +16,7 @@
     "clean": "rimraf --no-interactive build dist"
   },
   "engines": {
-    "node": ">=20",
-    "pnpm": "^9"
+    "node": ">=23"
   },
   "devDependencies": {
     "@girs/gjs": "4.0.0-beta.18",

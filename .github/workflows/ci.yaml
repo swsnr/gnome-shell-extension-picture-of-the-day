@@ -7,38 +7,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          # Keep in sync with engines.pnpm in package.json
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: latest
-          cache: "pnpm"
-      - run: pnpm install
+          cache: "npm"
+      - run: npm ci
       - run: "jq -r .description < metadata.json"
-      - run: pnpm lint
-      - run: pnpm format --check
-      - run: pnpm check:types
+      - run: npm run lint
+      - run: npm run format --check
+      - run: npm run check:types
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          # Keep in sync with engines.pnpm in package.json
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: latest
-          cache: "pnpm"
+          cache: "npm"
       - name: Install gettext, gnome-shell, and strip-nondeterminism
         run: |
           sudo apt-get update -qq
           sudo apt-get install --no-install-recommends -qq -y gettext gnome-shell strip-nondeterminism
-      - run: pnpm install
-      - run: pnpm run pack
+      - run: npm ci
+      - run: npm run pack
       - run: strip-nondeterminism dist/*.zip
       - run: b2sum *.zip > B2SUMS.txt
         working-directory: dist
