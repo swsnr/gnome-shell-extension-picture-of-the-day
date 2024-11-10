@@ -18,8 +18,8 @@ importers:
         specifier: 3.6.0-4.0.0-beta.18
         version: 3.6.0-4.0.0-beta.18
       '@swsnr/gsebuild':
-        specifier: 0.0.5
-        version: 0.0.5(typescript@5.6.3)
+        specifier: ^0.0.7
+        version: 0.0.7(typescript@5.6.3)
       eslint:
         specifier: ^9.13.0
         version: 9.13.0
@@ -274,8 +274,8 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@swsnr/gsebuild@0.0.5':
-    resolution: {integrity: sha512-ON3KOdWJZttVTq3X0bwzqeVqIe/llOoP8lNTeYHkmpUTbHrirTtdAnaoHwkT24XBNrW1CG39gaxeAgkttTwWyA==}
+  '@swsnr/gsebuild@0.0.7':
+    resolution: {integrity: sha512-utOBmzWx5PKLgkD0vXMifN0u5/60RoU00NQpgQe3RF6G9mV/t3UEAllu8ndi9YwXJNWwybLb6AH0xym6B8LIpg==}
     engines: {node: '>=23'}
     hasBin: true
 
@@ -1560,7 +1560,7 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@swsnr/gsebuild@0.0.5(typescript@5.6.3)':
+  '@swsnr/gsebuild@0.0.7(typescript@5.6.3)':
     dependencies:
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
       '@eslint/js': 9.14.0
