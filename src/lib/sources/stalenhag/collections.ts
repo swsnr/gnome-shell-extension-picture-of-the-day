@@ -23,19 +23,13 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 
-export interface Collection {
-  readonly tag: string;
-  readonly title: string;
-}
+import collections from "./collections.json";
 
-export interface Image {
-  readonly src: string;
-}
+export type ImageCollections = typeof collections;
 
-export interface ImageCollection extends Collection {
-  readonly images: readonly Image[];
-  readonly url: string;
-}
+export type ImageCollection = ImageCollections[0];
+
+export type Image = ImageCollection["images"][0];
 
 /**
  * Load the Stalenhag image collectsion from our data file.
@@ -44,9 +38,7 @@ export interface ImageCollection extends Collection {
  *
  * @returns All image image collections tracked in our data file
  */
-export const loadImageCollections = async (): Promise<
-  readonly ImageCollection[]
-> => {
+export const loadImageCollections = async (): Promise<ImageCollections> => {
   const dataFile = Gio.File.new_for_uri(
     GLib.Uri.resolve_relative(
       import.meta.url,
@@ -55,7 +47,5 @@ export const loadImageCollections = async (): Promise<
     ),
   );
   const [contents] = await dataFile.load_contents_async(null);
-  return JSON.parse(
-    new TextDecoder().decode(contents),
-  ) as readonly ImageCollection[];
+  return JSON.parse(new TextDecoder().decode(contents)) as ImageCollections;
 };

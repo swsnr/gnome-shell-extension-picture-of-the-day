@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-04 13:58+0100\n"
+"POT-Creation-Date: 2024-11-10 18:01+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "Picture of the Day"
 msgstr ""
 
-#: src/lib/prefs/sources_page.ts:187
+#: src/lib/prefs/sources_page.ts:184
 msgid "XDG State directory"
 msgstr ""
 
-#: src/lib/prefs/sources_page.ts:195
+#: src/lib/prefs/sources_page.ts:192
 msgid "Select download folder"
 msgstr ""
 
-#: src/lib/prefs/sources_page.ts:242
+#: src/lib/prefs/sources_page.ts:239
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
@@ -155,15 +155,17 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: src/lib/sources/stalenhag.ts:103
+#: src/lib/sources/stalenhag.ts:104
 #, javascript-format
 msgid "Collection: %s"
 msgstr ""
 
-#: src/lib/sources/stalenhag.ts:104
+#: src/lib/sources/stalenhag.ts:105
 msgid "All rights reserved."
 msgstr ""
 
+#. We do not know anything about the copyright here, so let's default to
+#. some "all rights reserved" blurp.
 #: src/lib/sources/wikimedia.ts:83
 msgid "Unknown, all rights reserved"
 msgstr ""
