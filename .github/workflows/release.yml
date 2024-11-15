@@ -75,7 +75,7 @@ jobs:
         with:
           path: dist
           name: dist
-      - run: "npx gsebuild upload -c ./.ego-confirmation.json ./dist/picture-of-the-day@swsnr.de.shell-extension.zip"
+      - run: "npx gsebuild upload --no-interaction -c ./.ego-confirmation.json ./dist/picture-of-the-day@swsnr.de.shell-extension.zip"
         env:
           EGO_USERNAME: ${{ secrets.EGO_USERNAME }}
           EGO_PASSWORD: ${{ secrets.EGO_PASSWORD }}
