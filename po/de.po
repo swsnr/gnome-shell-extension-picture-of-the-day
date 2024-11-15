@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-04 13:58+0100\n"
+"POT-Creation-Date: 2024-11-10 18:01+0100\n"
 "PO-Revision-Date: 2024-11-04 13:06+0000\n"
 "Last-Translator: swsnr <swsnr@users.noreply.translate.codeberg.org>\n"
-"Language-Team: German <https://translate.codeberg.org/projects/"
-"picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/de/>\n"
+"Language-Team: German <https://translate.codeberg.org/projects/picture-of-"
+"the-day-swsnr-de/picture-of-the-day-swsnr-de/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,15 +22,15 @@ msgstr ""
 msgid "Picture of the Day"
 msgstr "Bild des Tages"
 
-#: src/lib/prefs/sources_page.ts:187
+#: src/lib/prefs/sources_page.ts:184
 msgid "XDG State directory"
 msgstr "XDG Zustandsverzeichnis"
 
-#: src/lib/prefs/sources_page.ts:195
+#: src/lib/prefs/sources_page.ts:192
 msgid "Select download folder"
 msgstr "Download-Ordner auswählen"
 
-#: src/lib/prefs/sources_page.ts:242
+#: src/lib/prefs/sources_page.ts:239
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
@@ -175,15 +175,17 @@ msgstr "Leider scheint ein Fehler aufgetreten zu sein."
 msgid "Details"
 msgstr "Details"
 
-#: src/lib/sources/stalenhag.ts:103
+#: src/lib/sources/stalenhag.ts:104
 #, javascript-format
 msgid "Collection: %s"
 msgstr "Sammlung: %s"
 
-#: src/lib/sources/stalenhag.ts:104
+#: src/lib/sources/stalenhag.ts:105
 msgid "All rights reserved."
 msgstr "Alle Rechte vorbehalten."
 
+#. We do not know anything about the copyright here, so let's default to
+#. some "all rights reserved" blurp.
 #: src/lib/sources/wikimedia.ts:83
 msgid "Unknown, all rights reserved"
 msgstr "Unbekannt, alle Rechte vorbehalten"
