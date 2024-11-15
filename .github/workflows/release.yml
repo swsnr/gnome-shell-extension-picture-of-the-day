@@ -9,19 +9,23 @@ jobs:
   build:
     # Run build on main as well to make sure it's working before we make a release
     runs-on: ubuntu-latest
+    container:
+      # Fedora 41 ships GNOME 47, i.e. the version we currently support
+      image: docker.io/fedora:41
     steps:
+      # TODO: We probably want to strip away timestamps in the ZIP file to make
+      # it deterministic again, but Fedora doesn't package strip-nondeterminism,
+      # and its add-determinism doesn't seem to support ZIP files, see
+      # https://github.com/keszybz/add-determinism/issues/46
+      - name: Install git, gettext, and gnome-shell
+        run: dnf install -y get gettext gnome-shell
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: latest
           cache: "npm"
-      - name: Install gettext, gnome-shell, and strip-nondeterminism
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install --no-install-recommends -qq -y gettext gnome-shell strip-nondeterminism
       - run: npm ci
       - run: npm run pack
-      - run: strip-nondeterminism dist/*.zip
       - run: b2sum *.zip > B2SUMS.txt
         working-directory: dist
       - uses: actions/upload-artifact@v4
