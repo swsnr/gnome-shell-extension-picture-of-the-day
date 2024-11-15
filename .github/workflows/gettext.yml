@@ -21,7 +21,7 @@ jobs:
       image: docker.io/fedora:latest
     steps:
       - name: Install git and gettext
-        run: dnf install -y git make gettext
+        run: dnf install -y --setopt=install_weak_deps=False git gettext
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:

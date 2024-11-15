@@ -18,7 +18,7 @@ jobs:
       # and its add-determinism doesn't seem to support ZIP files, see
       # https://github.com/keszybz/add-determinism/issues/46
       - name: Install git, gettext, and gnome-shell
-        run: dnf install -y git gettext gnome-shell
+        run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
