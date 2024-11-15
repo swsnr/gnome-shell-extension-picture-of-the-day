@@ -11,6 +11,7 @@
     "pack": "gsebuild pack",
     "check:types": "tsc --build tsconfig.types.json --force",
     "xgettext": "gsebuild xgettext",
+    "postxgettext": "sed -i /POT-Creation-Date/d po/picture-of-the-day@swsnr.de.pot",
     "lint": "eslint .",
     "format": "prettier .",
     "clean": "rimraf --no-interactive build dist"
