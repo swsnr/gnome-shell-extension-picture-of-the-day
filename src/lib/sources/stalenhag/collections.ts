@@ -23,7 +23,7 @@
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 
-import collections from "./collections.json";
+import collections from "./collections.json" with { type: "json" };
 
 export type ImageCollections = typeof collections;
 
