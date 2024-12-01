@@ -50,10 +50,14 @@ export class DesktopBackgroundService {
   /**
    * Set the current background image, for both default and dark themes.
    */
-  set backgroundImage(uri: string) {
+  set backgroundImage(uri: string | null) {
     console.log("Changing desktop background", uri);
     for (const key of ["picture-uri", "picture-uri-dark"]) {
-      this.settings.set_string(key, uri);
+      if (uri !== null) {
+        this.settings.set_string(key, uri);
+      } else {
+        this.settings.reset(key);
+      }
     }
   }
 
