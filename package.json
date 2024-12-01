@@ -22,7 +22,7 @@
   "devDependencies": {
     "@girs/gnome-shell": "47.0.0",
     "@girs/soup-3.0": "3.6.0-4.0.0-beta.19",
-    "@swsnr/gsebuild": "^0.1.1",
+    "@swsnr/gsebuild": "^0.1.2",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "glob": "^11.0.0",
