@@ -5,45 +5,26 @@ on:
     branches: [main]
     tags: v*
 
-env:
-  ADD_DETERMINISM_VERSION: 0.5.0
-
 jobs:
-  install-add-determinism:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/cache/restore@v4
-        id: cache-add-determinism
-        with:
-          path: ${{ runner.tool_cache }}/add-determinism
-          key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
-          lookup-only: true
-      - uses: dtolnay/rust-toolchain@stable
-        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
-      - run: cargo install --root ${{ runner.tool_cache }}/add-determinism --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
-        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
-      - uses: actions/cache/save@v4
-        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
-        with:
-          path: ${{ runner.tool_cache }}/add-determinism
-          key: ${{ steps.cache-add-determinism.outputs.cache-primary-key }}
-
   build:
     # Run build on main as well to make sure it's working before we make a release
     runs-on: ubuntu-latest
-    needs: install-add-determinism
     container:
       # Fedora 41 ships GNOME 47, i.e. the version we currently support
       image: docker.io/fedora:41
     steps:
-      # Install zstd to restore cache
-      - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell zstd
-      - uses: actions/cache/restore@v4
-        with:
-          path: ${{ runner.tool_cache }}/add-determinism
-          key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
-          fail-on-cache-miss: true
-      - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
+      # TODO: Stip timestamps from ZIP with strip-nondeterminism once 0.4.3 or newer are available in Fedora.cancel-timeout-minutes:
+      # With 0.5.0 we can set timestamps to the date of the current commit:
+      #
+      # env SOURCE_DATE_EPOCH=$(git show --no-patch --format=%ct HEAD) add-determinism dist/*.zip
+      #
+      # With 0.4.3 we need to reset to the minimal ZIP date because add-determinism retains timestamps older than
+      # SOURCE_DATE_EPOCH in this version.  We also need to force it to use the JAR handler for ZIP files.
+      #
+      # SOURCE_DATE_EPOCH=(date -d1980-01-01T00:00:00Z +'%s') add-determinism --ignore-extension --handler jar
+      #
+      - name: Install git, gettext, and gnome-shell
+        run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -51,7 +32,6 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run pack
-      - run: env OURCE_DATE_EPOCH="$(git show --no-patch --format=%ct HEAD)" add-determinism dist/picture-of-the-day@swsnr.de.shell-extension.zip
       - run: b2sum *.zip > B2SUMS.txt
         working-directory: dist
       - uses: actions/upload-artifact@v4
