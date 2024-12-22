@@ -5,26 +5,41 @@ on:
     branches: [main]
     tags: v*
 
+env:
+  ADD_DETERMINISM_VERSION: 0.5.0
+
 jobs:
+  install-add-determinism:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache/restore@v4
+        id: cache-add-determinism
+        with:
+          path: ${{ runner.tool_cache }}/add-determinism
+          key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
+          lookup-only: true
+      - uses: dtolnay/rust-toolchain@stable
+        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
+      - run: cargo install --root ${{ runner.tool_cache }}/add-determinism --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
+        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
+      - uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.tool_cache }}/add-determinism
+          key: ${{ steps.cache-add-determinism.outputs.cache-primary-key }}
+
   build:
     # Run build on main as well to make sure it's working before we make a release
     runs-on: ubuntu-latest
     container:
       # Fedora 41 ships GNOME 47, i.e. the version we currently support
       image: docker.io/fedora:41
-    env:
-      ADD_DETERMINISM_VERSION: 0.5.0
     steps:
       - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
         id: cache-add-determinism
         with:
           path: ${{ runner.tool_cache }}/add-determinism
           key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
-      - uses: dtolnay/rust-toolchain@stable
-        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
-      - run: cargo install --root ${{ runner.tool_cache }}/add-determinism --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
-        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
       - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
