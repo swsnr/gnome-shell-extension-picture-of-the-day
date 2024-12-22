@@ -36,14 +36,14 @@ jobs:
       # Fedora 41 ships GNOME 47, i.e. the version we currently support
       image: docker.io/fedora:41
     steps:
+      # Install zstd to restore cache
+      - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell zstd
       - uses: actions/cache/restore@v4
         with:
           path: ${{ runner.tool_cache }}/add-determinism
           key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
           fail-on-cache-miss: true
-          enableCrossOsArchive: true
       - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
-      - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
