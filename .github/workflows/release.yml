@@ -35,7 +35,6 @@ jobs:
       # Fedora 41 ships GNOME 47, i.e. the version we currently support
       image: docker.io/fedora:41
     steps:
-      - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
       - uses: actions/cache/restore@v4
         id: cache-add-determinism
         with:
@@ -43,6 +42,7 @@ jobs:
           key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
           fail-on-cache-miss: true
       - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
+      - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
