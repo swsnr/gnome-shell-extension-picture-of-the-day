@@ -12,8 +12,20 @@ jobs:
     container:
       # Fedora 41 ships GNOME 47, i.e. the version we currently support
       image: docker.io/fedora:41
+    env:
+      ADD_DETERMINISM_VERSION: 0.5.0
     steps:
-      - run: dnf install -y --setopt=install_weak_deps=False git gettext add-determinism gnome-shell
+      - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
+      - uses: actions/cache@v4
+        id: cache-add-determinism
+        with:
+          path: ${{ runner.tool_cache }}/add-determinism
+          key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
+      - uses: dtolnay/rust-toolchain@stable
+        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
+      - run: cargo install --root ${{ runner.tool_cache }}/cargo-vet --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
+        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
+      - run: echo "${{ runner.tool_cache }}/cargo-vet/bin" >> $GITHUB_PATH
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -21,7 +33,7 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run pack
-      - run: env SOURCE_DATE_EPOCH="$(date -d1980-01-01T00:00:00Z +'%s')" add-determinism --ignore-extension --handler jar dist/picture-of-the-day@swsnr.de.shell-extension.zip
+      - run: env OURCE_DATE_EPOCH="$(git show --no-patch --format=%ct HEAD)" add-determinism dist/picture-of-the-day@swsnr.de.shell-extension.zip
       - run: b2sum *.zip > B2SUMS.txt
         working-directory: dist
       - uses: actions/upload-artifact@v4
