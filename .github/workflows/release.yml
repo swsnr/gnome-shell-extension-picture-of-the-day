@@ -23,6 +23,7 @@ jobs:
       - run: cargo install --root ${{ runner.tool_cache }}/add-determinism --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
         if: steps.cache-add-determinism.outputs.cache-hit != 'true'
       - uses: actions/cache/save@v4
+        if: steps.cache-add-determinism.outputs.cache-hit != 'true'
         with:
           path: ${{ runner.tool_cache }}/add-determinism
           key: ${{ steps.cache-add-determinism.outputs.cache-primary-key }}
