@@ -41,6 +41,7 @@ jobs:
         with:
           path: ${{ runner.tool_cache }}/add-determinism
           key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
+          fail-on-cache-miss: true
       - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
