@@ -40,6 +40,9 @@ jobs:
         with:
           path: ${{ runner.tool_cache }}/add-determinism
           key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
+          restore-keys: |
+            add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
+            add-determinism-bin
           fail-on-cache-miss: true
       - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
       - run: dnf install -y --setopt=install_weak_deps=False git gettext gnome-shell
