@@ -30,6 +30,7 @@ jobs:
   build:
     # Run build on main as well to make sure it's working before we make a release
     runs-on: ubuntu-latest
+    needs: install-add-determinism
     container:
       # Fedora 41 ships GNOME 47, i.e. the version we currently support
       image: docker.io/fedora:41
