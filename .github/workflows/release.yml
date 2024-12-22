@@ -23,9 +23,9 @@ jobs:
           key: add-determinism-bin-${{ env.ADD_DETERMINISM_VERSION }}
       - uses: dtolnay/rust-toolchain@stable
         if: steps.cache-add-determinism.outputs.cache-hit != 'true'
-      - run: cargo install --root ${{ runner.tool_cache }}/cargo-vet --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
+      - run: cargo install --root ${{ runner.tool_cache }}/add-determinism --version '${{ env.ADD_DETERMINISM_VERSION }}' add-determinism
         if: steps.cache-add-determinism.outputs.cache-hit != 'true'
-      - run: echo "${{ runner.tool_cache }}/cargo-vet/bin" >> $GITHUB_PATH
+      - run: echo "${{ runner.tool_cache }}/add-determinism/bin" >> $GITHUB_PATH
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
