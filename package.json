@@ -24,7 +24,7 @@
     "@girs/soup-3.0": "3.6.0-4.0.0-beta.19",
     "@swsnr/gsebuild": "^0.1.2",
     "eslint": "^9.17.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.1",
     "glob": "^11.0.0",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
