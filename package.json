@@ -28,7 +28,7 @@
     "glob": "^11.0.0",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   },
   "gsebuild": {
     "gettext": {
