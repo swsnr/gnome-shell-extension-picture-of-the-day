@@ -5,6 +5,8 @@ updates:
     schedule:
       interval: "monthly"
     assignees: [swsnr]
+    ignore:
+      - update-types: ["version-update:semver-patch"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
