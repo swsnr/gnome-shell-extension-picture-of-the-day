@@ -20,8 +20,8 @@
     "node": ">=23"
   },
   "devDependencies": {
-    "@girs/gnome-shell": "47.0.1",
-    "@girs/soup-3.0": "3.6.0-4.0.0-beta.19",
+    "@girs/gnome-shell": "47.0.2",
+    "@girs/soup-3.0": "3.6.4-4.0.0-beta.21",
     "@swsnr/gsebuild": "^0.1.2",
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.2",
@@ -29,6 +29,13 @@
     "prettier": "^3.5.2",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.2"
+  },
+  "overrides": {
+    "@girs/gobject-2.0": "2.83.3-4.0.0-beta.21",
+    "@girs/glib-2.0": "2.83.3-4.0.0-beta.21",
+    "@girs/gio-2.0": "2.83.3-4.0.0-beta.21",
+    "@girs/gcr-4": "4.3.91-4.0.0-beta.21",
+    "@girs/gtk-4.0": "4.17.5-4.0.0-beta.21"
   },
   "gsebuild": {
     "gettext": {
