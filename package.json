@@ -20,7 +20,7 @@
     "node": ">=23"
   },
   "devDependencies": {
-    "@girs/gnome-shell": "47.0.1",
+    "@girs/gnome-shell": "47.0.2",
     "@girs/soup-3.0": "3.6.0-4.0.0-beta.19",
     "@swsnr/gsebuild": "^0.1.2",
     "eslint": "^9.19.0",
