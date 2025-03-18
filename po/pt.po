@@ -7,11 +7,11 @@ msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-10 18:01+0100\n"
-"PO-Revision-Date: 2024-11-15 07:45+0000\n"
+"PO-Revision-Date: 2024-11-21 23:07+0000\n"
 "Last-Translator: joaovrsoares <joaovrsoares@users.noreply.translate.codeberg."
 "org>\n"
-"Language-Team: Portuguese <https://translate.codeberg.org/projects/picture-"
-"of-the-day-swsnr-de/picture-of-the-day-swsnr-de/pt/>\n"
+"Language-Team: Portuguese <https://translate.codeberg.org/projects/"
+"picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: src/extension.ts:149
 msgid "Picture of the Day"
-msgstr "Imagem do Dia"
+msgstr "Picture of the Day"
 
 #: src/lib/prefs/sources_page.ts:184
 msgid "XDG State directory"
@@ -41,7 +41,7 @@ msgstr[1] "%s/%s coleções ativadas"
 #: src/lib/services/refresh-error-handler.ts:67
 msgctxt "Error notification"
 msgid "Picture of the Day needs an API key"
-msgstr "Imagem do Dia precisa de uma chave de API"
+msgstr "Picture of the Day precisa de uma chave de API"
 
 #: src/lib/services/refresh-error-handler.ts:71
 msgctxt "Error notification"
@@ -61,7 +61,7 @@ msgstr "Abrir configurações"
 #: src/lib/services/refresh-error-handler.ts:82
 msgctxt "Error notification"
 msgid "Picture of the Day was rate-limited"
-msgstr "O Imagem do Dia foi restringido devido ao limite de requisições"
+msgstr "Picture of the Day foi restringido devido ao limite de requisições"
 
 #: src/lib/services/refresh-error-handler.ts:86
 msgctxt "Error notification"
@@ -76,7 +76,7 @@ msgstr ""
 #: src/lib/services/refresh-error-handler.ts:92
 msgctxt "Error notification"
 msgid "Picture of the Day has some invalid configuration"
-msgstr "Imagem do Dia possui alguma configuração inválida"
+msgstr "Picture of the Day possui alguma configuração inválida"
 
 #: src/lib/services/refresh-error-handler.ts:96
 msgctxt "Error notification"
@@ -86,7 +86,7 @@ msgstr "Por favor, corrija a configuração inválida nos ajustes."
 #: src/lib/services/refresh-error-handler.ts:107
 msgctxt "Error notification"
 msgid "Picture of the Day failed to fetch today's picture."
-msgstr "O Imagem do Dia não conseguiu buscar a imagem de hoje."
+msgstr "Picture of the Day não conseguiu buscar a imagem de hoje."
 
 #: src/lib/services/refresh-error-handler.ts:115
 msgctxt "Error notification"
