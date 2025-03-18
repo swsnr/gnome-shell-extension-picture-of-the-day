@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Sebastian Wiesner <sebastian@swsnr.de>
+# This file is distributed under the same license as the picture-of-the-day@swsnr.de package.
+# faymaz <faymaz@users.noreply.translate.codeberg.org>, 2025.
+msgid ""
+msgstr ""
+"Project-Id-Version: picture-of-the-day@swsnr.de\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: src/extension.ts:149
+msgid "Picture of the Day"
+msgstr ""
+
+#: src/lib/prefs/sources_page.ts:184
+msgid "XDG State directory"
+msgstr ""
+
+#: src/lib/prefs/sources_page.ts:192
+msgid "Select download folder"
+msgstr ""
+
+#: src/lib/prefs/sources_page.ts:239
+#, javascript-format
+msgid "%s/%s collection enabled"
+msgid_plural "%s/%s collections enabled"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/lib/services/refresh-error-handler.ts:67
+msgctxt "Error notification"
+msgid "Picture of the Day needs an API key"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:71
+msgctxt "Error notification"
+msgid ""
+"Please configure a valid API key for the configured source in the extensions "
+"settings."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:74
+#: src/lib/services/refresh-error-handler.ts:99
+msgctxt "Error notification"
+msgid "Open preferences"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:82
+msgctxt "Error notification"
+msgid "Picture of the Day was rate-limited"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:86
+msgctxt "Error notification"
+msgid ""
+"The server for the configured source is rate-limited and does not permit to "
+"fetch an image currently. Try again later, or try a different image source."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:92
+msgctxt "Error notification"
+msgid "Picture of the Day has some invalid configuration"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:96
+msgctxt "Error notification"
+msgid "Please correct the invalid configuration in the extension settings."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:107
+msgctxt "Error notification"
+msgid "Picture of the Day failed to fetch today's picture."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:115
+msgctxt "Error notification"
+msgid ""
+"The system seems to have limited network connectivity. Try to connect to the "
+"internet. If the error persists, try again later."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:119
+msgctxt "Error notification"
+msgid "Open network settings"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:127
+msgctxt "Error notification"
+msgid ""
+"The server for the configured source seems to have issues. Try to configure "
+"a different image source or try again later."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:131
+#: src/lib/services/refresh-error-handler.ts:152
+msgctxt "Error notification"
+msgid "No picture today"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:135
+#, javascript-format
+msgctxt "Error notification"
+msgid ""
+"%s is not an image, and cannot be used as background. You can perhaps view "
+"it directly on the website."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:142
+msgctxt "Error notification"
+msgid "Open website"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:156
+#, javascript-format
+msgctxt "Error notification"
+msgid ""
+"%s does not provide a picture today.  Try again tomorrow, or try a different "
+"source."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:163
+msgctxt "Error notification"
+msgid "Image could not be downloaded"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:167
+#, javascript-format
+msgctxt "Error notification"
+msgid ""
+"An I/O error occurred while fetching today's image, with this message %s. "
+"Check your network connection and the permissions in the download folder."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:192
+msgctxt "Error notification"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:195
+msgctxt "Error notification"
+msgid "We are sorry but there seems to be an error."
+msgstr ""
+
+#: src/lib/services/refresh-error-handler.ts:199
+msgid "Details"
+msgstr ""
+
+#: src/lib/sources/stalenhag.ts:104
+#, javascript-format
+msgid "Collection: %s"
+msgstr ""
+
+#: src/lib/sources/stalenhag.ts:105
+msgid "All rights reserved."
+msgstr ""
+
+#. We do not know anything about the copyright here, so let's default to
+#. some "all rights reserved" blurp.
+#: src/lib/sources/wikimedia.ts:83
+msgid "Unknown, all rights reserved"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:114
+msgctxt "ErrorDetailDialog"
+msgid ""
+"The following text contains the internal error messages and stacktraces of "
+"the error.  You may find additional details which may help you to fix the "
+"error, or you may use this data to report an issue on Github."
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:136
+msgctxt "ErrorDetailDialog"
+msgid "Picture of the Day failed"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:145
+msgctxt "ErrorDetailDialog"
+msgid "Copy to clipboard"
+msgstr ""
+
+#: src/lib/ui/error-detail-dialog.ts:153
+msgctxt "Error Dialog"
+msgid "Close"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:120
+#, javascript-format
+msgid "Copyright %s"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:137
+msgid "Open image"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:146
+msgid "Open image folder"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:204
+#, javascript-format
+msgid "Source: %s"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:209
+msgid "Cancel refresh…"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:212
+msgid "Refresh"
+msgstr ""
+
+#: src/lib/ui/indicator.ts:273
+msgid "Preferences"
+msgstr ""
+
+#: ui/AboutPage.blp:7
+msgid "About"
+msgstr ""
+
+#: ui/AboutPage.blp:37
+msgid "Get a picture of the day as desktop background."
+msgstr ""
+
+#: ui/AboutPage.blp:46
+msgctxt "about link"
+msgid "Github"
+msgstr ""
+
+#: ui/AboutPage.blp:51
+msgctxt "about link"
+msgid "Issue tracker"
+msgstr ""
+
+#: ui/AboutPage.blp:55
+msgctxt "translations link"
+msgid "Translations"
+msgstr ""
+
+#: ui/SourcesPage.blp:7
+msgid "Picture Sources"
+msgstr ""
+
+#: ui/SourcesPage.blp:8
+msgid "Configure sources for the Picture of the Day."
+msgstr ""
+
+#: ui/SourcesPage.blp:13
+msgid "Selected source"
+msgstr ""
+
+#: ui/SourcesPage.blp:18
+msgid "Refresh automatically"
+msgstr ""
+
+#: ui/SourcesPage.blp:24
+msgid "Custom download folder"
+msgstr ""
+
+#: ui/SourcesPage.blp:43
+msgid "API key"
+msgstr ""
+
+#: ui/SourcesPage.blp:47
+msgid "Get API key"
+msgstr ""
+
+#: ui/SourcesPage.blp:55
+msgid "Enabled collections"
+msgstr ""
