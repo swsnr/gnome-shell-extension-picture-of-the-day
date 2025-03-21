@@ -1,45 +1,45 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Sebastian Wiesner <sebastian@swsnr.de>
 # This file is distributed under the same license as the picture-of-the-day@swsnr.de package.
-# chalda <chalda@users.noreply.translate.codeberg.org>, 2024.
+# Vistaus <vistaus@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picture-of-the-day@swsnr.de\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-11-19 07:07+0000\n"
-"Last-Translator: chalda <chalda@users.noreply.translate.codeberg.org>\n"
-"Language-Team: Italian <https://translate.codeberg.org/projects/"
-"picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/it/>\n"
-"Language: it\n"
+"PO-Revision-Date: 2025-03-18 15:21+0000\n"
+"Last-Translator: Vistaus <vistaus@noreply.codeberg.org>\n"
+"Language-Team: Dutch <https://translate.codeberg.org/projects/"
+"picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/nl/>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: src/extension.ts:149
 msgid "Picture of the Day"
-msgstr "Immagine del Giorno"
+msgstr "Afbeelding van de dag"
 
 #: src/lib/prefs/sources_page.ts:184
 msgid "XDG State directory"
-msgstr "Cartella di Stato XDG"
+msgstr "XDG-statusmap"
 
 #: src/lib/prefs/sources_page.ts:192
 msgid "Select download folder"
-msgstr "Seleziona la cartella di download"
+msgstr "Kies een downloadmap"
 
 #: src/lib/prefs/sources_page.ts:239
 #, javascript-format
 msgid "%s/%s collection enabled"
 msgid_plural "%s/%s collections enabled"
-msgstr[0] "%s/%s raccolta abilitata"
-msgstr[1] "%s/%s raccolte abilitate"
+msgstr[0] "%s/%s collectie ingeschakeld"
+msgstr[1] "%s/%s collecties ingeschakeld"
 
 #: src/lib/services/refresh-error-handler.ts:67
 msgctxt "Error notification"
 msgid "Picture of the Day needs an API key"
-msgstr "Immagine del Giorno richiede una chiave API"
+msgstr "Voor het gebruik van deze uitbreiding is een api-sleutel vereist"
 
 #: src/lib/services/refresh-error-handler.ts:71
 msgctxt "Error notification"
@@ -47,19 +47,18 @@ msgid ""
 "Please configure a valid API key for the configured source in the extensions "
 "settings."
 msgstr ""
-"Si prega di configurare una chiave API valida per la sorgente nelle "
-"impostazioni dell'estensione."
+"Stel de api-sleutel van de gekozen bron in in de uitbreidingsvoorkeuren."
 
 #: src/lib/services/refresh-error-handler.ts:74
 #: src/lib/services/refresh-error-handler.ts:99
 msgctxt "Error notification"
 msgid "Open preferences"
-msgstr "Apri le preferenze"
+msgstr "Voorkeuren openen"
 
 #: src/lib/services/refresh-error-handler.ts:82
 msgctxt "Error notification"
 msgid "Picture of the Day was rate-limited"
-msgstr "È stato superato il limite di richieste per l'Immagine del Giorno"
+msgstr "Gebruiksbeperking"
 
 #: src/lib/services/refresh-error-handler.ts:86
 msgctxt "Error notification"
@@ -67,26 +66,23 @@ msgid ""
 "The server for the configured source is rate-limited and does not permit to "
 "fetch an image currently. Try again later, or try a different image source."
 msgstr ""
-"Il server della sorgente selezionata è al momento soggetto a limiti di "
-"velocità e non consente al momento di recuperare un'immagine. Prova di nuovo "
-"più tardi o utilizza una fonte alternativa."
+"De server heeft u een beperking opgelegd - hierdoor kunt u geen afbeeldingen "
+"ophalen. Probeer het later opnieuw of maak gebruik van een andere bron."
 
 #: src/lib/services/refresh-error-handler.ts:92
 msgctxt "Error notification"
 msgid "Picture of the Day has some invalid configuration"
-msgstr "La configurazione dell'Immagine del Giorno non è valida"
+msgstr "Ongeldige voorkeuren"
 
 #: src/lib/services/refresh-error-handler.ts:96
 msgctxt "Error notification"
 msgid "Please correct the invalid configuration in the extension settings."
-msgstr ""
-"Si prega di correggere la configurazione non valida nelle impostazioni "
-"dell'estensione."
+msgstr "Pas de ongeldige voorkeuren aan in de uitbreidingsvoorkeuren."
 
 #: src/lib/services/refresh-error-handler.ts:107
 msgctxt "Error notification"
 msgid "Picture of the Day failed to fetch today's picture."
-msgstr "L'Immagine del Giorno non è riuscita a scaricare l'immagine di oggi."
+msgstr "De afbeelding van de dag kan niet worden opgehaald."
 
 #: src/lib/services/refresh-error-handler.ts:115
 msgctxt "Error notification"
@@ -94,13 +90,14 @@ msgid ""
 "The system seems to have limited network connectivity. Try to connect to the "
 "internet. If the error persists, try again later."
 msgstr ""
-"Sembra che il sistema abbia una connessione di rete limitata. Prova a "
-"connetterti a Internet. Se l'errore persiste, riprova più tardi."
+"Er lijkt geen internetverbinding te zijn. Maak verbinding met het internet "
+"en probeer het opnieuw. Als het probleem zich blijft voordoen, maak hier dan "
+"melding van."
 
 #: src/lib/services/refresh-error-handler.ts:119
 msgctxt "Error notification"
 msgid "Open network settings"
-msgstr "Apri le impostazioni di rete"
+msgstr "Netwerkvoorkeuren openen"
 
 #: src/lib/services/refresh-error-handler.ts:127
 msgctxt "Error notification"
@@ -108,15 +105,14 @@ msgid ""
 "The server for the configured source seems to have issues. Try to configure "
 "a different image source or try again later."
 msgstr ""
-"Sembra che il server della sorgente configurata stia riscontrando dei "
-"problemi. Prova a impostare una sorgente di immagini diversa o riprova più "
-"tardi."
+"Er lijken problemen te zijn met de server. Probeer het later opnieuw of maak "
+"gebruik van een andere bron."
 
 #: src/lib/services/refresh-error-handler.ts:131
 #: src/lib/services/refresh-error-handler.ts:152
 msgctxt "Error notification"
 msgid "No picture today"
-msgstr "Nessuna immagine oggi"
+msgstr "Geen afbeelding beschikbaar"
 
 #: src/lib/services/refresh-error-handler.ts:135
 #, javascript-format
@@ -125,13 +121,13 @@ msgid ""
 "%s is not an image, and cannot be used as background. You can perhaps view "
 "it directly on the website."
 msgstr ""
-"%s non è un'immagine e non può essere utilizzata come sfondo. Forse puoi "
-"visualizzarla direttamente sul sito."
+"‘%s’ is geen afbeelding en kan daarom niet worden gebruikt. Probeer het via "
+"de bijbehorende website."
 
 #: src/lib/services/refresh-error-handler.ts:142
 msgctxt "Error notification"
 msgid "Open website"
-msgstr "Apri il sito web"
+msgstr "Website openen"
 
 #: src/lib/services/refresh-error-handler.ts:156
 #, javascript-format
@@ -140,13 +136,13 @@ msgid ""
 "%s does not provide a picture today.  Try again tomorrow, or try a different "
 "source."
 msgstr ""
-"%s non ha un'immagine disponibile per oggi.  Riprova domani o prova una "
-"sorgente diversa."
+"%s heeft vandaag geen afbeelding beschikbaar gesteld. Probeer het morgen "
+"opnieuw of maak gebruik van een andere bron."
 
 #: src/lib/services/refresh-error-handler.ts:163
 msgctxt "Error notification"
 msgid "Image could not be downloaded"
-msgstr "Non è stato possibile scaricare l'immagine"
+msgstr "Afbeelding kan niet worden opgehaald"
 
 #: src/lib/services/refresh-error-handler.ts:167
 #, javascript-format
@@ -155,38 +151,38 @@ msgid ""
 "An I/O error occurred while fetching today's image, with this message %s. "
 "Check your network connection and the permissions in the download folder."
 msgstr ""
-"C'è stato un errore I/O nel recuperare l'immagine di oggi, con il seguente "
-"messaggio di errore: %s. Verifica la connessione di rete e i permessi nella "
-"cartella di download."
+"Er is een i/o-fout opgetreden tijdens het ophalen van de afbeelding. De "
+"precieze foutmelding is “%s”. Maak verbinding met het internet of controleer "
+"de maprechten."
 
 #: src/lib/services/refresh-error-handler.ts:192
 msgctxt "Error notification"
 msgid "Picture of the Day failed"
-msgstr "Non è stato possibile caricare l'Immagine del Giorno"
+msgstr "Ophalen mislukt"
 
 #: src/lib/services/refresh-error-handler.ts:195
 msgctxt "Error notification"
 msgid "We are sorry but there seems to be an error."
-msgstr "Purtroppo sembra che si sia verificato un errore."
+msgstr "Er lijkt een fout te zijn opgetreden."
 
 #: src/lib/services/refresh-error-handler.ts:199
 msgid "Details"
-msgstr "Dettagli"
+msgstr "Details"
 
 #: src/lib/sources/stalenhag.ts:104
 #, javascript-format
 msgid "Collection: %s"
-msgstr "Collezione: %s"
+msgstr "Collectie: %s"
 
 #: src/lib/sources/stalenhag.ts:105
 msgid "All rights reserved."
-msgstr "Tutti i diritti riservati."
+msgstr "Alle rechten voorbehouden."
 
 #. We do not know anything about the copyright here, so let's default to
 #. some "all rights reserved" blurp.
 #: src/lib/sources/wikimedia.ts:83
 msgid "Unknown, all rights reserved"
-msgstr "Sconosciuto, tutti i diritti riservati"
+msgstr "Onbekend - alle rechten voorbehouden"
 
 #: src/lib/ui/error-detail-dialog.ts:114
 msgctxt "ErrorDetailDialog"
@@ -195,107 +191,107 @@ msgid ""
 "the error.  You may find additional details which may help you to fix the "
 "error, or you may use this data to report an issue on Github."
 msgstr ""
-"Il testo seguente contiene i messaggi di errore interni e le stacktrace "
-"dell'errore.  Potresti trovare dettagli aggiuntivi che potrebbero aiutarti a "
-"correggere l'errore, oppure potresti usare questi dati per segnalare il "
-"problema su Github."
+"De volgende tekst bevat de interne foutmeldingen en andere "
+"foutopsporingsinformatie.  Aan de hand van deze gegevens kunt u mogelijk de "
+"foutmelding oplossen. Mocht dat niet lukken, open dan een ‘issue’ op GitHub "
+"en vermeld deze informatie."
 
 #: src/lib/ui/error-detail-dialog.ts:136
 msgctxt "ErrorDetailDialog"
 msgid "Picture of the Day failed"
-msgstr "Non è stato possibile caricare l'Immagine del Giorno"
+msgstr "Ophalen mislukt"
 
 #: src/lib/ui/error-detail-dialog.ts:145
 msgctxt "ErrorDetailDialog"
 msgid "Copy to clipboard"
-msgstr "Copia negli appunti"
+msgstr "Kopiëren naar klembord"
 
 #: src/lib/ui/error-detail-dialog.ts:153
 msgctxt "Error Dialog"
 msgid "Close"
-msgstr "Chiudi"
+msgstr "Sluiten"
 
 #: src/lib/ui/indicator.ts:120
 #, javascript-format
 msgid "Copyright %s"
-msgstr "Copyright %s"
+msgstr "Auteursrecht/Copyright: %s"
 
 #: src/lib/ui/indicator.ts:137
 msgid "Open image"
-msgstr "Apri l'immagine"
+msgstr "Afbeelding openen"
 
 #: src/lib/ui/indicator.ts:146
 msgid "Open image folder"
-msgstr "Apri la cartella dell'immagine"
+msgstr "Afbeeldingsmap openen"
 
 #: src/lib/ui/indicator.ts:204
 #, javascript-format
 msgid "Source: %s"
-msgstr "Fonte: %s"
+msgstr "Bron: %s"
 
 #: src/lib/ui/indicator.ts:209
 msgid "Cancel refresh…"
-msgstr "Annulla aggiornamento…"
+msgstr "Herladen afbreken…"
 
 #: src/lib/ui/indicator.ts:212
 msgid "Refresh"
-msgstr "Aggiorna"
+msgstr "Herladen"
 
 #: src/lib/ui/indicator.ts:273
 msgid "Preferences"
-msgstr "Preferenze"
+msgstr "Voorkeuren"
 
 #: ui/AboutPage.blp:7
 msgid "About"
-msgstr "Informazioni"
+msgstr "Over"
 
 #: ui/AboutPage.blp:37
 msgid "Get a picture of the day as desktop background."
-msgstr "Imposta l'immagine del giorno come sfondo del desktop."
+msgstr "De afbeelding van de dag als bureaubladachtergrond."
 
 #: ui/AboutPage.blp:46
 msgctxt "about link"
 msgid "Github"
-msgstr "Github"
+msgstr "GitHub"
 
 #: ui/AboutPage.blp:51
 msgctxt "about link"
 msgid "Issue tracker"
-msgstr "Issue tracker"
+msgstr "Probleemmeldingen"
 
 #: ui/AboutPage.blp:55
 msgctxt "translations link"
 msgid "Translations"
-msgstr "Traduzioni"
+msgstr "Vertalingen"
 
 #: ui/SourcesPage.blp:7
 msgid "Picture Sources"
-msgstr "Fonti delle immagini"
+msgstr "Afbeeldingsbronnen"
 
 #: ui/SourcesPage.blp:8
 msgid "Configure sources for the Picture of the Day."
-msgstr "Configura le fonti per l'Immagine del Giorno."
+msgstr "Stel de te gebruiken afbeeldingsbronnen in."
 
 #: ui/SourcesPage.blp:13
 msgid "Selected source"
-msgstr "Fonte selezionata"
+msgstr "Gekozen bron"
 
 #: ui/SourcesPage.blp:18
 msgid "Refresh automatically"
-msgstr "Aggiorna automaticamente"
+msgstr "Automatisch bijwerken"
 
 #: ui/SourcesPage.blp:24
 msgid "Custom download folder"
-msgstr "Cartella di download personalizzata"
+msgstr "Eigen downloadmap"
 
 #: ui/SourcesPage.blp:43
 msgid "API key"
-msgstr "Chiave API"
+msgstr "Api-sleutel"
 
 #: ui/SourcesPage.blp:47
 msgid "Get API key"
-msgstr "Recupera la chiave API"
+msgstr "Api-sleutel verkrijgen"
 
 #: ui/SourcesPage.blp:55
 msgid "Enabled collections"
-msgstr "Raccolte attivate"
+msgstr "Ingeschakelde collecties"
