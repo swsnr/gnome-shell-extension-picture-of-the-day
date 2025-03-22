@@ -3,7 +3,7 @@
   "uuid": "picture-of-the-day@swsnr.de",
   "description": "Obsolete, use https://flathub.org/apps/details/de.swsnr.pictureoftheday instead.",
   "url": "https://flathub.org/apps/details/de.swsnr.pictureoftheday",
-  "version-name": "47.6",
+  "version-name": "47.7",
   "shell-version": ["47"],
   "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day",
   "gettext-domain": "picture-of-the-day@swsnr.de"
