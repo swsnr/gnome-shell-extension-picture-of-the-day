@@ -19,6 +19,16 @@ corresponding .blp file and regenerate this file with blueprint-compiler.
             <property name="halign">3</property>
             <property name="margin-bottom">15</property>
             <child>
+              <object class="GtkLabel">
+                <property name="label">This extension is obsolete and no longer maintained. Use the &lt;a href="https://flathub.org/apps/details/de.swsnr.pictureoftheday"&gt;Picture Of The Day app&lt;/a&gt; instead.</property>
+                <property name="margin-bottom">5</property>
+                <style>
+                  <class name="title-2"/>
+                  <class name="warning"/>
+                </style>
+              </object>
+            </child>
+            <child>
               <object class="GtkLabel" id="extensionName">
                 <property name="label">The name of this extension</property>
                 <property name="margin-bottom">5</property>

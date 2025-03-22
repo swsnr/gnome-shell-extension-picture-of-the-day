@@ -1,8 +1,8 @@
 {
   "name": "Picture of the Day",
   "uuid": "picture-of-the-day@swsnr.de",
-  "description": "Get a picture of the day as desktop background or wallpaper.\n\nSupports the following sources: NASA Astronomy Picture of the Day (APOD), NASA Earth Observatory Image of the Day, Bing, Wikimedia Featured Image, and Simon Stålenhag artworks.",
-  "url": "https://github.com/swsnr/gnome-shell-extension-picture-of-the-day",
+  "description": "Obsolete, use https://flathub.org/apps/details/de.swsnr.pictureoftheday instead.",
+  "url": "https://flathub.org/apps/details/de.swsnr.pictureoftheday",
   "version-name": "47.6",
   "shell-version": ["47"],
   "settings-schema": "org.gnome.shell.extensions.swsnr-picture-of-the-day",

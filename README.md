@@ -1,9 +1,9 @@
 # Picture of the Day
 
-[![Download on EGO](https://img.shields.io/badge/EGO-install-blue)](https://extensions.gnome.org/extension/6469/picture-of-the-day/)
-[![Latest release](https://img.shields.io/github/v/release/swsnr/gnome-shell-extension-picture-of-the-day)](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/releases/)
-[![Translation status](https://translate.codeberg.org/widget/picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/svg-badge.svg)](https://translate.codeberg.org/engage/picture-of-the-day-swsnr-de/)
-[![CI status](https://img.shields.io/github/actions/workflow/status/swsnr/gnome-shell-extension-picture-of-the-day/ci.yaml)](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/actions)
+> [!IMPORTANT]
+> I consider this extension obsolete and no longer maintain it.
+>
+> Use the [Picture Of The Day app](https://flathub.org/apps/de.swsnr.pictureoftheday) instead.
 
 Use a picture of the day from various sources as GNOME desktop background.
 
