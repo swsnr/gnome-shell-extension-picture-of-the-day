@@ -41,12 +41,6 @@ Use "Settings" in the Extension apps, or in the indicator menu. Or run
 $ gnome-extensions prefs picture-of-the-day@swsnr.de
 ```
 
-## Translations
-
-Please contribute translations on Codeberg Translate under the [picture-of-the-day-swsnr-de](https://translate.codeberg.org/engage/picture-of-the-day-swsnr-de/) project:
-
-[![Translation status](https://translate.codeberg.org/widget/picture-of-the-day-swsnr-de/picture-of-the-day-swsnr-de/multi-blue.svg)](https://translate.codeberg.org/engage/picture-of-the-day-swsnr-de/)
-
 ## Credits and Acknowledgments
 
 I'd like to thank the following people and projects without whom this extension would never have existed:
