@@ -226,23 +226,17 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: ui/AboutPage.blp:37
+#: ui/AboutPage.blp:26
+msgid "Picture Of The Day app"
+msgstr ""
+
+#: ui/AboutPage.blp:49
 msgid "Get a picture of the day as desktop background."
 msgstr ""
 
-#: ui/AboutPage.blp:46
+#: ui/AboutPage.blp:58
 msgctxt "about link"
 msgid "Github"
-msgstr ""
-
-#: ui/AboutPage.blp:51
-msgctxt "about link"
-msgid "Issue tracker"
-msgstr ""
-
-#: ui/AboutPage.blp:55
-msgctxt "translations link"
-msgid "Translations"
 msgstr ""
 
 #: ui/SourcesPage.blp:7
