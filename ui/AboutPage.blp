@@ -16,6 +16,18 @@ template $PictureOfTheDayAboutPage : Adw.PreferencesPage {
       halign: center;
       margin-bottom: 15;
 
+      Label {
+        label: "This extension is obsolete and no longer maintained.";
+        margin-bottom: 5;
+        styles ["title-2", "warning"]
+      }
+
+      LinkButton linkIssues {
+        label: _("Picture Of The Day app");
+        margin-bottom: 5;
+        uri: "https://flathub.org/apps/details/de.swsnr.pictureoftheday";
+      }
+
       Label extensionName {
         label: "The name of this extension";
         margin-bottom: 5;
@@ -44,16 +56,6 @@ template $PictureOfTheDayAboutPage : Adw.PreferencesPage {
 
       LinkButton linkGithub {
         label: C_("about link", "Github");
-
-      }
-
-      LinkButton linkIssues {
-        label: C_("about link", "Issue tracker");
-      }
-
-      LinkButton {
-        label: C_("translations link", "Translations");
-        uri: "https://translate.codeberg.org/engage/picture-of-the-day-swsnr-de/";
       }
     }
 
