@@ -24,7 +24,7 @@ Use a picture of the day from various sources as GNOME desktop background.
 Install from [extensions.gnome.org](https://extensions.gnome.org/extension/6469/picture-of-the-day/).
 
 **Note**: The mandatory review process for extensions.gnome.org can sometimes delay releases for a few days, in particular if the release contains larger changes.
-Please do be patient, or use release file (see below) as an alternative.
+Please do be patient, or use the release file (see below) as an alternative.
 
 Or download the latest ZIP file from [releases](https://github.com/swsnr/gnome-shell-extension-picture-of-the-day/releases),
 and install with
